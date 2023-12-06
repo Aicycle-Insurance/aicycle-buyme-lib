@@ -1,9 +1,9 @@
-import 'package:aicycle_buyme_lib/features/folder_details/data/models/check_car_model.dart';
 import 'package:dartz/dartz.dart';
 
 import '../../../../network/api_error.dart';
 import '../../domain/repository/folder_detail_repository.dart';
 import '../models/buy_me_image_model.dart';
+import '../models/check_car_model.dart';
 import '../remote_data/folder_detail_api.dart';
 
 class FolderDetailRepositoryImpl implements FolderDetailRepository {

@@ -1,10 +1,10 @@
 abstract class BaseEndpoint {
   // static String get baseUrl => 'https://dev-api-insurance.aicycle.ai';
   // static String get adminBaseUrl => 'https://dev-api-admin.aicycle.ai';
-  // static String get baseUrl => 'https://stage-api-insurance.aicycle.ai';
-  // static String get adminBaseUrl => 'https://stage-api-admin.aicycle.ai';
-  static String get baseUrl => 'https://api-aws-insurance.aicycle.ai';
-  static String get adminBaseUrl => 'https://api-aws-admin.aicycle.ai';
+  static String get baseUrl => 'https://stage-api-insurance.aicycle.ai';
+  static String get adminBaseUrl => 'https://stage-api-admin.aicycle.ai';
+  // static String get baseUrl => 'https://api-aws-insurance.aicycle.ai';
+  // static String get adminBaseUrl => 'https://api-aws-admin.aicycle.ai';
 }
 
 abstract class Endpoint {

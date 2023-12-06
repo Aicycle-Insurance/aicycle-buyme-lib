@@ -1,10 +1,10 @@
 // ignore_for_file: deprecated_member_use_from_same_package
 
-import 'package:aicycle_buyme_lib/aicycle_buyme_lib.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:readmore/readmore.dart';
 
+import '../../../../aicycle_buyme_lib.dart';
 import '../../../../generated/assets.gen.dart';
 import '../../../common/app_string.dart';
 import '../../../common/c_button.dart';

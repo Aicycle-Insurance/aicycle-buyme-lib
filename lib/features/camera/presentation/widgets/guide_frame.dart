@@ -1,9 +1,9 @@
 // ignore_for_file: must_be_immutable
 
-import 'package:aicycle_buyme_lib/aicycle_buyme_lib.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../../aicycle_buyme_lib.dart';
 import '../../../../enum/car_model.dart';
 import '../../../../enum/car_part_direction.dart';
 
