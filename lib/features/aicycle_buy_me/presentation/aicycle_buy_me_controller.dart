@@ -36,7 +36,7 @@ class AiCycleBuyMeController extends BaseController {
     res.fold(
       (l) {
         if (l.details.toString().toLowerCase().contains('duplicate')) {
-          getDupliacateFolder();
+          getDuplicateFolder();
         } else {
           isLoading(false);
           status.value = BaseStatus(
@@ -56,7 +56,7 @@ class AiCycleBuyMeController extends BaseController {
     );
   }
 
-  void getDupliacateFolder() async {
+  void getDuplicateFolder() async {
     var res = await getDuplicateFolderUsecase(
         externalClaimId: argument.externalClaimId);
     res.fold(
