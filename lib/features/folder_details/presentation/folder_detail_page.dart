@@ -56,7 +56,6 @@ class _FolderDetailPageState
   @override
   void initState() {
     super.initState();
-
     controller.claimId = widget.claimFolderId;
     _callEngineSub = controller.damageResponseStream.stream.listen((p0) {
       if (p0 != null) {
