@@ -56,7 +56,7 @@ class _FolderDetailPageState
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: (widget.hasAppBar ?? false)
+      appBar: (widget.hasAppBar ?? true)
           ? AppBar(
               backgroundColor: CColors.white,
               elevation: 0.7,
@@ -186,7 +186,7 @@ class _FolderDetailPageState
                   onPressed: () {
                     widget.onViewResultCallBack
                         ?.call(controller.imageInfo.value?.images);
-                    Navigator.pop(context);
+                    // Navigator.pop(context);
                   },
                   title: AppString.viewResult,
                 ),
