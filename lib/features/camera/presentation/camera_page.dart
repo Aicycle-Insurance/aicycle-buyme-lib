@@ -59,6 +59,7 @@ class _CameraPageState extends BaseState<CameraPage, CameraPageController> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     final screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
       backgroundColor: Colors.black,
@@ -292,4 +293,7 @@ class _CameraPageState extends BaseState<CameraPage, CameraPageController> {
       ),
     );
   }
+
+  @override
+  bool get wantKeepAlive => false;
 }

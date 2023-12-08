@@ -5,7 +5,7 @@ import 'base_controller.dart';
 import 'utils.dart';
 
 abstract class BaseState<W extends StatefulWidget, C extends BaseController>
-    extends State<W> {
+    extends State<W> with AutomaticKeepAliveClientMixin {
   late final C controller;
   @override
   void initState() {

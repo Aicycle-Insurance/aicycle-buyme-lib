@@ -63,6 +63,7 @@ class _FolderDetailPageState
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Scaffold(
       appBar: (widget.hasAppBar ?? true)
           ? AppBar(
@@ -205,4 +206,8 @@ class _FolderDetailPageState
       ),
     );
   }
+
+  @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => true;
 }
