@@ -61,6 +61,9 @@ class _AiCycleBuyMeState
               claimFolderId: controller.claimFolder.value?.claimId ?? '',
               externalClaimId: widget.argument.externalClaimId,
               onViewResultCallBack: widget.onViewResultCallBack,
+              onCallEngineSuccessfully: (p0) {
+                print(p0);
+              },
             ),
           ),
         );
