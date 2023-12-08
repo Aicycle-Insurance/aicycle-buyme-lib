@@ -1,4 +1,5 @@
 import '../../../../../enum/app_state.dart';
+import '../../../../camera/data/models/damage_assessment_response.dart';
 import '../../../../common/base_controller.dart';
 import 'package:camera/camera.dart';
 import 'package:get/get.dart';
@@ -15,6 +16,7 @@ class FolderDetailController extends BaseController {
   final CheckIsOneCarUsecase checkIsOneCarUsecase = Get.find();
   var checkCarModel = Rx<CheckCarModel?>(null);
   var imageInfo = Rx<BuyMeImageResponse?>(null);
+  var damageResponseListener = Rx<DamageAssessmentResponse?>(null);
   String? claimId;
 
   @override

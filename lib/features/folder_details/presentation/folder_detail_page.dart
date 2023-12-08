@@ -1,6 +1,5 @@
 // ignore_for_file: invalid_use_of_protected_member
 
-import 'package:aicycle_buyme_lib/features/aicycle_buy_me/presentation/aicycle_buy_me.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
@@ -8,6 +7,8 @@ import 'package:get/get.dart';
 import '../../../aicycle_buyme_lib.dart';
 import '../../../enum/car_part_direction.dart';
 import '../../../generated/assets.gen.dart';
+import '../../aicycle_buy_me/presentation/aicycle_buy_me.dart';
+import '../../camera/data/models/damage_assessment_response.dart';
 import '../../common/app_string.dart';
 import '../../common/base_widget.dart';
 import '../../common/c_button.dart';
@@ -25,11 +26,13 @@ class FolderDetailPage extends StatefulWidget {
     required this.externalClaimId,
     this.onViewResultCallBack,
     this.hasAppBar,
+    this.onCallEngineSuccessfully,
   });
   final String claimFolderId;
   final String externalClaimId;
   final bool? hasAppBar;
   final Function(List<BuyMeImage>? images)? onViewResultCallBack;
+  final Function(DamageAssessmentResponse?)? onCallEngineSuccessfully;
 
   @override
   State<FolderDetailPage> createState() => _FolderDetailPageState();
@@ -51,6 +54,11 @@ class _FolderDetailPageState
     super.initState();
 
     controller.claimId = widget.claimFolderId;
+    controller.damageResponseListener.listen((p0) {
+      if (p0 != null) {
+        widget.onCallEngineSuccessfully?.call(p0);
+      }
+    });
   }
 
   @override
