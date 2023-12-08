@@ -24,11 +24,11 @@ class FolderDetailPage extends StatefulWidget {
     required this.claimFolderId,
     required this.externalClaimId,
     this.onViewResultCallBack,
-    this.apiKey,
+    this.hasAppBar,
   });
   final String claimFolderId;
   final String externalClaimId;
-  final String? apiKey;
+  final bool? hasAppBar;
   final Function(List<BuyMeImage>? images)? onViewResultCallBack;
 
   @override
@@ -49,19 +49,19 @@ class _FolderDetailPageState
   @override
   void initState() {
     super.initState();
-    if (widget.apiKey != null) {
-      apiToken = widget.apiKey;
-    }
+
     controller.claimId = widget.claimFolderId;
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: CColors.white,
-        elevation: 0.7,
-      ),
+      appBar: (widget.hasAppBar ?? false)
+          ? AppBar(
+              backgroundColor: CColors.white,
+              elevation: 0.7,
+            )
+          : null,
       body: LoadingView<FolderDetailController>(
         isCustomLoading: true,
         child: Column(
