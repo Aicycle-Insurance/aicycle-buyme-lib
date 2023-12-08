@@ -1,6 +1,6 @@
-name: aicycle_buyme_lib_stage
-description: An AiCycle BuyMe package in stage environment.
-version: 0.0.1
+name: aicycle_buyme_lib
+description: An AiCycle BuyMe package.
+version: 0.0.2
 homepage: https://aicycle.ai/
 
 environment:
