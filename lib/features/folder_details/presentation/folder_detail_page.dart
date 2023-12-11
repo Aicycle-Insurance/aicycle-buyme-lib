@@ -1,5 +1,7 @@
 // ignore_for_file: invalid_use_of_protected_member
 
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
@@ -25,12 +27,12 @@ class FolderDetailPage extends StatefulWidget {
     required this.claimFolderId,
     required this.externalClaimId,
     this.onViewResultCallBack,
+    this.hasAppBar,
     this.onCallEngineSuccessfully,
-    this.apiKey,
   });
   final String claimFolderId;
   final String externalClaimId;
-  final String? apiKey;
+  final bool? hasAppBar;
   final Function(List<BuyMeImage>? images)? onViewResultCallBack;
   final Function(DamageAssessmentResponse?)? onCallEngineSuccessfully;
 
@@ -40,6 +42,8 @@ class FolderDetailPage extends StatefulWidget {
 
 class _FolderDetailPageState
     extends BaseState<FolderDetailPage, FolderDetailController> {
+  late final StreamSubscription _callEngineSub;
+
   @override
   FolderDetailController provideController() {
     if (Get.isRegistered<FolderDetailController>()) {
@@ -52,11 +56,9 @@ class _FolderDetailPageState
   @override
   void initState() {
     super.initState();
-    if (widget.apiKey != null) {
-      apiToken = widget.apiKey;
-    }
+
     controller.claimId = widget.claimFolderId;
-    controller.damageResponseListener.listen((p0) {
+    _callEngineSub = controller.damageResponseStream.stream.listen((p0) {
       if (p0 != null) {
         widget.onCallEngineSuccessfully?.call(p0);
       }
@@ -64,12 +66,21 @@ class _FolderDetailPageState
   }
 
   @override
+  void dispose() {
+    super.dispose();
+    _callEngineSub.cancel();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: CColors.white,
-        elevation: 0.7,
-      ),
+      appBar: (widget.hasAppBar ?? true)
+          ? AppBar(
+              backgroundColor: CColors.white,
+              elevation: 0.7,
+            )
+          : null,
       body: LoadingView<FolderDetailController>(
         isCustomLoading: true,
         child: Column(
@@ -194,7 +205,7 @@ class _FolderDetailPageState
                   onPressed: () {
                     widget.onViewResultCallBack
                         ?.call(controller.imageInfo.value?.images);
-                    Navigator.pop(context);
+                    // Navigator.pop(context);
                   },
                   title: AppString.viewResult,
                 ),
@@ -205,4 +216,8 @@ class _FolderDetailPageState
       ),
     );
   }
+
+  @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => true;
 }

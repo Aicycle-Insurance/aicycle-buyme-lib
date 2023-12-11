@@ -73,6 +73,7 @@ class _AiCycleBuyMeState
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Scaffold(
       body: Container(
         height: double.infinity,
@@ -113,4 +114,8 @@ class _AiCycleBuyMeState
       ),
     );
   }
+
+  @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => false;
 }

@@ -373,7 +373,8 @@ class CameraPageController extends BaseController {
     if (Get.isRegistered<FolderDetailController>()) {
       final folderDetailController = Get.find<FolderDetailController>();
       folderDetailController.getImageInfo();
-      folderDetailController.damageResponseListener.value = value;
+      // folderDetailController.damageResponseListener.value = value;
+      folderDetailController.damageResponseStream.sink.add(value);
       // var images = folderDetailController.imageInfo.value?.images ?? [];
       // images.removeWhere(
       //   (element) =>
