@@ -1,5 +1,7 @@
 // ignore_for_file: invalid_use_of_protected_member
 
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
@@ -40,6 +42,8 @@ class FolderDetailPage extends StatefulWidget {
 
 class _FolderDetailPageState
     extends BaseState<FolderDetailPage, FolderDetailController> {
+  late final StreamSubscription _callEngineSub;
+
   @override
   FolderDetailController provideController() {
     if (Get.isRegistered<FolderDetailController>()) {
@@ -54,11 +58,17 @@ class _FolderDetailPageState
     super.initState();
 
     controller.claimId = widget.claimFolderId;
-    controller.damageResponseListener.listen((p0) {
+    _callEngineSub = controller.damageResponseStream.stream.listen((p0) {
       if (p0 != null) {
         widget.onCallEngineSuccessfully?.call(p0);
       }
     });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _callEngineSub.cancel();
   }
 
   @override
