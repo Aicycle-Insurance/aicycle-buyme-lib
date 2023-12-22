@@ -13,3 +13,7 @@
 ## 0.0.4
 
 * Fix package name
+
+## 0.0.5
+
+* Fix camera loading bug

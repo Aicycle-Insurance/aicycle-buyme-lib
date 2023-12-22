@@ -41,6 +41,7 @@ class CameraPageController extends BaseController {
   Map<String, dynamic> cacheValidationModel = {};
   var isFromGallery = false.obs;
   var localImageSize = Rx<Size?>(null);
+  var isCameraLoading = false.obs;
 
   @override
   void onInit() {
@@ -80,7 +81,7 @@ class CameraPageController extends BaseController {
   }
 
   Future<void> onNewCameraSelected(CameraDescription cameraDescription) async {
-    isLoading(true);
+    isCameraLoading(true);
     final CameraController? oldController = cameraController;
     if (oldController != null) {
       cameraController = null;
@@ -106,9 +107,9 @@ class CameraPageController extends BaseController {
       if (Platform.isIOS) {
         cameraCtrl.lockCaptureOrientation(DeviceOrientation.landscapeLeft);
       }
-      isLoading(false);
+      isCameraLoading(false);
     } on CameraException catch (_) {
-      isLoading(false);
+      isCameraLoading(false);
       status.value = BaseStatus(
         message: 'No camera found',
         state: AppState.pop,

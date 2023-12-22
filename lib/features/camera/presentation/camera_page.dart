@@ -104,7 +104,8 @@ class _CameraPageState extends BaseState<CameraPage, CameraPageController> {
         child: GetBuilder<CameraPageController>(
           id: 'camera',
           builder: (ctrl) {
-            if (controller.isInActive.isTrue ||
+            if (controller.isCameraLoading.isTrue ||
+                controller.isInActive.isTrue ||
                 controller.cameraController == null ||
                 controller.cameraController?.value.isInitialized != true) {
               return const SizedBox.expand(
