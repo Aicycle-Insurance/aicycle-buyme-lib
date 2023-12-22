@@ -9,7 +9,6 @@ import 'package:get/get.dart';
 import '../../../aicycle_buyme_lib.dart';
 import '../../../enum/car_part_direction.dart';
 import '../../../generated/assets.gen.dart';
-import '../../aicycle_buy_me/presentation/aicycle_buy_me.dart';
 import '../../camera/data/models/damage_assessment_response.dart';
 import '../../common/app_string.dart';
 import '../../common/base_widget.dart';
@@ -218,6 +217,5 @@ class _FolderDetailPageState
   }
 
   @override
-  // TODO: implement wantKeepAlive
   bool get wantKeepAlive => true;
 }

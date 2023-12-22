@@ -81,8 +81,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           },
                           argument: AiCycleBuyMeArgument(
                             externalClaimId: externalClaimIdController.text,
-                            // apiToken: 'your api token',
-                            apiToken: '7b8eee82-69a5-46de-8772-537cd962b8eb',
+                            apiToken: 'your api token',
                           ),
                         ),
                       ),

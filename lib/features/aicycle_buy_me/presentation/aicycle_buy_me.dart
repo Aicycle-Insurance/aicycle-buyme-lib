@@ -61,9 +61,7 @@ class _AiCycleBuyMeState
               claimFolderId: controller.claimFolder.value?.claimId ?? '',
               externalClaimId: widget.argument.externalClaimId,
               onViewResultCallBack: widget.onViewResultCallBack,
-              onCallEngineSuccessfully: (p0) {
-                print(p0);
-              },
+              onCallEngineSuccessfully: (p0) {},
             ),
           ),
         );
@@ -116,6 +114,5 @@ class _AiCycleBuyMeState
   }
 
   @override
-  // TODO: implement wantKeepAlive
   bool get wantKeepAlive => false;
 }
