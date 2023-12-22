@@ -1,6 +1,6 @@
 name: aicycle_buyme_lib_stage
 description: An AiCycle BuyMe package on stage environment.
-version: 0.0.3
+version: 0.0.4
 homepage: https://aicycle.ai/
 
 environment:
@@ -33,6 +33,7 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^2.0.0
+  
 flutter_gen:
   output: lib/generated/ # Optional (default: lib/gen/)
   line_length: 80 # Optional (default: 80)
