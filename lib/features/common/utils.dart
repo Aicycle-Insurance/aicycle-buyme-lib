@@ -33,14 +33,14 @@ class Utils {
         return source;
       }
       if (Platform.isAndroid && !fromGallery) {
-        input = img.copyRotate(input, angle: 90);
+        input = img.copyRotate(input, angle: -90);
       }
       int imageWidth = input.width;
       int imageHeight = input.height;
       input = img.copyResize(
         input,
-        width: imageWidth > imageHeight ? 1600 : 1200,
-        height: imageWidth > imageHeight ? 1200 : 1600,
+        width: imageWidth > imageHeight ? 1920 : 1080,
+        height: imageWidth > imageHeight ? 1080 : 1920,
         maintainAspect: true,
       );
       final dirPath = (await getTemporaryDirectory()).path;
