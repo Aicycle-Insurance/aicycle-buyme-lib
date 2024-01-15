@@ -1,5 +1,5 @@
-import '../../../aicycle.dart';
 import '../../../generated/locales.g.dart';
+import '../../aicycle_buy_me/presentation/aicycle_buy_me.dart';
 
 extension Trans on String {
   String get trans {

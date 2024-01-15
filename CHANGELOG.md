@@ -30,3 +30,7 @@
 
 * Support vi_VN, en_US, ja_JP languages
 * Fix bugs
+
+## 0.0.9
+
+* Fix bugs
