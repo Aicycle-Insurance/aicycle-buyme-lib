@@ -34,3 +34,7 @@
 ## 0.0.9
 
 * Fix bugs
+
+## 0.1.0
+
+* Fix multiple languages
