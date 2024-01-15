@@ -1,5 +1,3 @@
-import 'package:get/get.dart';
-
 import '../features/aicycle_buy_me/presentation/aicycle_buy_me.dart';
 import 'api_provider.dart';
 import 'endpoints.dart';
@@ -34,10 +32,21 @@ class APIRequest {
     this.isBaseResponse = true,
     this.isMultiLanguage = true,
   }) {
+    String langCode = 'vi';
+    switch (locale?.languageCode) {
+      case "en":
+        langCode = 'en';
+        break;
+      case "vi":
+        langCode = 'vi';
+        break;
+      case "ja":
+        langCode = 'jp';
+        break;
+    }
     final baseHeaders = {
       if (apiToken != null) 'Authorization': "Bearer $apiToken",
-      if (isMultiLanguage)
-        "lang": locale?.languageCode ?? Get.locale?.languageCode ?? "vi",
+      if (isMultiLanguage) "lang": langCode,
     };
     this.headers = baseHeaders;
     this.headers?.addAll(headers ?? {});
