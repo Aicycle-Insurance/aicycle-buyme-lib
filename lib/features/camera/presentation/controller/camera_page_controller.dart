@@ -1,7 +1,7 @@
 // import 'package:aicycle_buyme_lib/enum/car_part_direction.dart';
-import 'dart:io';
+// import 'dart:io';
 
-import 'package:flutter/services.dart';
+// import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart';
 
@@ -91,6 +91,7 @@ class CameraPageController extends BaseController {
       cameraDescription,
       ResolutionPreset.veryHigh,
       enableAudio: false,
+      imageFormatGroup: ImageFormatGroup.jpeg,
     );
     cameraController = cameraCtrl;
     // If the controller is updated then update the UI.
@@ -104,9 +105,9 @@ class CameraPageController extends BaseController {
     });
     try {
       await cameraCtrl.initialize();
-      if (Platform.isIOS) {
-        cameraCtrl.lockCaptureOrientation(DeviceOrientation.landscapeLeft);
-      }
+      // if (Platform.isIOS) {
+      //   cameraCtrl.lockCaptureOrientation(DeviceOrientation.landscapeLeft);
+      // }
       isCameraLoading(false);
     } on CameraException catch (_) {
       isCameraLoading(false);
@@ -135,9 +136,10 @@ class CameraPageController extends BaseController {
       isFromGallery.value = false;
       if (previewFile.value != null) {
         isResizing.value = true;
-        final resizeFile = await Utils.compressImage(
+        final resizeFile = await Utils.compressImageV2(
           previewFile.value!,
           100,
+          fromGallery: false,
           imageSizeCallBack: (p0) {
             localImageSize.value = p0;
           },
@@ -170,7 +172,7 @@ class CameraPageController extends BaseController {
       if (pickedFile != null) {
         previewFile.value = pickedFile;
         isResizing.value = true;
-        var resizeFile = await Utils.compressImage(
+        var resizeFile = await Utils.compressImageV2(
           pickedFile,
           100,
           fromGallery: true,

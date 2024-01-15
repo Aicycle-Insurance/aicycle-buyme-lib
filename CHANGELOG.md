@@ -42,3 +42,11 @@
 ## 0.1.1
 
 * Custom for Aicycle
+
+## 0.1.2
+
+* Hotfix UI bug
+
+## 0.1.3
+
+* Hotfix camera UI

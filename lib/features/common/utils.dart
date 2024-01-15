@@ -1,6 +1,7 @@
 import 'dart:io';
 
-import 'package:camera/camera.dart';
+// import 'package:camera/camera.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -67,6 +68,61 @@ class Utils {
       return compressedXFile;
     } catch (e) {
       return source;
+    }
+  }
+
+  static Future<XFile> compressImageV2(
+    XFile sourceFile,
+    int quality, {
+    Function(Size)? imageSizeCallBack,
+    bool fromGallery = false,
+  }) async {
+    XFile? compressedXFile;
+    try {
+      // var sourceSize = await _calculateImageSize(sourceFile);
+      var decodeImage =
+          await decodeImageFromList(await sourceFile.readAsBytes());
+      int imageWidth = decodeImage.width;
+      int imageHeight = decodeImage.height;
+      final Directory extDir = await getTemporaryDirectory();
+      final appImageDir =
+          await Directory('${extDir.path}/app_images').create(recursive: true);
+      final String targetPath =
+          '${appImageDir.path}/${DateTime.now().millisecondsSinceEpoch}.jpg';
+      compressedXFile = await FlutterImageCompress.compressAndGetFile(
+        sourceFile.path,
+        targetPath,
+        quality: quality,
+        minHeight: imageHeight > imageWidth ? 1600 : 1080,
+        minWidth: imageHeight > imageWidth ? 1080 : 1600,
+        rotate: !fromGallery ? -90 : 0,
+      );
+      // Nếu vẫn lớn hơn 2MB thì giảm chất lượng ảnh
+      File? compressedFile;
+      if (compressedXFile != null) {
+        compressedFile = File(compressedXFile.path);
+      }
+      if (compressedFile == null) {
+        return XFile(sourceFile.path);
+      } else {
+        if (compressedFile.readAsBytesSync().lengthInBytes > 2000000) {
+          return await compressImageV2(XFile(compressedFile.path), 90);
+        }
+      }
+      // var compressedSize = await _calculateImageSize(compressedFile);
+      final compressedImg =
+          await decodeImageFromList(compressedFile.readAsBytesSync());
+      logger.i(
+        'Resize successfully: ${(await sourceFile.length()) / 1000000}MB to ${compressedFile.readAsBytesSync().lengthInBytes / 1000000}MB',
+      );
+      logger.i(
+        'Resize successfully:${imageWidth}x$imageHeight => ${compressedImg.width}x${compressedImg.height}',
+      );
+      imageSizeCallBack?.call(Size(
+          compressedImg.width.toDouble(), compressedImg.height.toDouble()));
+      return XFile(compressedFile.path);
+    } catch (e) {
+      return sourceFile;
     }
   }
 

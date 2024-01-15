@@ -61,7 +61,7 @@ class LoadingView<T> extends StatelessWidget {
               : RotatedBox(
                   quarterTurns: quarterTurns,
                   child: Container(
-                    height: 154,
+                    height: 180,
                     width: quarterTurns == 0 || quarterTurns == 2
                         ? double.maxFinite
                         : 300,

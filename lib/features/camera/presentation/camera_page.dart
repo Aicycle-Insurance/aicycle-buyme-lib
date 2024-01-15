@@ -127,11 +127,8 @@ class _CameraPageState extends BaseState<CameraPage, CameraPageController> {
                 Center(
                   child: Transform.scale(
                     scale: scale,
-                    child: RotatedBox(
-                      quarterTurns: Platform.isIOS ? 1 : 0,
-                      child: CameraPreview(
-                        controller.cameraController!,
-                      ),
+                    child: CameraPreview(
+                      controller.cameraController!,
                     ),
                   ),
                 ),
