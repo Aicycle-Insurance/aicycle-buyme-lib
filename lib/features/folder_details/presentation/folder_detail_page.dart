@@ -10,6 +10,7 @@ import '../../../aicycle_buyme_lib.dart';
 import '../../../enum/car_part_direction.dart';
 import '../../../generated/assets.gen.dart';
 import '../../../generated/locales.g.dart';
+import '../../aicycle_buy_me/presentation/aicycle_buy_me.dart';
 import '../../camera/data/models/damage_assessment_response.dart';
 import '../../common/base_widget.dart';
 import '../../common/extension/translation_ext.dart';
@@ -24,17 +25,17 @@ import 'widgets/is_one_car_widget.dart';
 class FolderDetailPage extends StatefulWidget {
   const FolderDetailPage({
     super.key,
-    required this.claimFolderId,
-    required this.externalClaimId,
     this.onViewResultCallBack,
     this.hasAppBar,
     this.onCallEngineSuccessfully,
+    required this.argument,
   });
-  final String claimFolderId;
-  final String externalClaimId;
+  // final String claimFolderId;
+  // final String externalClaimId;
   final bool? hasAppBar;
   final Function(List<BuyMeImage>? images)? onViewResultCallBack;
   final Function(DamageAssessmentResponse?)? onCallEngineSuccessfully;
+  final AiCycleBuyMeArgument argument;
 
   @override
   State<FolderDetailPage> createState() => _FolderDetailPageState();
@@ -56,8 +57,10 @@ class _FolderDetailPageState
   @override
   void initState() {
     super.initState();
-
-    controller.claimId = widget.claimFolderId;
+    apiToken = widget.argument.apiToken;
+    environtment = widget.argument.environtment ?? Evn.production;
+    locale = widget.argument.locale;
+    controller.claimId = widget.argument.externalClaimId;
     _callEngineSub = controller.damageResponseStream.stream.listen((p0) {
       if (p0 != null) {
         widget.onCallEngineSuccessfully?.call(p0);
@@ -129,12 +132,14 @@ class _FolderDetailPageState
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   CarPosition(
-                                    claimFolderId: widget.claimFolderId,
+                                    claimFolderId:
+                                        widget.argument.externalClaimId,
                                     direction: CarPartDirectionEnum.d45LeftBack,
                                     images: controller.imageInfo.value?.images,
                                   ),
                                   CarPosition(
-                                    claimFolderId: widget.claimFolderId,
+                                    claimFolderId:
+                                        widget.argument.externalClaimId,
                                     direction:
                                         CarPartDirectionEnum.d45RightBack,
                                     images: controller.imageInfo.value?.images,
@@ -149,7 +154,7 @@ class _FolderDetailPageState
                             left: 0,
                             child: Obx(
                               () => CarPosition(
-                                claimFolderId: widget.claimFolderId,
+                                claimFolderId: widget.argument.externalClaimId,
                                 images: controller.imageInfo.value?.images,
                                 direction: CarPartDirectionEnum.leftProd,
                               ),
@@ -162,7 +167,7 @@ class _FolderDetailPageState
                             top: 0,
                             child: Obx(
                               () => CarPosition(
-                                claimFolderId: widget.claimFolderId,
+                                claimFolderId: widget.argument.externalClaimId,
                                 images: controller.imageInfo.value?.images,
                                 direction: CarPartDirectionEnum.d45LeftFront,
                               ),
@@ -175,7 +180,7 @@ class _FolderDetailPageState
                             top: 0,
                             child: Obx(
                               () => CarPosition(
-                                claimFolderId: widget.claimFolderId,
+                                claimFolderId: widget.argument.externalClaimId,
                                 images: controller.imageInfo.value?.images,
                                 direction: CarPartDirectionEnum.d45RightFront,
                               ),

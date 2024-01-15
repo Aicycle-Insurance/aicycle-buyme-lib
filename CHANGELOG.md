@@ -38,3 +38,7 @@
 ## 0.1.0
 
 * Fix multiple languages
+
+## 0.1.1
+
+* Custom for Aicycle

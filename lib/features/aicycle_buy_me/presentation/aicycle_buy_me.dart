@@ -73,8 +73,7 @@ class _AiCycleBuyMeState
         Navigator.of(context).pushReplacement(
           MaterialPageRoute<void>(
             builder: (BuildContext context) => FolderDetailPage(
-              claimFolderId: controller.claimFolder.value?.claimId ?? '',
-              externalClaimId: widget.argument.externalClaimId,
+              argument: widget.argument,
               onViewResultCallBack: widget.onViewResultCallBack,
               onCallEngineSuccessfully: (p0) {},
             ),
