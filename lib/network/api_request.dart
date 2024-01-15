@@ -7,7 +7,11 @@ import 'endpoints.dart';
 enum HTTPMethod { get, post, delete, put, patch }
 
 class APIRequest {
-  String baseUrl = BaseEndpoint.baseUrl;
+  String baseUrl = environtment == Evn.production
+      ? BaseEndpoint.baseUrl
+      : environtment == Evn.stage
+          ? BaseEndpoint.stageBaseUrl
+          : BaseEndpoint.devBaseUrl;
   String endpoint;
   String contentType;
   HTTPMethod method;
@@ -32,7 +36,8 @@ class APIRequest {
   }) {
     final baseHeaders = {
       if (apiToken != null) 'Authorization': "Bearer $apiToken",
-      if (isMultiLanguage) "lang": Get.locale?.languageCode ?? "vi",
+      if (isMultiLanguage)
+        "lang": locale?.languageCode ?? Get.locale?.languageCode ?? "vi",
     };
     this.headers = baseHeaders;
     this.headers?.addAll(headers ?? {});

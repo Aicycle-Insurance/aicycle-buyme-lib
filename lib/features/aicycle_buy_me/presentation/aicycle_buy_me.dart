@@ -5,23 +5,36 @@ import 'package:get/get.dart';
 import '../../../aicycle_buyme_lib.dart';
 import '../../../enum/app_state.dart';
 import '../../../generated/assets.gen.dart';
-import '../../common/app_string.dart';
+import '../../../generated/locales.g.dart';
 import '../../common/base_widget.dart';
 import '../../common/themes/c_colors.dart';
 import '../../common/themes/c_textstyle.dart';
 import '../../folder_details/data/models/buy_me_image_model.dart';
 import '../../folder_details/presentation/folder_detail_page.dart';
+import '../../common/extension/translation_ext.dart';
 import 'aicycle_buy_me_controller.dart';
 
+enum Evn {
+  dev,
+  stage,
+  production,
+}
+
 String? apiToken;
+Evn environtment = Evn.production;
+Locale? locale;
 
 class AiCycleBuyMeArgument {
   final String externalClaimId;
   final String apiToken;
+  final Evn? environtment;
+  final Locale? locale;
 
   AiCycleBuyMeArgument({
     required this.externalClaimId,
     required this.apiToken,
+    this.environtment,
+    this.locale,
   });
 }
 
@@ -53,6 +66,8 @@ class _AiCycleBuyMeState
     super.initState();
     controller.argument = widget.argument;
     apiToken = widget.argument.apiToken;
+    environtment = widget.argument.environtment ?? Evn.production;
+    locale = widget.argument.locale;
     controller.status.listen((state) {
       if (state.state == AppState.redirect) {
         Navigator.of(context).pushReplacement(
@@ -96,7 +111,7 @@ class _AiCycleBuyMeState
             ),
             const Gap(24),
             Text(
-              AppString.pleaseWait,
+              LocaleKeys.pleaseWait.trans,
               style: CTextStyles.base.s16.whiteColor,
             ),
             const Gap(12),

@@ -9,9 +9,10 @@ import 'package:get/get.dart';
 import '../../../aicycle_buyme_lib.dart';
 import '../../../enum/car_part_direction.dart';
 import '../../../generated/assets.gen.dart';
+import '../../../generated/locales.g.dart';
 import '../../camera/data/models/damage_assessment_response.dart';
-import '../../common/app_string.dart';
 import '../../common/base_widget.dart';
+import '../../common/extension/translation_ext.dart';
 import '../../common/c_button.dart';
 import '../../common/c_loading_view.dart';
 import '../../common/themes/c_colors.dart';
@@ -206,7 +207,7 @@ class _FolderDetailPageState
                         ?.call(controller.imageInfo.value?.images);
                     // Navigator.pop(context);
                   },
-                  title: AppString.viewResult,
+                  title: LocaleKeys.viewResult.trans,
                 ),
               ),
             ),

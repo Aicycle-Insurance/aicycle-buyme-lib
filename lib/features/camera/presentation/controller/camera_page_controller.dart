@@ -65,19 +65,19 @@ class CameraPageController extends BaseController {
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) async {
-    final CameraController? cameraCtrl = cameraController;
-    // App state changed before we got the chance to initialize.
-    if (cameraCtrl == null || !cameraCtrl.value.isInitialized) {
-      return;
-    }
-    if (state == AppLifecycleState.inactive) {
-      isInActive(true);
-      cameraCtrl.dispose();
-      update(['camera']);
-    } else if (state == AppLifecycleState.resumed) {
-      isInActive(false);
-      onNewCameraSelected(cameraCtrl.description);
-    }
+    // final CameraController? cameraCtrl = cameraController;
+    // // App state changed before we got the chance to initialize.
+    // if (cameraCtrl == null || !cameraCtrl.value.isInitialized) {
+    //   return;
+    // }
+    // if (state == AppLifecycleState.inactive) {
+    //   isInActive(true);
+    //   cameraCtrl.dispose();
+    //   update(['camera']);
+    // } else if (state == AppLifecycleState.resumed) {
+    //   isInActive(false);
+    //   onNewCameraSelected(cameraCtrl.description);
+    // }
   }
 
   Future<void> onNewCameraSelected(CameraDescription cameraDescription) async {

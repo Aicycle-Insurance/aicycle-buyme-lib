@@ -1,5 +1,7 @@
 import 'dart:io';
 
+import 'package:aicycle_buyme_lib/features/common/extension/translation_ext.dart';
+import 'package:aicycle_buyme_lib/generated/locales.g.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
@@ -89,7 +91,7 @@ class LoadingView<T> extends StatelessWidget {
                         ),
                         const Gap(8),
                         Text(
-                          'Đang xử lý dữ liệu, vui lòng chờ.',
+                          LocaleKeys.isProcessing.trans,
                           style: CTextStyles.base.s14.w500(),
                           textAlign: TextAlign.center,
                         )

@@ -6,9 +6,10 @@ import 'package:gap/gap.dart';
 import 'package:readmore/readmore.dart';
 
 import '../../../../generated/assets.gen.dart';
-import '../../../common/app_string.dart';
+import '../../../../generated/locales.g.dart';
 import '../../../common/c_button.dart';
 import '../../../common/themes/c_colors.dart';
+import '../../../common/extension/translation_ext.dart';
 import '../../../common/themes/c_textstyle.dart';
 
 class ErrorDialog extends StatelessWidget {
@@ -57,8 +58,8 @@ class ErrorDialog extends StatelessWidget {
                 style: CTextStyles.base.s12.w300(),
                 trimLines: 2,
                 trimMode: TrimMode.Line,
-                trimCollapsedText: AppString.readMore,
-                trimExpandedText: AppString.showLess,
+                trimCollapsedText: LocaleKeys.readMore.trans,
+                trimExpandedText: LocaleKeys.showLess.trans,
                 // overflow: TextOverflow.ellipsis,
               ),
               const SizedBox(height: 4),
@@ -66,7 +67,7 @@ class ErrorDialog extends StatelessWidget {
             CButton2(
               isOutlined: false,
               verticalPadding: 0,
-              title: AppString.retake,
+              title: LocaleKeys.retake.trans,
               height: 40,
               onPressed: retake,
               borderRadius: 6,
