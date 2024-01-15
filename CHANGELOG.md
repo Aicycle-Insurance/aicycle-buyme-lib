@@ -25,3 +25,8 @@
 ## 0.0.7
 
 * rotate capture image
+
+## 0.0.8
+
+* Support vi_VN, en_US, ja_JP languages
+* Fix bugs
