@@ -29,12 +29,14 @@ class AiCycleBuyMeArgument {
   final String apiToken;
   final Evn? environtment;
   final Locale? locale;
+  final String? aicycleClaimId;
 
   AiCycleBuyMeArgument({
     required this.externalClaimId,
     required this.apiToken,
     this.environtment,
     this.locale,
+    this.aicycleClaimId,
   });
 }
 
@@ -73,7 +75,7 @@ class _AiCycleBuyMeState
         Navigator.of(context).pushReplacement(
           MaterialPageRoute<void>(
             builder: (BuildContext context) => FolderDetailPage(
-              argument: widget.argument,
+              argument: controller.argument,
               onViewResultCallBack: widget.onViewResultCallBack,
               onCallEngineSuccessfully: (p0) {},
             ),

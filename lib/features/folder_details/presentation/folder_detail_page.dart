@@ -60,7 +60,8 @@ class _FolderDetailPageState
     apiToken = widget.argument.apiToken;
     environtment = widget.argument.environtment ?? Evn.production;
     locale = widget.argument.locale;
-    controller.claimId = widget.argument.externalClaimId;
+    controller.claimId =
+        widget.argument.aicycleClaimId ?? widget.argument.externalClaimId;
     _callEngineSub = controller.damageResponseStream.stream.listen((p0) {
       if (p0 != null) {
         widget.onCallEngineSuccessfully?.call(p0);
@@ -133,13 +134,15 @@ class _FolderDetailPageState
                                 children: [
                                   CarPosition(
                                     claimFolderId:
-                                        widget.argument.externalClaimId,
+                                        widget.argument.aicycleClaimId ??
+                                            widget.argument.externalClaimId,
                                     direction: CarPartDirectionEnum.d45LeftBack,
                                     images: controller.imageInfo.value?.images,
                                   ),
                                   CarPosition(
                                     claimFolderId:
-                                        widget.argument.externalClaimId,
+                                        widget.argument.aicycleClaimId ??
+                                            widget.argument.externalClaimId,
                                     direction:
                                         CarPartDirectionEnum.d45RightBack,
                                     images: controller.imageInfo.value?.images,
@@ -154,7 +157,8 @@ class _FolderDetailPageState
                             left: 0,
                             child: Obx(
                               () => CarPosition(
-                                claimFolderId: widget.argument.externalClaimId,
+                                claimFolderId: widget.argument.aicycleClaimId ??
+                                    widget.argument.externalClaimId,
                                 images: controller.imageInfo.value?.images,
                                 direction: CarPartDirectionEnum.leftProd,
                               ),
@@ -167,7 +171,8 @@ class _FolderDetailPageState
                             top: 0,
                             child: Obx(
                               () => CarPosition(
-                                claimFolderId: widget.argument.externalClaimId,
+                                claimFolderId: widget.argument.aicycleClaimId ??
+                                    widget.argument.externalClaimId,
                                 images: controller.imageInfo.value?.images,
                                 direction: CarPartDirectionEnum.d45LeftFront,
                               ),
@@ -180,7 +185,8 @@ class _FolderDetailPageState
                             top: 0,
                             child: Obx(
                               () => CarPosition(
-                                claimFolderId: widget.argument.externalClaimId,
+                                claimFolderId: widget.argument.aicycleClaimId ??
+                                    widget.argument.externalClaimId,
                                 images: controller.imageInfo.value?.images,
                                 direction: CarPartDirectionEnum.d45RightFront,
                               ),

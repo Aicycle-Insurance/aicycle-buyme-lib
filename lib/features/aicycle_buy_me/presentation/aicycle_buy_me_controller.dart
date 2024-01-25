@@ -46,6 +46,13 @@ class AiCycleBuyMeController extends BaseController {
         }
       },
       (r) {
+        argument = AiCycleBuyMeArgument(
+          externalClaimId: argument.externalClaimId,
+          apiToken: argument.apiToken,
+          aicycleClaimId: r.claimId,
+          environtment: argument.environtment,
+          locale: argument.locale,
+        );
         isLoading(false);
         status.value = BaseStatus(
           message: null,
@@ -68,6 +75,13 @@ class AiCycleBuyMeController extends BaseController {
         );
       },
       (r) {
+        argument = AiCycleBuyMeArgument(
+          externalClaimId: argument.externalClaimId,
+          apiToken: argument.apiToken,
+          aicycleClaimId: r.claimId,
+          environtment: argument.environtment,
+          locale: argument.locale,
+        );
         isLoading(false);
         status.value = BaseStatus(
           message: null,

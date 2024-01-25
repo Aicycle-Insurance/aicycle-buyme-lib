@@ -50,3 +50,11 @@
 ## 0.1.3
 
 * Hotfix camera UI
+
+## 0.1.4
+
+* Update rotate image
+
+## 0.1.5
+
+* Fix bugs
