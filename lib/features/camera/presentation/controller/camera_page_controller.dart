@@ -74,21 +74,22 @@ class CameraPageController extends BaseController {
     super.onReady();
   }
 
+  var isPickingPhoto = false.obs;
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) async {
-    // final CameraController? cameraCtrl = cameraController;
-    // // App state changed before we got the chance to initialize.
-    // if (cameraCtrl == null || !cameraCtrl.value.isInitialized) {
-    //   return;
-    // }
-    // if (state == AppLifecycleState.inactive) {
-    //   isInActive(true);
-    //   cameraCtrl.dispose();
-    //   update(['camera']);
-    // } else if (state == AppLifecycleState.resumed) {
-    //   isInActive(false);
-    //   onNewCameraSelected(cameraCtrl.description);
-    // }
+    final CameraController? cameraCtrl = cameraController;
+    // App state changed before we got the chance to initialize.
+    if (cameraCtrl == null || !cameraCtrl.value.isInitialized) {
+      return;
+    }
+    if (state == AppLifecycleState.inactive && !isPickingPhoto()) {
+      isInActive(true);
+      cameraCtrl.dispose();
+      update(['camera']);
+    } else if (state == AppLifecycleState.resumed && !isPickingPhoto()) {
+      isInActive(false);
+      onNewCameraSelected(cameraCtrl.description);
+    }
   }
 
   Future<void> onNewCameraSelected(CameraDescription cameraDescription) async {
@@ -181,11 +182,13 @@ class CameraPageController extends BaseController {
 
   void pickedPhoto() async {
     if (previewFile.value == null) {
+      isPickingPhoto(true);
       var pickedFile = await ImagePicker().pickImage(
         source: ImageSource.gallery,
         imageQuality: 100,
       );
       isFromGallery.value = true;
+      isPickingPhoto(false);
       if (pickedFile != null) {
         previewFile.value = pickedFile;
         isResizing.value = true;

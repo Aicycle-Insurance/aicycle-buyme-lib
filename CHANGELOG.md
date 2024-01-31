@@ -58,3 +58,11 @@
 ## 0.1.5
 
 * Fix bugs
+
+## 0.1.6
+
+* Fix bugs
+
+## 0.1.7
+
+* Bug fixes and improvements
