@@ -1,3 +1,7 @@
+import 'package:aicycle_buyme_lib/features/common/extension/translation_ext.dart';
+
+import '../generated/locales.g.dart';
+
 enum CarPartDirectionEnum {
   up(1, 'tren-BrogFf'),
   front(2, 'truoc-sT9qgX'),
@@ -96,36 +100,36 @@ extension CarPartDirectionEnumExt on CarPartDirectionEnum {
 
   String get buyMeTitle {
     if (this == CarPartDirectionEnum.d45RightFront) {
-      return "Góc trước ghế phụ";
+      return LocaleKeys.rightFront45Buyme.trans;
     }
     if (this == CarPartDirectionEnum.d45LeftFront) {
-      return "Góc trước ghế lái";
+      return LocaleKeys.leftFront45Buyme.trans;
     }
     if (this == CarPartDirectionEnum.d45RightBack) {
-      return "Góc sau ghế phụ";
+      return LocaleKeys.rightBack45Buyme.trans;
     }
     if (this == CarPartDirectionEnum.leftDev ||
         this == CarPartDirectionEnum.leftProd) {
-      return "Tem đăng kiểm";
+      return LocaleKeys.registrationSticker.trans;
     }
-    return "Góc sau ghế lái";
+    return LocaleKeys.leftBack45Buyme.trans;
   }
 
   String get cathayTitle {
     if (this == CarPartDirectionEnum.d45RightFront) {
-      return "cathay_front_right";
+      return LocaleKeys.cathayFrontRight.trans;
     }
     if (this == CarPartDirectionEnum.d45LeftFront) {
-      return "cathay_front_left";
+      return LocaleKeys.cathayFrontLeft.trans;
     }
     if (this == CarPartDirectionEnum.d45RightBack) {
-      return "cathay_rear_right";
+      return LocaleKeys.cathayRearRight.trans;
     }
     if (this == CarPartDirectionEnum.leftDev ||
         this == CarPartDirectionEnum.leftProd) {
-      return "guideLeft";
+      return LocaleKeys.registrationSticker.trans;
     }
-    return "cathay_rear_left";
+    return LocaleKeys.cathayRearLeft.trans;
   }
 
   String get intoContent {

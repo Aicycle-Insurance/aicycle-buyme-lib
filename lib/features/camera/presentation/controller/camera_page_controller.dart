@@ -1,9 +1,11 @@
 // import 'package:aicycle_buyme_lib/enum/car_part_direction.dart';
-import 'dart:io';
+// import 'dart:io';
 
+// import 'package:flutter/services.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart';
+import 'package:sensors_plus/sensors_plus.dart';
 
 import '../../../common/base_controller.dart';
 import 'package:flutter/material.dart';
@@ -41,6 +43,10 @@ class CameraPageController extends BaseController {
   Map<String, dynamic> cacheValidationModel = {};
   var isFromGallery = false.obs;
   var localImageSize = Rx<Size?>(null);
+  var isCameraLoading = false.obs;
+
+  late Stream<DeviceOrientation> sensorStream;
+  DeviceOrientation currentOrientation = DeviceOrientation.portraitUp;
 
   @override
   void onInit() {
@@ -48,6 +54,12 @@ class CameraPageController extends BaseController {
     if (cameras.isNotEmpty) {
       onNewCameraSelected(cameras[0]);
     }
+    sensorStream = accelerometerEventStream()
+        .map<DeviceOrientation>(Utils.getOrientation)
+        .distinct();
+    sensorStream.listen((event) {
+      currentOrientation = event;
+    });
     super.onInit();
   }
 
@@ -62,6 +74,7 @@ class CameraPageController extends BaseController {
     super.onReady();
   }
 
+  var isPickingPhoto = false.obs;
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) async {
     final CameraController? cameraCtrl = cameraController;
@@ -69,18 +82,18 @@ class CameraPageController extends BaseController {
     if (cameraCtrl == null || !cameraCtrl.value.isInitialized) {
       return;
     }
-    if (state == AppLifecycleState.inactive) {
+    if (state == AppLifecycleState.inactive && !isPickingPhoto()) {
       isInActive(true);
       cameraCtrl.dispose();
       update(['camera']);
-    } else if (state == AppLifecycleState.resumed) {
+    } else if (state == AppLifecycleState.resumed && !isPickingPhoto()) {
       isInActive(false);
       onNewCameraSelected(cameraCtrl.description);
     }
   }
 
   Future<void> onNewCameraSelected(CameraDescription cameraDescription) async {
-    isLoading(true);
+    isCameraLoading(true);
     final CameraController? oldController = cameraController;
     if (oldController != null) {
       cameraController = null;
@@ -90,6 +103,7 @@ class CameraPageController extends BaseController {
       cameraDescription,
       ResolutionPreset.veryHigh,
       enableAudio: false,
+      imageFormatGroup: ImageFormatGroup.jpeg,
     );
     cameraController = cameraCtrl;
     // If the controller is updated then update the UI.
@@ -103,12 +117,12 @@ class CameraPageController extends BaseController {
     });
     try {
       await cameraCtrl.initialize();
-      if (Platform.isIOS) {
-        cameraCtrl.lockCaptureOrientation(DeviceOrientation.landscapeLeft);
-      }
-      isLoading(false);
+      // if (Platform.isIOS) {
+      //   cameraCtrl.lockCaptureOrientation(DeviceOrientation.landscapeLeft);
+      // }
+      isCameraLoading(false);
     } on CameraException catch (_) {
-      isLoading(false);
+      isCameraLoading(false);
       status.value = BaseStatus(
         message: 'No camera found',
         state: AppState.pop,
@@ -128,15 +142,22 @@ class CameraPageController extends BaseController {
   }
 
   void takePhoto() async {
+    int rotate = currentOrientation == DeviceOrientation.landscapeLeft
+        ? -90
+        : currentOrientation == DeviceOrientation.landscapeRight
+            ? 90
+            : 0;
     if (previewFile.value == null) {
       previewFile.value = await cameraController?.takePicture();
       await cameraController?.pausePreview();
       isFromGallery.value = false;
       if (previewFile.value != null) {
         isResizing.value = true;
-        final resizeFile = await Utils.compressImage(
+        final resizeFile = await Utils.compressImageV2(
           previewFile.value!,
           100,
+          // fromGallery: false,
+          rotate: rotate,
           imageSizeCallBack: (p0) {
             localImageSize.value = p0;
           },
@@ -161,18 +182,20 @@ class CameraPageController extends BaseController {
 
   void pickedPhoto() async {
     if (previewFile.value == null) {
+      isPickingPhoto(true);
       var pickedFile = await ImagePicker().pickImage(
         source: ImageSource.gallery,
         imageQuality: 100,
       );
       isFromGallery.value = true;
+      isPickingPhoto(false);
       if (pickedFile != null) {
         previewFile.value = pickedFile;
         isResizing.value = true;
-        var resizeFile = await Utils.compressImage(
+        var resizeFile = await Utils.compressImageV2(
           pickedFile,
           100,
-          fromGallery: true,
+          // fromGallery: true,
           imageSizeCallBack: (p0) {
             localImageSize.value = p0;
           },
@@ -373,6 +396,8 @@ class CameraPageController extends BaseController {
     if (Get.isRegistered<FolderDetailController>()) {
       final folderDetailController = Get.find<FolderDetailController>();
       folderDetailController.getImageInfo();
+      // folderDetailController.damageResponseListener.value = value;
+      folderDetailController.damageResponseStream.sink.add(value);
       // var images = folderDetailController.imageInfo.value?.images ?? [];
       // images.removeWhere(
       //   (element) =>

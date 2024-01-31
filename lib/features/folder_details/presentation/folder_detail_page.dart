@@ -1,5 +1,7 @@
 // ignore_for_file: invalid_use_of_protected_member
 
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
@@ -7,8 +9,11 @@ import 'package:get/get.dart';
 import '../../../aicycle_buyme_lib.dart';
 import '../../../enum/car_part_direction.dart';
 import '../../../generated/assets.gen.dart';
-import '../../common/app_string.dart';
+import '../../../generated/locales.g.dart';
+import '../../aicycle_buy_me/presentation/aicycle_buy_me.dart';
+import '../../camera/data/models/damage_assessment_response.dart';
 import '../../common/base_widget.dart';
+import '../../common/extension/translation_ext.dart';
 import '../../common/c_button.dart';
 import '../../common/c_loading_view.dart';
 import '../../common/themes/c_colors.dart';
@@ -20,13 +25,17 @@ import 'widgets/is_one_car_widget.dart';
 class FolderDetailPage extends StatefulWidget {
   const FolderDetailPage({
     super.key,
-    required this.claimFolderId,
-    required this.externalClaimId,
     this.onViewResultCallBack,
+    this.hasAppBar,
+    this.onCallEngineSuccessfully,
+    required this.argument,
   });
-  final String claimFolderId;
-  final String externalClaimId;
+  // final String claimFolderId;
+  // final String externalClaimId;
+  final bool? hasAppBar;
   final Function(List<BuyMeImage>? images)? onViewResultCallBack;
+  final Function(DamageAssessmentResponse?)? onCallEngineSuccessfully;
+  final AiCycleBuyMeArgument argument;
 
   @override
   State<FolderDetailPage> createState() => _FolderDetailPageState();
@@ -34,6 +43,8 @@ class FolderDetailPage extends StatefulWidget {
 
 class _FolderDetailPageState
     extends BaseState<FolderDetailPage, FolderDetailController> {
+  late final StreamSubscription _callEngineSub;
+
   @override
   FolderDetailController provideController() {
     if (Get.isRegistered<FolderDetailController>()) {
@@ -46,16 +57,34 @@ class _FolderDetailPageState
   @override
   void initState() {
     super.initState();
-    controller.claimId = widget.claimFolderId;
+    apiToken = widget.argument.apiToken;
+    environtment = widget.argument.environtment ?? Evn.production;
+    locale = widget.argument.locale;
+    controller.claimId =
+        widget.argument.aicycleClaimId ?? widget.argument.externalClaimId;
+    _callEngineSub = controller.damageResponseStream.stream.listen((p0) {
+      if (p0 != null) {
+        widget.onCallEngineSuccessfully?.call(p0);
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _callEngineSub.cancel();
   }
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: CColors.white,
-        elevation: 0.7,
-      ),
+      appBar: (widget.hasAppBar ?? true)
+          ? AppBar(
+              backgroundColor: CColors.white,
+              elevation: 0.7,
+            )
+          : null,
       body: LoadingView<FolderDetailController>(
         isCustomLoading: true,
         child: Column(
@@ -104,12 +133,16 @@ class _FolderDetailPageState
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   CarPosition(
-                                    claimFolderId: widget.claimFolderId,
+                                    claimFolderId:
+                                        widget.argument.aicycleClaimId ??
+                                            widget.argument.externalClaimId,
                                     direction: CarPartDirectionEnum.d45LeftBack,
                                     images: controller.imageInfo.value?.images,
                                   ),
                                   CarPosition(
-                                    claimFolderId: widget.claimFolderId,
+                                    claimFolderId:
+                                        widget.argument.aicycleClaimId ??
+                                            widget.argument.externalClaimId,
                                     direction:
                                         CarPartDirectionEnum.d45RightBack,
                                     images: controller.imageInfo.value?.images,
@@ -124,7 +157,8 @@ class _FolderDetailPageState
                             left: 0,
                             child: Obx(
                               () => CarPosition(
-                                claimFolderId: widget.claimFolderId,
+                                claimFolderId: widget.argument.aicycleClaimId ??
+                                    widget.argument.externalClaimId,
                                 images: controller.imageInfo.value?.images,
                                 direction: CarPartDirectionEnum.leftProd,
                               ),
@@ -137,7 +171,8 @@ class _FolderDetailPageState
                             top: 0,
                             child: Obx(
                               () => CarPosition(
-                                claimFolderId: widget.claimFolderId,
+                                claimFolderId: widget.argument.aicycleClaimId ??
+                                    widget.argument.externalClaimId,
                                 images: controller.imageInfo.value?.images,
                                 direction: CarPartDirectionEnum.d45LeftFront,
                               ),
@@ -150,7 +185,8 @@ class _FolderDetailPageState
                             top: 0,
                             child: Obx(
                               () => CarPosition(
-                                claimFolderId: widget.claimFolderId,
+                                claimFolderId: widget.argument.aicycleClaimId ??
+                                    widget.argument.externalClaimId,
                                 images: controller.imageInfo.value?.images,
                                 direction: CarPartDirectionEnum.d45RightFront,
                               ),
@@ -180,9 +216,9 @@ class _FolderDetailPageState
                   onPressed: () {
                     widget.onViewResultCallBack
                         ?.call(controller.imageInfo.value?.images);
-                    Navigator.pop(context);
+                    // Navigator.pop(context);
                   },
-                  title: AppString.viewResult,
+                  title: LocaleKeys.viewResult.trans,
                 ),
               ),
             ),
@@ -191,4 +227,7 @@ class _FolderDetailPageState
       ),
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

@@ -1,9 +1,10 @@
 import 'dart:io';
 
+import '../../common/extension/translation_ext.dart';
 import '../../../enum/app_state.dart';
 import '../../../enum/car_model.dart';
 import '../../../enum/car_part_direction.dart';
-import '../../common/app_string.dart';
+import '../../../generated/locales.g.dart';
 import '../../common/base_widget.dart';
 import '../../common/c_loading_view.dart';
 import 'package:camera/camera.dart';
@@ -59,6 +60,7 @@ class _CameraPageState extends BaseState<CameraPage, CameraPageController> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     final screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
       backgroundColor: Colors.black,
@@ -103,7 +105,8 @@ class _CameraPageState extends BaseState<CameraPage, CameraPageController> {
         child: GetBuilder<CameraPageController>(
           id: 'camera',
           builder: (ctrl) {
-            if (controller.isInActive.isTrue ||
+            if (controller.isCameraLoading.isTrue ||
+                controller.isInActive.isTrue ||
                 controller.cameraController == null ||
                 controller.cameraController?.value.isInitialized != true) {
               return const SizedBox.expand(
@@ -124,11 +127,8 @@ class _CameraPageState extends BaseState<CameraPage, CameraPageController> {
                 Center(
                   child: Transform.scale(
                     scale: scale,
-                    child: RotatedBox(
-                      quarterTurns: Platform.isIOS ? 1 : 0,
-                      child: CameraPreview(
-                        controller.cameraController!,
-                      ),
+                    child: CameraPreview(
+                      controller.cameraController!,
                     ),
                   ),
                 ),
@@ -190,7 +190,7 @@ class _CameraPageState extends BaseState<CameraPage, CameraPageController> {
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       Text(
-                                        AppString.compressing,
+                                        LocaleKeys.compressing.trans,
                                         style: CTextStyles.base.s14.whiteColor
                                             .copyWith(
                                                 fontWeight: FontWeight.w500),
@@ -225,9 +225,9 @@ class _CameraPageState extends BaseState<CameraPage, CameraPageController> {
                             leftButtonText:
                                 controller.cacheDamageResponse != null
                                     ? controller.isConfidentLevelWarning.isTrue
-                                        ? AppString.next
-                                        : AppString.save
-                                    : AppString.next,
+                                        ? LocaleKeys.next.trans
+                                        : LocaleKeys.save.trans
+                                    : LocaleKeys.next.trans,
                             leftPressed: () =>
                                 controller.cacheDamageResponse != null
                                     ? controller.engineWarningHandle('save')
@@ -255,8 +255,9 @@ class _CameraPageState extends BaseState<CameraPage, CameraPageController> {
                           child: ErrorDialog(
                             retake: () =>
                                 controller.engineWarningHandle('retake'),
-                            description: AppString.error,
-                            subDescription: 'Lý do: $message',
+                            description: LocaleKeys.error.trans,
+                            subDescription: LocaleKeys.reason.trans
+                                .replaceAll('@message', message ?? '...'),
                           ),
                         ),
                       );
@@ -292,4 +293,7 @@ class _CameraPageState extends BaseState<CameraPage, CameraPageController> {
       ),
     );
   }
+
+  @override
+  bool get wantKeepAlive => false;
 }

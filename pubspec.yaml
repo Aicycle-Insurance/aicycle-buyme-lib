@@ -1,6 +1,6 @@
 name: aicycle_buyme_lib
 description: An AiCycle BuyMe package.
-version: 0.0.1
+version: 0.1.7
 homepage: https://aicycle.ai/
 
 environment:
@@ -27,6 +27,7 @@ dependencies:
   path_provider: ^2.1.1
   photo_view: ^0.14.0
   readmore: ^2.2.0
+  sensors_plus: ^4.0.2
   top_snackbar_flutter: ^3.1.0
 
 dev_dependencies:

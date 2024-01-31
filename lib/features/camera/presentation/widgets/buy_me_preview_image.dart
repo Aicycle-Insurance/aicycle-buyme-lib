@@ -1,6 +1,7 @@
 import 'dart:io';
 
-import '../../../common/app_string.dart';
+import '../../../common/extension/translation_ext.dart';
+import '../../../../generated/locales.g.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -77,9 +78,9 @@ class BuyMePreviewImage extends StatelessWidget {
                 borderRadius: BorderRadius.circular(4),
                 border: Border.all(color: Colors.white),
               ),
-              child: const Text(
-                AppString.retake,
-                style: TextStyle(color: Colors.white),
+              child: Text(
+                LocaleKeys.retake.trans,
+                style: const TextStyle(color: Colors.white),
               ),
             ),
           ),

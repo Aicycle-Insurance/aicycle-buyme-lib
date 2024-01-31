@@ -1,4 +1,7 @@
+import 'dart:async';
+
 import '../../../../../enum/app_state.dart';
+import '../../../../camera/data/models/damage_assessment_response.dart';
 import '../../../../common/base_controller.dart';
 import 'package:camera/camera.dart';
 import 'package:get/get.dart';
@@ -15,12 +18,23 @@ class FolderDetailController extends BaseController {
   final CheckIsOneCarUsecase checkIsOneCarUsecase = Get.find();
   var checkCarModel = Rx<CheckCarModel?>(null);
   var imageInfo = Rx<BuyMeImageResponse?>(null);
+  // var damageResponseListener = Rx<DamageAssessmentResponse?>(null);
+
+  final damageResponseStream =
+      StreamController<DamageAssessmentResponse?>.broadcast();
+
   String? claimId;
 
   @override
   void onReady() {
     super.onReady();
     getImageInfo();
+  }
+
+  @override
+  void onClose() {
+    damageResponseStream.close();
+    super.onClose();
   }
 
   void getImageInfo() async {

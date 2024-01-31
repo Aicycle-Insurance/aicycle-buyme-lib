@@ -1,9 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:gap/gap.dart';
 
-import '../../../common/app_string.dart';
+import '../../../../generated/locales.g.dart';
 import '../../../common/c_button.dart';
 import '../../../common/themes/c_colors.dart';
+import '../../../common/extension/translation_ext.dart';
 import '../../../common/themes/c_textstyle.dart';
 
 class WarningDialog extends StatelessWidget {
@@ -48,7 +49,7 @@ class WarningDialog extends StatelessWidget {
                   child: CButton2(
                     isOutlined: true,
                     verticalPadding: 0,
-                    title: leftButtonText ?? AppString.next,
+                    title: leftButtonText ?? LocaleKeys.next.trans,
                     onPressed: leftPressed,
                     borderRadius: 6,
                     textColor: CColors.primaryA500,
@@ -60,7 +61,7 @@ class WarningDialog extends StatelessWidget {
                   Expanded(
                     child: CButton2(
                       verticalPadding: 0,
-                      title: AppString.retake,
+                      title: LocaleKeys.retake.trans,
                       onPressed: rightPressed,
                       borderRadius: 6,
                       textStyle: CTextStyles.base.s14.whiteColor.w300(),

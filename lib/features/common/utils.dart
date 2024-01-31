@@ -1,8 +1,11 @@
 import 'dart:io';
 
-import 'package:camera/camera.dart';
+// import 'package:camera/camera.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:sensors_plus/sensors_plus.dart';
 
 import '../../aicycle_buyme_lib.dart';
 import 'package:flutter/material.dart';
@@ -33,14 +36,14 @@ class Utils {
         return source;
       }
       if (Platform.isAndroid && !fromGallery) {
-        input = img.copyRotate(input, angle: 90);
+        input = img.copyRotate(input, angle: -90);
       }
       int imageWidth = input.width;
       int imageHeight = input.height;
       input = img.copyResize(
         input,
-        width: imageWidth > imageHeight ? 1600 : 1200,
-        height: imageWidth > imageHeight ? 1200 : 1600,
+        width: imageWidth > imageHeight ? 1920 : 1080,
+        height: imageWidth > imageHeight ? 1080 : 1920,
         maintainAspect: true,
       );
       final dirPath = (await getTemporaryDirectory()).path;
@@ -70,7 +73,83 @@ class Utils {
     }
   }
 
+  static Future<XFile> compressImageV2(
+    XFile sourceFile,
+    int quality, {
+    Function(Size)? imageSizeCallBack,
+    // bool fromGallery = false,
+    int rotate = 0,
+  }) async {
+    XFile? compressedXFile;
+    try {
+      // var sourceSize = await _calculateImageSize(sourceFile);
+      var decodeImage =
+          await decodeImageFromList(await sourceFile.readAsBytes());
+      int imageWidth = decodeImage.width;
+      int imageHeight = decodeImage.height;
+      final Directory extDir = await getTemporaryDirectory();
+      final appImageDir =
+          await Directory('${extDir.path}/app_images').create(recursive: true);
+      final String targetPath =
+          '${appImageDir.path}/${DateTime.now().millisecondsSinceEpoch}.jpg';
+      compressedXFile = await FlutterImageCompress.compressAndGetFile(
+        sourceFile.path,
+        targetPath,
+        quality: quality,
+        minHeight: imageHeight > imageWidth ? 1600 : 1080,
+        minWidth: imageHeight > imageWidth ? 1080 : 1600,
+        // rotate: !fromGallery ? -90 : 0,
+        rotate: rotate,
+      );
+      // Nếu vẫn lớn hơn 2MB thì giảm chất lượng ảnh
+      File? compressedFile;
+      if (compressedXFile != null) {
+        compressedFile = File(compressedXFile.path);
+      }
+      if (compressedFile == null) {
+        return XFile(sourceFile.path);
+      } else {
+        if (compressedFile.readAsBytesSync().lengthInBytes > 2000000) {
+          return await compressImageV2(XFile(compressedFile.path), 90);
+        }
+      }
+      // var compressedSize = await _calculateImageSize(compressedFile);
+      final compressedImg =
+          await decodeImageFromList(compressedFile.readAsBytesSync());
+      logger.i(
+        'Resize successfully: ${(await sourceFile.length()) / 1000000}MB to ${compressedFile.readAsBytesSync().lengthInBytes / 1000000}MB',
+      );
+      logger.i(
+        'Resize successfully:${imageWidth}x$imageHeight => ${compressedImg.width}x${compressedImg.height}',
+      );
+      imageSizeCallBack?.call(Size(
+          compressedImg.width.toDouble(), compressedImg.height.toDouble()));
+      return XFile(compressedFile.path);
+    } catch (e) {
+      return sourceFile;
+    }
+  }
+
   static void dismissKeyboard() => Get.focusScope?.unfocus();
+
+  static DeviceOrientation getOrientation(AccelerometerEvent event) {
+    final x = event.x.abs();
+    final y = event.y.abs();
+    final z = event.z.abs();
+
+    if (z > x && z > y) {
+      return DeviceOrientation.portraitUp;
+    }
+    DeviceOrientation result = DeviceOrientation.portraitUp;
+    if (x > y) {
+      result = event.x > 0
+          ? DeviceOrientation.landscapeLeft
+          : DeviceOrientation.landscapeRight;
+    } else {
+      result = DeviceOrientation.portraitUp;
+    }
+    return result;
+  }
 
   void showError(
     BuildContext context, {
