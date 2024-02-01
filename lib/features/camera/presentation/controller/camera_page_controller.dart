@@ -23,11 +23,12 @@ import '../../domain/usecase/call_engine_usecase.dart';
 import '../../domain/usecase/upload_image_usecase.dart';
 import '../camera_page.dart';
 
-class CameraPageController extends BaseController {
-  final CallEngineUsecase callEngineUsecase = Get.find<CallEngineUsecase>();
-  final UploadImageUsecase uploadImageToS3Server =
-      Get.find<UploadImageUsecase>();
-  final DeleteImageByIdUsecase deleteImageByIdUsecase = Get.find();
+class BuyMeCameraPageController extends BuyMeBaseController {
+  final BuyMeCallEngineUsecase callEngineUsecase =
+      Get.find<BuyMeCallEngineUsecase>();
+  final BuyMeUploadImageUsecase uploadImageToS3Server =
+      Get.find<BuyMeUploadImageUsecase>();
+  final BuyMeDeleteImageByIdUsecase deleteImageByIdUsecase = Get.find();
   CameraController? cameraController;
   var isInActive = false.obs;
   var showGuideFrame = true.obs;
@@ -393,8 +394,8 @@ class CameraPageController extends BaseController {
   }
 
   void updateDirection(DamageAssessmentResponse? value) {
-    if (Get.isRegistered<FolderDetailController>()) {
-      final folderDetailController = Get.find<FolderDetailController>();
+    if (Get.isRegistered<BuyMeFolderDetailController>()) {
+      final folderDetailController = Get.find<BuyMeFolderDetailController>();
       folderDetailController.getImageInfo();
       // folderDetailController.damageResponseListener.value = value;
       folderDetailController.damageResponseStream.sink.add(value);

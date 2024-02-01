@@ -6,7 +6,7 @@ import '../../domain/repository/folder_detail_repository.dart';
 import '../models/buy_me_image_model.dart';
 import '../remote_data/folder_detail_api.dart';
 
-class FolderDetailRepositoryImpl implements FolderDetailRepository {
+class BuyMeFolderDetailRepositoryImpl implements FolderDetailRepository {
   @override
   Future<Either<APIErrors, BuyMeImageResponse>> getImageInfo(
       String claimId) async {

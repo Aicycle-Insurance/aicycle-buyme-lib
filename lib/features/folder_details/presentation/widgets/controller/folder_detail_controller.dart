@@ -13,9 +13,9 @@ import '../../../domain/usecase/get_image_info_usecase.dart';
 
 List<CameraDescription> cameras = <CameraDescription>[];
 
-class FolderDetailController extends BaseController {
-  final GetImageInfoUsecase getImageInfoUsecase = Get.find();
-  final CheckIsOneCarUsecase checkIsOneCarUsecase = Get.find();
+class BuyMeFolderDetailController extends BuyMeBaseController {
+  final BuyMeGetImageInfoUsecase getImageInfoUsecase = Get.find();
+  final BuyMeCheckIsOneCarUsecase checkIsOneCarUsecase = Get.find();
   var checkCarModel = Rx<CheckCarModel?>(null);
   var imageInfo = Rx<BuyMeImageResponse?>(null);
   // var damageResponseListener = Rx<DamageAssessmentResponse?>(null);
