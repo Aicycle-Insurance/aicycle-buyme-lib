@@ -59,6 +59,7 @@ class _FolderDetailPageState
     super.initState();
     apiToken = widget.argument.apiToken;
     environtment = widget.argument.environtment ?? Evn.production;
+    enableVersion2 = widget.argument.enableVersion2 ?? true;
     locale = widget.argument.locale;
     controller.claimId =
         widget.argument.aicycleClaimId ?? widget.argument.externalClaimId;

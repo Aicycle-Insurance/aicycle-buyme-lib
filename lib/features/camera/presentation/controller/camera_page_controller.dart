@@ -7,6 +7,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart';
 import 'package:sensors_plus/sensors_plus.dart';
 
+import '../../../aicycle_buy_me/presentation/aicycle_buy_me.dart';
 import '../../../common/base_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -397,27 +398,7 @@ class BuyMeCameraPageController extends BuyMeBaseController {
     if (Get.isRegistered<BuyMeFolderDetailController>()) {
       final folderDetailController = Get.find<BuyMeFolderDetailController>();
       folderDetailController.getImageInfo();
-      // folderDetailController.damageResponseListener.value = value;
       folderDetailController.damageResponseStream.sink.add(value);
-      // var images = folderDetailController.imageInfo.value?.images ?? [];
-      // images.removeWhere(
-      //   (element) =>
-      //       element.directionSlug == argument?.carPartDirectionEnum.excelId ||
-      //       element.directionId == argument?.carPartDirectionEnum.id.toString(),
-      // );
-      // images.add(BuyMeImage(
-      //   imageId: value?.imageId?.toString(),
-      //   directionId: argument?.carPartDirectionEnum.id.toString(),
-      //   directionName: argument?.carPartDirectionEnum.buyMeTitle,
-      //   directionSlug: value?.result?.extraInfor?.imageDirection ??
-      //       argument?.carPartDirectionEnum.excelId,
-      //   imageUrl: value?.result?.imgUrl,
-      //   resizeImageUrl: value?.result?.imgUrl,
-      //   imageSize: value?.result?.imgSize,
-      // ));
-
-      // folderDetailController.imageInfo.value =
-      //     BuyMeImageResponse(images: images);
     }
   }
 }

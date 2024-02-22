@@ -1,3 +1,4 @@
+import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
@@ -23,6 +24,8 @@ enum Evn {
 String? apiToken;
 Evn environtment = Evn.production;
 Locale? locale;
+bool? enableVersion2 = true;
+List<CameraDescription> cameras = <CameraDescription>[];
 
 class AiCycleBuyMeArgument {
   final String externalClaimId;
@@ -30,6 +33,7 @@ class AiCycleBuyMeArgument {
   final Evn? environtment;
   final Locale? locale;
   final String? aicycleClaimId;
+  final bool? enableVersion2;
 
   AiCycleBuyMeArgument({
     required this.externalClaimId,
@@ -37,6 +41,7 @@ class AiCycleBuyMeArgument {
     this.environtment,
     this.locale,
     this.aicycleClaimId,
+    this.enableVersion2,
   });
 }
 
@@ -69,6 +74,7 @@ class _AiCycleBuyMeState
     controller.argument = widget.argument;
     apiToken = widget.argument.apiToken;
     environtment = widget.argument.environtment ?? Evn.production;
+    enableVersion2 = widget.argument.enableVersion2 ?? true;
     locale = widget.argument.locale;
     controller.status.listen((state) {
       if (state.state == AppState.redirect) {

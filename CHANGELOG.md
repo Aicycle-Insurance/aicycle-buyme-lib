@@ -66,3 +66,11 @@
 ## 0.1.7
 
 * Bug fixes and improvements
+
+## 0.1.8
+
+* Update classes names
+
+## 0.1.9
+
+* Bug fixes and improvements 
