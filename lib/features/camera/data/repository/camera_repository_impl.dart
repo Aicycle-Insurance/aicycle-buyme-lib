@@ -93,9 +93,9 @@ class BuyMeCameraRepositoryImpl implements CameraRepository {
 
       /// upload thanh cong thi validate
       if (s3FilePath != null && s3FilePath.isNotEmpty) {
-        var result = await CameraAPI.validateAfterUploadToS3(
-                serverFilePath: serverFilePath)
-            .request();
+        var result =
+            await CameraAPI.validateAfterUploadToS3(serverFilePath: s3FilePath)
+                .request();
         return Right(ImageUploadResponse.fromJson(result));
       }
       return Left(FetchDataError('Upload image failed'));

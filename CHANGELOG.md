@@ -78,3 +78,7 @@
 ## 0.2.0
 
 * Required image upload-location
+
+## 0.2.1
+
+* Bug fixes and improvements
