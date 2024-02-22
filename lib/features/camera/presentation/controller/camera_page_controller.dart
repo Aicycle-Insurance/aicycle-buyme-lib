@@ -2,6 +2,8 @@
 // import 'dart:io';
 
 // import 'package:flutter/services.dart';
+import 'dart:io';
+
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart';
@@ -15,6 +17,8 @@ import 'package:camera/camera.dart';
 
 import '../../../../enum/app_state.dart';
 import '../../../common/contants/direction_constant.dart';
+import '../../../common/contants/warning_code_from_engine.dart';
+import '../../../common/location_seveices.dart';
 import '../../../common/utils.dart';
 // import '../../../folder_details/data/models/buy_me_image_model.dart';
 import '../../../folder_details/domain/usecase/detele_image_by_id_usecase.dart';
@@ -65,8 +69,11 @@ class BuyMeCameraPageController extends BuyMeBaseController {
     super.onInit();
   }
 
+  late String? currentLocation;
+  String? imageLocation;
+  String? createdDateTime;
   @override
-  void onReady() {
+  void onReady() async {
     if (cameras.isEmpty) {
       status.value = BaseStatus(
         message: 'No camera found',
@@ -74,6 +81,9 @@ class BuyMeCameraPageController extends BuyMeBaseController {
       );
     }
     super.onReady();
+    final currentPos = await LocationServices.getLocation();
+    currentLocation = await LocationServices.getLocationInfo(
+        currentPos?.latitude, currentPos?.longitude);
   }
 
   var isPickingPhoto = false.obs;
@@ -166,6 +176,10 @@ class BuyMeCameraPageController extends BuyMeBaseController {
         );
         // previewFile.value = resizeFile;
         isResizing.value = false;
+
+        ///
+        imageLocation = currentLocation;
+        createdDateTime = DateTime.now().toUtc().toIso8601String();
         callEngine(resizeFile);
       }
     } else {
@@ -204,6 +218,14 @@ class BuyMeCameraPageController extends BuyMeBaseController {
         );
         // previewFile.value = resizeFile;
         isResizing.value = false;
+
+        ///
+        imageLocation = await LocationServices.getLocationOfImage(
+          File(resizeFile.path),
+          getDateTimeCallBack: (date) {
+            createdDateTime = date.toUtc().toIso8601String();
+          },
+        );
         await callEngine(resizeFile);
       }
     }
@@ -324,7 +346,9 @@ class BuyMeCameraPageController extends BuyMeBaseController {
       direction: argument!.carPartDirectionEnum.excelId,
       vehiclePartExcelId: '',
       timeAppUpload: timeAppUpload,
-      utcTimeCreated: DateTime.now().toUtc().toIso8601String(),
+      utcTimeCreated: createdDateTime,
+      uploadLocation: currentLocation,
+      locationName: imageLocation,
     );
 
     callEngineRes.fold((l) {
@@ -371,7 +395,7 @@ class BuyMeCameraPageController extends BuyMeBaseController {
         cacheDamageResponse = r;
 
         /// confident level thấp
-        if (r.errorCodeFromEngine == 66616) {
+        if (warningCodeFromEngine.contains(r.errorCodeFromEngine)) {
           status(
             BaseStatus(
               message: r.message,
