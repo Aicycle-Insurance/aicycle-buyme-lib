@@ -12,7 +12,7 @@ import '../models/get_upload_url_response.dart';
 import '../models/image_upload_response.dart';
 import '../remote_data/camera_api.dart';
 
-class CameraRepositoryImpl implements CameraRepository {
+class BuyMeCameraRepositoryImpl implements CameraRepository {
   @override
   Future<Either<APIErrors, DamageAssessmentResponse>>
       callAiEngineAfterTakePhotoV2(
@@ -93,9 +93,9 @@ class CameraRepositoryImpl implements CameraRepository {
 
       /// upload thanh cong thi validate
       if (s3FilePath != null && s3FilePath.isNotEmpty) {
-        var result = await CameraAPI.validateAfterUploadToS3(
-                serverFilePath: serverFilePath)
-            .request();
+        var result =
+            await CameraAPI.validateAfterUploadToS3(serverFilePath: s3FilePath)
+                .request();
         return Right(ImageUploadResponse.fromJson(result));
       }
       return Left(FetchDataError('Upload image failed'));

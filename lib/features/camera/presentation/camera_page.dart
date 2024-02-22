@@ -42,7 +42,8 @@ class CameraPage extends StatefulWidget {
   State<CameraPage> createState() => _CameraPageState();
 }
 
-class _CameraPageState extends BaseState<CameraPage, CameraPageController> {
+class _CameraPageState
+    extends BaseState<CameraPage, BuyMeCameraPageController> {
   @override
   void initState() {
     super.initState();
@@ -50,11 +51,11 @@ class _CameraPageState extends BaseState<CameraPage, CameraPageController> {
   }
 
   @override
-  CameraPageController provideController() {
-    if (Get.isRegistered<CameraPageController>()) {
-      return Get.find<CameraPageController>();
+  BuyMeCameraPageController provideController() {
+    if (Get.isRegistered<BuyMeCameraPageController>()) {
+      return Get.find<BuyMeCameraPageController>();
     } else {
-      return Get.put(CameraPageController());
+      return Get.put(BuyMeCameraPageController());
     }
   }
 
@@ -99,10 +100,10 @@ class _CameraPageState extends BaseState<CameraPage, CameraPageController> {
           ),
         ],
       ),
-      body: LoadingView<CameraPageController>(
+      body: LoadingView<BuyMeCameraPageController>(
         isCustomLoading: true,
         quarterTurns: 1,
-        child: GetBuilder<CameraPageController>(
+        child: GetBuilder<BuyMeCameraPageController>(
           id: 'camera',
           builder: (ctrl) {
             if (controller.isCameraLoading.isTrue ||

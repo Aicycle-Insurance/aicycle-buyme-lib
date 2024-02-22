@@ -4,8 +4,9 @@ import '../../enum/app_state.dart';
 import 'base_controller.dart';
 import 'utils.dart';
 
-abstract class BaseState<W extends StatefulWidget, C extends BaseController>
-    extends State<W> with AutomaticKeepAliveClientMixin {
+abstract class BaseState<W extends StatefulWidget,
+        C extends BuyMeBaseController> extends State<W>
+    with AutomaticKeepAliveClientMixin {
   late final C controller;
   @override
   void initState() {

@@ -42,15 +42,15 @@ class FolderDetailPage extends StatefulWidget {
 }
 
 class _FolderDetailPageState
-    extends BaseState<FolderDetailPage, FolderDetailController> {
+    extends BaseState<FolderDetailPage, BuyMeFolderDetailController> {
   late final StreamSubscription _callEngineSub;
 
   @override
-  FolderDetailController provideController() {
-    if (Get.isRegistered<FolderDetailController>()) {
-      return Get.find<FolderDetailController>();
+  BuyMeFolderDetailController provideController() {
+    if (Get.isRegistered<BuyMeFolderDetailController>()) {
+      return Get.find<BuyMeFolderDetailController>();
     } else {
-      return Get.put(FolderDetailController());
+      return Get.put(BuyMeFolderDetailController());
     }
   }
 
@@ -59,6 +59,7 @@ class _FolderDetailPageState
     super.initState();
     apiToken = widget.argument.apiToken;
     environtment = widget.argument.environtment ?? Evn.production;
+    enableVersion2 = widget.argument.enableVersion2 ?? true;
     locale = widget.argument.locale;
     controller.claimId =
         widget.argument.aicycleClaimId ?? widget.argument.externalClaimId;
@@ -85,7 +86,7 @@ class _FolderDetailPageState
               elevation: 0.7,
             )
           : null,
-      body: LoadingView<FolderDetailController>(
+      body: LoadingView<BuyMeFolderDetailController>(
         isCustomLoading: true,
         child: Column(
           children: [

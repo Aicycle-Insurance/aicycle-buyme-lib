@@ -2,11 +2,14 @@
 // import 'dart:io';
 
 // import 'package:flutter/services.dart';
+import 'dart:io';
+
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart';
 import 'package:sensors_plus/sensors_plus.dart';
 
+import '../../../aicycle_buy_me/presentation/aicycle_buy_me.dart';
 import '../../../common/base_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -14,6 +17,8 @@ import 'package:camera/camera.dart';
 
 import '../../../../enum/app_state.dart';
 import '../../../common/contants/direction_constant.dart';
+import '../../../common/contants/warning_code_from_engine.dart';
+import '../../../common/location_seveices.dart';
 import '../../../common/utils.dart';
 // import '../../../folder_details/data/models/buy_me_image_model.dart';
 import '../../../folder_details/domain/usecase/detele_image_by_id_usecase.dart';
@@ -23,11 +28,12 @@ import '../../domain/usecase/call_engine_usecase.dart';
 import '../../domain/usecase/upload_image_usecase.dart';
 import '../camera_page.dart';
 
-class CameraPageController extends BaseController {
-  final CallEngineUsecase callEngineUsecase = Get.find<CallEngineUsecase>();
-  final UploadImageUsecase uploadImageToS3Server =
-      Get.find<UploadImageUsecase>();
-  final DeleteImageByIdUsecase deleteImageByIdUsecase = Get.find();
+class BuyMeCameraPageController extends BuyMeBaseController {
+  final BuyMeCallEngineUsecase callEngineUsecase =
+      Get.find<BuyMeCallEngineUsecase>();
+  final BuyMeUploadImageUsecase uploadImageToS3Server =
+      Get.find<BuyMeUploadImageUsecase>();
+  final BuyMeDeleteImageByIdUsecase deleteImageByIdUsecase = Get.find();
   CameraController? cameraController;
   var isInActive = false.obs;
   var showGuideFrame = true.obs;
@@ -63,8 +69,11 @@ class CameraPageController extends BaseController {
     super.onInit();
   }
 
+  late String? currentLocation;
+  String? imageLocation;
+  String? createdDateTime;
   @override
-  void onReady() {
+  void onReady() async {
     if (cameras.isEmpty) {
       status.value = BaseStatus(
         message: 'No camera found',
@@ -72,6 +81,9 @@ class CameraPageController extends BaseController {
       );
     }
     super.onReady();
+    final currentPos = await LocationServices.getLocation();
+    currentLocation = await LocationServices.getLocationInfo(
+        currentPos?.latitude, currentPos?.longitude);
   }
 
   var isPickingPhoto = false.obs;
@@ -164,6 +176,10 @@ class CameraPageController extends BaseController {
         );
         // previewFile.value = resizeFile;
         isResizing.value = false;
+
+        ///
+        imageLocation = currentLocation;
+        createdDateTime = DateTime.now().toUtc().toIso8601String();
         callEngine(resizeFile);
       }
     } else {
@@ -202,6 +218,14 @@ class CameraPageController extends BaseController {
         );
         // previewFile.value = resizeFile;
         isResizing.value = false;
+
+        ///
+        imageLocation = await LocationServices.getLocationOfImage(
+          File(resizeFile.path),
+          getDateTimeCallBack: (date) {
+            createdDateTime = date.toUtc().toIso8601String();
+          },
+        );
         await callEngine(resizeFile);
       }
     }
@@ -322,7 +346,9 @@ class CameraPageController extends BaseController {
       direction: argument!.carPartDirectionEnum.excelId,
       vehiclePartExcelId: '',
       timeAppUpload: timeAppUpload,
-      utcTimeCreated: DateTime.now().toUtc().toIso8601String(),
+      utcTimeCreated: createdDateTime,
+      uploadLocation: currentLocation,
+      locationName: imageLocation,
     );
 
     callEngineRes.fold((l) {
@@ -369,7 +395,7 @@ class CameraPageController extends BaseController {
         cacheDamageResponse = r;
 
         /// confident level thấp
-        if (r.errorCodeFromEngine == 66616) {
+        if (warningCodeFromEngine.contains(r.errorCodeFromEngine)) {
           status(
             BaseStatus(
               message: r.message,
@@ -393,30 +419,10 @@ class CameraPageController extends BaseController {
   }
 
   void updateDirection(DamageAssessmentResponse? value) {
-    if (Get.isRegistered<FolderDetailController>()) {
-      final folderDetailController = Get.find<FolderDetailController>();
+    if (Get.isRegistered<BuyMeFolderDetailController>()) {
+      final folderDetailController = Get.find<BuyMeFolderDetailController>();
       folderDetailController.getImageInfo();
-      // folderDetailController.damageResponseListener.value = value;
       folderDetailController.damageResponseStream.sink.add(value);
-      // var images = folderDetailController.imageInfo.value?.images ?? [];
-      // images.removeWhere(
-      //   (element) =>
-      //       element.directionSlug == argument?.carPartDirectionEnum.excelId ||
-      //       element.directionId == argument?.carPartDirectionEnum.id.toString(),
-      // );
-      // images.add(BuyMeImage(
-      //   imageId: value?.imageId?.toString(),
-      //   directionId: argument?.carPartDirectionEnum.id.toString(),
-      //   directionName: argument?.carPartDirectionEnum.buyMeTitle,
-      //   directionSlug: value?.result?.extraInfor?.imageDirection ??
-      //       argument?.carPartDirectionEnum.excelId,
-      //   imageUrl: value?.result?.imgUrl,
-      //   resizeImageUrl: value?.result?.imgUrl,
-      //   imageSize: value?.result?.imgSize,
-      // ));
-
-      // folderDetailController.imageInfo.value =
-      //     BuyMeImageResponse(images: images);
     }
   }
 }

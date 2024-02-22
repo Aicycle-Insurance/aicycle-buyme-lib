@@ -14,7 +14,7 @@ class BaseStatus {
   });
 }
 
-abstract class BaseController extends FullLifeCycleController {
+abstract class BuyMeBaseController extends FullLifeCycleController {
   final RxBool isLoading = true.obs;
   final Rx<BaseStatus> status = Rx<BaseStatus>(BaseStatus(message: null));
 

@@ -66,3 +66,19 @@
 ## 0.1.7
 
 * Bug fixes and improvements
+
+## 0.1.8
+
+* Update classes names
+
+## 0.1.9
+
+* Bug fixes and improvements 
+
+## 0.2.0
+
+* Required image upload-location
+
+## 0.2.1
+
+* Bug fixes and improvements

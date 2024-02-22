@@ -4,9 +4,9 @@ import '../../../../network/api_error.dart';
 import '../../data/models/buy_me_image_model.dart';
 import '../repository/folder_detail_repository.dart';
 
-class GetImageInfoUsecase {
+class BuyMeGetImageInfoUsecase {
   final FolderDetailRepository repository;
-  GetImageInfoUsecase(this.repository);
+  BuyMeGetImageInfoUsecase(this.repository);
 
   Future<Either<APIErrors, BuyMeImageResponse>> call(
     String claimId,

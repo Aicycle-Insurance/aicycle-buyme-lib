@@ -99,7 +99,7 @@ class Utils {
         minHeight: imageHeight > imageWidth ? 1600 : 1080,
         minWidth: imageHeight > imageWidth ? 1080 : 1600,
         // rotate: !fromGallery ? -90 : 0,
-        rotate: rotate,
+        rotate: rotate, keepExif: true,
       );
       // Nếu vẫn lớn hơn 2MB thì giảm chất lượng ảnh
       File? compressedFile;

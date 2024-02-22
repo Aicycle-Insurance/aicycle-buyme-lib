@@ -1,6 +1,26 @@
 
 An Aicycle BuyMe package for Aicycle Insurance's partners.
 
+### Usage
+
+>
+>1. Add the following to your "gradle.properties" file:
+>
+>```
+>android.useAndroidX=true
+>android.enableJetifier=true
+>```
+>2. Make sure you set the `compileSdkVersion` in your "android/app/build.gradle" file to 33:
+>
+>```
+>android {
+>  compileSdkVersion 33
+>
+>  ...
+>}
+>```
+>3. Make sure you replace all the `android.` dependencies to their AndroidX counterparts (a full list can be found [Android migration guide](https://developer.android.com/jetpack/androidx/migrate)).
+
 ### Set permissions
    - **iOS** add these on ```ios/Runner/Info.plist``` file
 
@@ -13,6 +33,9 @@ An Aicycle BuyMe package for Aicycle Insurance's partners.
 
 <key>NSPhotoLibraryUsageDescription</key>
 <string>Your own description</string>
+
+<key>NSLocationWhenInUseUsageDescription</key>
+<string>This app needs access to location when open.</string>
 ```
 
   - **Android**
@@ -23,6 +46,8 @@ An Aicycle BuyMe package for Aicycle Insurance's partners.
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_MEDIA_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     ```
 
     - Change the minimum SDK version to 21 (or higher) in ```android/app/build.gradle```
