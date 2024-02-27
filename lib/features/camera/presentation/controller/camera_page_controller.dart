@@ -69,7 +69,7 @@ class BuyMeCameraPageController extends BuyMeBaseController {
     super.onInit();
   }
 
-  late String? currentLocation;
+  String? currentLocation;
   String? imageLocation;
   String? createdDateTime;
   @override
