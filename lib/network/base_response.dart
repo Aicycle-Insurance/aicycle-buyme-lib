@@ -12,7 +12,7 @@ class BaseResponse extends Equatable {
         status: (json['status'] != null && json['status'] is num)
             ? int.tryParse(json['status'])
             : null,
-        result: json['result'] ?? json['data'] ?? json,
+        result: json['result'] ?? json['data'] ?? json['results'] ?? json,
       );
 
   Map<String, dynamic> toJson() => {

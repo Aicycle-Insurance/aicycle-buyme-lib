@@ -4,6 +4,7 @@ import 'features/aicycle_buy_me/domain/usecase/get_duplicate_folder_usecase.dart
 import 'features/folder_details/data/repository/folder_detail_repository_impl.dart';
 import 'features/folder_details/domain/usecase/check_is_one_car_usecase.dart';
 import 'features/folder_details/domain/usecase/detele_image_by_id_usecase.dart';
+import 'features/folder_details/domain/usecase/get_image_details_usecase.dart';
 import 'features/folder_details/domain/usecase/get_image_info_usecase.dart';
 import 'package:get/get.dart';
 
@@ -28,6 +29,11 @@ class InjectionContainer {
     Get.lazyPut(
       () =>
           BuyMeGetImageInfoUsecase(Get.find<BuyMeFolderDetailRepositoryImpl>()),
+      fenix: true,
+    );
+    Get.lazyPut(
+      () => BuyMeGetImageDetailsUsecase(
+          Get.find<BuyMeFolderDetailRepositoryImpl>()),
       fenix: true,
     );
     Get.lazyPut(

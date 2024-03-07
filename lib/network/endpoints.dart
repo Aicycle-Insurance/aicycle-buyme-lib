@@ -17,4 +17,5 @@ abstract class Endpoint {
   static String get deleteImageById => '/claimimages/{imageId}';
   static String get getImageInformation =>
       '/v2/claimfolders/{claimId}/insurance-images';
+  static String get getImageDetails => '/insurance/images/{imageId}';
 }

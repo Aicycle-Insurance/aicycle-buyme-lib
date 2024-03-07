@@ -17,7 +17,6 @@ import '../../common/extension/translation_ext.dart';
 import '../../common/c_button.dart';
 import '../../common/c_loading_view.dart';
 import '../../common/themes/c_colors.dart';
-import '../data/models/buy_me_image_model.dart';
 import 'widgets/controller/folder_detail_controller.dart';
 import 'widgets/car_position.dart';
 import 'widgets/is_one_car_widget.dart';
@@ -33,7 +32,7 @@ class FolderDetailPage extends StatefulWidget {
   // final String claimFolderId;
   // final String externalClaimId;
   final bool? hasAppBar;
-  final Function(List<BuyMeImage>? images)? onViewResultCallBack;
+  final Function(Map<String, dynamic> result)? onViewResultCallBack;
   final Function(DamageAssessmentResponse?)? onCallEngineSuccessfully;
   final AiCycleBuyMeArgument argument;
 
@@ -226,8 +225,16 @@ class _FolderDetailPageState
                   return CButton(
                     isDisable: isDisable,
                     onPressed: () {
-                      widget.onViewResultCallBack
-                          ?.call(controller.imageInfo.value?.images);
+                      controller.getResult().then((value) {
+                        final imagesJson = List.from(controller.imagesDetails
+                            .map((element) => element.toJson())
+                            .toList());
+                        final Map<String, dynamic> result = {
+                          'results': imagesJson,
+                          'itemsCount': controller.imagesDetails.length
+                        };
+                        widget.onViewResultCallBack?.call(result);
+                      });
                     },
                     title: LocaleKeys.viewResult.trans,
                   );

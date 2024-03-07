@@ -10,7 +10,6 @@ import '../../../generated/locales.g.dart';
 import '../../common/base_widget.dart';
 import '../../common/themes/c_colors.dart';
 import '../../common/themes/c_textstyle.dart';
-import '../../folder_details/data/models/buy_me_image_model.dart';
 import '../../folder_details/presentation/folder_detail_page.dart';
 import '../../common/extension/translation_ext.dart';
 import 'aicycle_buy_me_controller.dart';
@@ -52,7 +51,7 @@ class AiCycleBuyMe extends StatefulWidget {
     required this.onViewResultCallBack,
   });
   final AiCycleBuyMeArgument argument;
-  final Function(List<BuyMeImage>? imagesResult) onViewResultCallBack;
+  final Function(Map<String, dynamic>? imagesResult) onViewResultCallBack;
 
   @override
   State<AiCycleBuyMe> createState() => _AiCycleBuyMeState();
