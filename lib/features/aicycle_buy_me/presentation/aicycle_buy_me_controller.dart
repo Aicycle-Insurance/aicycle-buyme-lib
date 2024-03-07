@@ -40,7 +40,7 @@ class AiCycleBuyMeController extends BuyMeBaseController {
         } else {
           isLoading(false);
           status.value = BaseStatus(
-            message: l.message,
+            message: '${l.code.toString()}: ${l.details.toString()}',
             state: AppState.pop,
           );
         }
@@ -70,7 +70,7 @@ class AiCycleBuyMeController extends BuyMeBaseController {
       (l) {
         isLoading(false);
         status.value = BaseStatus(
-          message: l.message,
+          message: '${l.code.toString()}: ${l.details.toString()}',
           state: AppState.pop,
         );
       },

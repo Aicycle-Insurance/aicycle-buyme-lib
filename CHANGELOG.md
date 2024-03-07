@@ -86,3 +86,7 @@
 ## 0.2.2
 
 * Bug fixes and improvements
+
+## 0.2.3
+
+* Fix bugs and update error message

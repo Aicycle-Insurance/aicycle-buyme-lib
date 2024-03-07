@@ -245,7 +245,8 @@ class BuyMeCameraPageController extends BuyMeBaseController {
           isLoading(false);
           status(
             BaseStatus(
-              message: l.message.toString(),
+              message:
+                  '${l.code.toString()}: ${l.details.toString()}'.toString(),
               state: AppState.customError,
             ),
           );
@@ -358,7 +359,7 @@ class BuyMeCameraPageController extends BuyMeBaseController {
       if (l.errorCodeFromEngine != null) {
         status(
           BaseStatus(
-            message: l.message.toString(),
+            message: '${l.code.toString()}: ${l.details.toString()}'.toString(),
             state: AppState.customError,
           ),
         );
