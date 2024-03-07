@@ -21,6 +21,7 @@ class BuyMeFolderDetailController extends BuyMeBaseController {
       StreamController<DamageAssessmentResponse?>.broadcast();
 
   String? claimId;
+  RxString message = ''.obs;
 
   @override
   void onReady() {

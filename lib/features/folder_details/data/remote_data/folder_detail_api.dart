@@ -3,7 +3,7 @@ import '../../../../network/endpoints.dart';
 
 class FolderDetailApi extends APIRequest {
   ///
-  FolderDetailApi.getImageInfor(String claimId)
+  FolderDetailApi.getImageInfo(String claimId)
       : super(
           endpoint:
               Endpoint.getImageInformation.replaceAll('{claimId}', claimId),

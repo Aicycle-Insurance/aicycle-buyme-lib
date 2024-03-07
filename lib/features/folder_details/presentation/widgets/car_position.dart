@@ -29,9 +29,7 @@ class CarPosition extends StatelessWidget {
     final scrWidth = MediaQuery.of(context).size.width;
     final String? image = images
         ?.firstWhere(
-          (e) =>
-              e.directionSlug == direction.excelId.toString() ||
-              e.directionId == direction.id.toString(),
+          (e) => e.directionSlug == direction.excelId.toString(),
           orElse: () => const BuyMeImage(),
         )
         .imageUrl;

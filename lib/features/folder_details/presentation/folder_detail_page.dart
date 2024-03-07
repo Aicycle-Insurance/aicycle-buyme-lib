@@ -98,9 +98,11 @@ class _FolderDetailPageState
 
                     /// Check car
                     Obx(() {
-                      if (controller.checkCarModel() != null) {
+                      if (controller.message.value.isNotEmpty ||
+                          controller.checkCarModel() != null) {
                         return IsOneCarWidget(
                           checkCarModel: controller.checkCarModel(),
+                          message: controller.message.value,
                         );
                       }
                       return const SizedBox.shrink();
@@ -211,16 +213,25 @@ class _FolderDetailPageState
               ),
               decoration: const BoxDecoration(color: Colors.white),
               child: Obx(
-                () => CButton(
-                  isDisable:
-                      controller.imageInfo.value?.images?.isNotEmpty != true,
-                  onPressed: () {
-                    widget.onViewResultCallBack
-                        ?.call(controller.imageInfo.value?.images);
-                    // Navigator.pop(context);
-                  },
-                  title: LocaleKeys.viewResult.trans,
-                ),
+                () {
+                  bool isDisable = false;
+                  if (controller.imageInfo.value != null) {
+                    if (controller.imageInfo.value!.images == null ||
+                        controller.imageInfo.value!.images!.isEmpty) {
+                      isDisable = true;
+                    }
+                  } else {
+                    isDisable = true;
+                  }
+                  return CButton(
+                    isDisable: isDisable,
+                    onPressed: () {
+                      widget.onViewResultCallBack
+                          ?.call(controller.imageInfo.value?.images);
+                    },
+                    title: LocaleKeys.viewResult.trans,
+                  );
+                },
               ),
             ),
           ],

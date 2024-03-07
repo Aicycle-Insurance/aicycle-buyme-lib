@@ -11,7 +11,7 @@ class BuyMeFolderDetailRepositoryImpl implements FolderDetailRepository {
   Future<Either<APIErrors, BuyMeImageResponse>> getImageInfo(
       String claimId) async {
     try {
-      final res = await FolderDetailApi.getImageInfor(claimId).request();
+      final res = await FolderDetailApi.getImageInfo(claimId).request();
       return Right(BuyMeImageResponse.fromJson(res));
     } catch (e) {
       if (e is APIErrors) {
