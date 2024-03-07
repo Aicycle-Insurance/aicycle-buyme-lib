@@ -59,18 +59,52 @@ class APIProvider {
         code: _.message,
       );
     } on DioException catch (_) {
-      if (_.type == DioExceptionType.unknown) {
-        throw FetchDataError(
-          _.message,
-          code: _.error,
-        );
+      switch (_.type) {
+        case DioExceptionType.connectionTimeout:
+        case DioExceptionType.sendTimeout:
+        case DioExceptionType.receiveTimeout:
+          throw TimeOutError(_.message);
+        case DioExceptionType.badCertificate:
+          throw FobiddenError(_.message);
+        case DioExceptionType.badResponse:
+          if (_.response?.data is Map) {
+            throw BadRequestError(
+              _.response?.data['message'] ??
+                  _.response?.statusMessage ??
+                  _.message,
+              code: _.response?.statusCode,
+            );
+          } else {
+            throw BadRequestError(_.message, code: _.response?.statusCode);
+          }
+        case DioExceptionType.cancel:
+          throw FetchDataError(_.message);
+        case DioExceptionType.connectionError:
+          throw NoInternetError();
+        case DioExceptionType.unknown:
+          throw FetchDataError(
+            _.message,
+            code: _.error,
+          );
       }
-      return _returnResponse(
-        _.response,
-        request,
-        tryCount,
-        isBaseResponse: request.isBaseResponse,
-      );
+      // return _returnResponse(
+      //   _.response,
+      //   request,
+      //   tryCount,
+      //   isBaseResponse: request.isBaseResponse,
+      // );
+      // if (_.type == DioExceptionType.unknown) {
+      //   throw FetchDataError(
+      //     _.message,
+      //     code: _.error,
+      //   );
+      // }
+      // return _returnResponse(
+      //   _.response,
+      //   request,
+      //   tryCount,
+      //   isBaseResponse: request.isBaseResponse,
+      // );
     } catch (e) {
       throw FetchDataError(
         e.toString(),

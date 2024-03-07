@@ -43,7 +43,9 @@ class BuyMeFolderDetailController extends BuyMeBaseController {
     res.fold(
       (l) {
         isLoading(false);
-        status.value = BaseStatus(message: l.message, state: AppState.failed);
+        status.value = BaseStatus(
+            message: '${l.code.toString()}: ${l.details.toString()}',
+            state: AppState.failed);
       },
       (r) {
         isLoading(false);
