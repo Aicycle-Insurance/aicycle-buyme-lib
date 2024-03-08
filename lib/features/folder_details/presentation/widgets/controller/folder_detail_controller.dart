@@ -28,10 +28,9 @@ class BuyMeFolderDetailController extends BuyMeBaseController {
   final RxList<BuyMeImageDetails> imagesDetails = RxList<BuyMeImageDetails>();
 
   @override
-  void onReady() async {
+  void onReady() {
     super.onReady();
     getImageInfo();
-    await getResult();
   }
 
   @override
@@ -87,6 +86,13 @@ class BuyMeFolderDetailController extends BuyMeBaseController {
       }
     }
     isLoading(false);
+  }
+
+  void getImageDetails(String imageId) async {
+    isLoading(true);
+    processUsecaseResult(
+      result: await getImageDetailsUsecase(imageId),
+    );
   }
 
   Future<void> checkIsOneCar() async {

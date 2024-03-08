@@ -90,3 +90,11 @@
 ## 0.2.3
 
 * Fix bugs and update error message
+
+## 0.2.4
+
+* Update result
+
+## 0.2.5
+
+* Bug fixes and improvements
