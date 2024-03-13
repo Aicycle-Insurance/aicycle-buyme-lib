@@ -98,3 +98,7 @@
 ## 0.2.5
 
 * Bug fixes and improvements
+
+## 0.2.6
+
+* Update dev and stage baseURL 
