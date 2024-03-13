@@ -82,29 +82,14 @@ class APIProvider {
         case DioExceptionType.connectionError:
           throw NoInternetError();
         case DioExceptionType.unknown:
+          if (_.message?.toLowerCase().contains('connection abort') == true) {
+            throw NoInternetError('Connection aborted');
+          }
           throw FetchDataError(
             _.message,
             code: _.error,
           );
       }
-      // return _returnResponse(
-      //   _.response,
-      //   request,
-      //   tryCount,
-      //   isBaseResponse: request.isBaseResponse,
-      // );
-      // if (_.type == DioExceptionType.unknown) {
-      //   throw FetchDataError(
-      //     _.message,
-      //     code: _.error,
-      //   );
-      // }
-      // return _returnResponse(
-      //   _.response,
-      //   request,
-      //   tryCount,
-      //   isBaseResponse: request.isBaseResponse,
-      // );
     } catch (e) {
       throw FetchDataError(
         e.toString(),

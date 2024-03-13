@@ -40,11 +40,11 @@ class FetchDataError extends APIErrors {
 }
 
 class NoInternetError extends APIErrors {
-  NoInternetError()
+  NoInternetError([String? details])
       : super(
           code: 503,
           message: "Service Unavailable",
-          details: "No Internet Connection",
+          details: details ?? "No Internet Connection",
         );
 }
 
