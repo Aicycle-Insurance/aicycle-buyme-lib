@@ -101,4 +101,8 @@
 
 ## 0.2.6
 
-* Update dev and stage baseURL 
+* Update dev and stage baseURL
+
+## 0.2.7
+
+* Integrate gallery saver 

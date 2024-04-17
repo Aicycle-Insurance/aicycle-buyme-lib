@@ -36,7 +36,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     super.initState();
-    externalClaimIdController.text = "";
+    externalClaimIdController.text = "46638";
   }
 
   @override
@@ -81,8 +81,9 @@ class _MyHomePageState extends State<MyHomePage> {
                           },
                           argument: AiCycleBuyMeArgument(
                             externalClaimId: externalClaimIdController.text,
-                            apiToken: '',
+                            apiToken: '26668a3f-bccd-4918-897e-2dc48ff32ae0',
                             locale: const Locale('en', 'US'),
+                            environtment: Evn.stage,
                           ),
                         ),
                       ),

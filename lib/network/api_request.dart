@@ -46,6 +46,7 @@ class APIRequest {
     }
     final baseHeaders = {
       if (apiToken != null) 'Authorization': "Bearer $apiToken",
+      if (xApplication != null) 'X-AICycle-Application': xApplication!,
       if (isMultiLanguage) "lang": langCode,
     };
     this.headers = baseHeaders;

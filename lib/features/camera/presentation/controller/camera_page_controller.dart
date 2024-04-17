@@ -5,6 +5,7 @@
 import 'dart:io';
 
 import 'package:flutter/services.dart';
+import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart';
 import 'package:sensors_plus/sensors_plus.dart';
@@ -181,6 +182,9 @@ class BuyMeCameraPageController extends BuyMeBaseController {
         imageLocation = currentLocation;
         createdDateTime = DateTime.now().toUtc().toIso8601String();
         callEngine(resizeFile);
+        if (savePhotoAfterShot == true) {
+          await ImageGallerySaver.saveFile(resizeFile.path);
+        }
       }
     } else {
       await cameraController?.resumePreview();

@@ -35,10 +35,19 @@ An Aicycle BuyMe package for Aicycle Insurance's partners.
 <string>Your own description</string>
 
 <key>NSLocationWhenInUseUsageDescription</key>
-<string>This app needs access to location when open.</string>
+<string>Your own description</string>
+
+<key>NSPhotoLibraryAddUsageDescription</key>
+<string>Your own description</string>
 ```
 
   - **Android**
+    - You need to ask for storage permission to save an image to the gallery. You can handle the storage permission using flutter_permission_handler. In Android version 10, Open the manifest file and add this line to your application tag
+    <br />
+    ```xml
+    <application android:requestLegacyExternalStorage="true" .....>
+    ```
+    
     - Set permissions before ```<application>```
     <br />
 

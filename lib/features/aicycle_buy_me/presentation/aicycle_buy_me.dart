@@ -21,6 +21,8 @@ enum Evn {
 }
 
 String? apiToken;
+String? xApplication;
+bool? savePhotoAfterShot;
 Evn environtment = Evn.production;
 Locale? locale;
 bool? enableVersion2 = true;
@@ -29,6 +31,8 @@ List<CameraDescription> cameras = <CameraDescription>[];
 class AiCycleBuyMeArgument {
   final String externalClaimId;
   final String apiToken;
+  final String? xApplication;
+  final bool? savePhotoAfterShot;
   final Evn? environtment;
   final Locale? locale;
   final String? aicycleClaimId;
@@ -38,6 +42,8 @@ class AiCycleBuyMeArgument {
     required this.externalClaimId,
     required this.apiToken,
     this.environtment,
+    this.xApplication,
+    this.savePhotoAfterShot,
     this.locale,
     this.aicycleClaimId,
     this.enableVersion2,
@@ -72,6 +78,8 @@ class _AiCycleBuyMeState
     super.initState();
     controller.argument = widget.argument;
     apiToken = widget.argument.apiToken;
+    xApplication = widget.argument.xApplication;
+    savePhotoAfterShot = widget.argument.savePhotoAfterShot;
     environtment = widget.argument.environtment ?? Evn.production;
     enableVersion2 = widget.argument.enableVersion2 ?? true;
     locale = widget.argument.locale;
