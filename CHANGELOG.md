@@ -105,4 +105,8 @@
 
 ## 0.2.7
 
-* Integrate gallery saver 
+* Integrate gallery saver
+
+## 0.2.8
+
+* Update pubspec file
