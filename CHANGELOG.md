@@ -110,3 +110,7 @@
 ## 0.2.8
 
 * Update pubspec file
+
+## 0.2.9
+
+* Bugfix

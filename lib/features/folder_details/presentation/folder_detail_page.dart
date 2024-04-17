@@ -58,7 +58,6 @@ class _FolderDetailPageState
     super.initState();
     apiToken = widget.argument.apiToken;
     xApplication = widget.argument.xApplication;
-    savePhotoAfterShot = widget.argument.savePhotoAfterShot;
     environtment = widget.argument.environtment ?? Evn.production;
     enableVersion2 = widget.argument.enableVersion2 ?? true;
     locale = widget.argument.locale;
@@ -79,6 +78,7 @@ class _FolderDetailPageState
 
   @override
   Widget build(BuildContext context) {
+    savePhotoAfterShot = widget.argument.savePhotoAfterShot;
     super.build(context);
     return Scaffold(
       appBar: (widget.hasAppBar ?? true)
