@@ -53,10 +53,17 @@ abstract class BuyMeBaseController extends FullLifeCycleController {
           //   error: error,
           //   message: error.details.toString(),
           // );
-          status.value = BaseStatus(
-            message: error.details.toString(),
-            state: AppState.failed,
-          );
+          if (error.details.toString().toLowerCase().contains('connection')) {
+            status.value = BaseStatus(
+              message: 'Connection aborted',
+              state: AppState.failed,
+            );
+          } else {
+            status.value = BaseStatus(
+              message: error.details.toString(),
+              state: AppState.failed,
+            );
+          }
         }
       }
       if (onFail != null) {
