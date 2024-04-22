@@ -97,6 +97,8 @@ class BuyMeCameraPageController extends BuyMeBaseController {
     }
     if (state == AppLifecycleState.inactive && !isPickingPhoto()) {
       isInActive(true);
+      flashMode.value = FlashMode.off;
+      cameraCtrl.setFlashMode(FlashMode.off);
       cameraCtrl.dispose();
       update(['camera']);
     } else if (state == AppLifecycleState.resumed && !isPickingPhoto()) {
@@ -429,5 +431,12 @@ class BuyMeCameraPageController extends BuyMeBaseController {
       folderDetailController.getImageInfo();
       folderDetailController.damageResponseStream.sink.add(value);
     }
+  }
+
+  @override
+  void onClose() async {
+    await cameraController?.setFlashMode(FlashMode.off);
+    cameraController?.dispose();
+    super.onClose();
   }
 }
