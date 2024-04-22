@@ -1,6 +1,6 @@
 name: aicycle_buyme_lib
 description: An AiCycle BuyMe package.
-version: 0.2.9
+version: 0.3.0
 homepage: https://aicycle.ai/
 
 environment:
