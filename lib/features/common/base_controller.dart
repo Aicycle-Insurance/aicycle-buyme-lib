@@ -53,7 +53,11 @@ abstract class BuyMeBaseController extends FullLifeCycleController {
           //   error: error,
           //   message: error.details.toString(),
           // );
-          if (error.details.toString().toLowerCase().contains('connection')) {
+          if (error.details.toString().toLowerCase().contains('connection') ||
+              error.details
+                  .toString()
+                  .toLowerCase()
+                  .contains('can\'t assign requested address')) {
             status.value = BaseStatus(
               message: 'Connection aborted',
               state: AppState.failed,
