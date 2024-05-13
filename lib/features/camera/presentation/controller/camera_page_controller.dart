@@ -148,8 +148,8 @@ class BuyMeCameraPageController extends BuyMeBaseController {
 
   void switchFlashMode() async {
     if (flashMode() == FlashMode.off) {
-      await cameraController?.setFlashMode(FlashMode.torch);
-      flashMode.value = FlashMode.torch;
+      await cameraController?.setFlashMode(FlashMode.always);
+      flashMode.value = FlashMode.always;
     } else {
       await cameraController?.setFlashMode(FlashMode.off);
       flashMode.value = FlashMode.off;
