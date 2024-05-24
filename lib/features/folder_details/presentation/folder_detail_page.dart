@@ -28,11 +28,13 @@ class FolderDetailPage extends StatefulWidget {
     this.hasAppBar,
     this.onCallEngineSuccessfully,
     required this.argument,
+    this.onError,
   });
   // final String claimFolderId;
   // final String externalClaimId;
   final bool? hasAppBar;
   final Function(Map<String, dynamic> result)? onViewResultCallBack;
+  final Function(dynamic error)? onError;
   final Function(DamageAssessmentResponse?)? onCallEngineSuccessfully;
   final AiCycleBuyMeArgument argument;
 
@@ -43,6 +45,7 @@ class FolderDetailPage extends StatefulWidget {
 class _FolderDetailPageState
     extends BaseState<FolderDetailPage, BuyMeFolderDetailController> {
   late final StreamSubscription _callEngineSub;
+  late final StreamSubscription _errorSub;
 
   @override
   BuyMeFolderDetailController provideController() {
@@ -63,9 +66,16 @@ class _FolderDetailPageState
     locale = widget.argument.locale;
     controller.claimId =
         widget.argument.aicycleClaimId ?? widget.argument.externalClaimId;
+
+    ///
     _callEngineSub = controller.damageResponseStream.stream.listen((p0) {
       if (p0 != null) {
         widget.onCallEngineSuccessfully?.call(p0);
+      }
+    });
+    _errorSub = controller.receiveErrorStream.stream.listen((p0) {
+      if (p0 != null) {
+        widget.onError?.call(p0);
       }
     });
   }
@@ -74,6 +84,7 @@ class _FolderDetailPageState
   void dispose() {
     super.dispose();
     _callEngineSub.cancel();
+    _errorSub.cancel();
   }
 
   @override

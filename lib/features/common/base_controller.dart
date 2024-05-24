@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import '../../enum/app_state.dart';
 import 'package:dartz/dartz.dart';
 import 'package:get/get.dart';
@@ -17,11 +19,18 @@ class BaseStatus {
 abstract class BuyMeBaseController extends FullLifeCycleController {
   final RxBool isLoading = true.obs;
   final Rx<BaseStatus> status = Rx<BaseStatus>(BaseStatus(message: null));
+  final receiveErrorStream = StreamController<dynamic>.broadcast();
 
   @override
   void onInit() {
     isLoading(false);
     super.onInit();
+  }
+
+  @override
+  void onClose() {
+    super.onClose();
+    receiveErrorStream.close();
   }
 
   void onRefresh() async {}
@@ -38,6 +47,7 @@ abstract class BuyMeBaseController extends FullLifeCycleController {
   }) {
     result.fold((error) {
       isLoading(false);
+      receiveErrorStream.sink.add(error);
       if (shouldShowError ?? true && error is! NoMessageError) {
         if (error is NoInternetError) {
           // Utils.instance.showError(
