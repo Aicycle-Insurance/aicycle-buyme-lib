@@ -21,6 +21,7 @@ class CameraAPI extends APIRequest {
           endpoint: Endpoint.callEngine,
           method: HTTPMethod.post,
           isLogResponse: true,
+          isBaseResponse: false,
           body: {
             "claimId": claimId,
             "imageName": imageName,

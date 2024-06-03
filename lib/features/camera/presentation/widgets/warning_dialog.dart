@@ -1,3 +1,5 @@
+import 'package:aicycle_buyme_lib/aicycle_buyme_lib.dart';
+import 'package:aicycle_buyme_lib/generated/assets.gen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:gap/gap.dart';
 
@@ -34,6 +36,12 @@ class WarningDialog extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
+          Assets.icons.icWarning.svg(
+            package: packageName,
+            width: 40,
+            height: 40,
+            color: CColors.redA500,
+          ),
           Text(
             description,
             textAlign: TextAlign.center,

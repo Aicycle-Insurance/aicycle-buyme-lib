@@ -130,3 +130,7 @@
 ## 0.3.3
 
 * Update error handling
+
+## 0.3.4
+
+* Bugfix
