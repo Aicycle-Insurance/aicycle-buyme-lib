@@ -134,3 +134,7 @@
 ## 0.3.4
 
 * Bugfix
+
+## 0.3.5
+
+* Cập nhật cho phép upload nếu thiết bị không có camera

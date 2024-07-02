@@ -55,11 +55,16 @@ class BuyMeCameraPageController extends BuyMeBaseController {
   late Stream<DeviceOrientation> sensorStream;
   DeviceOrientation currentOrientation = DeviceOrientation.portraitUp;
 
+  final isCameraSupported = true.obs;
+
   @override
   void onInit() {
     WidgetsBinding.instance.addObserver(this);
     if (cameras.isNotEmpty) {
+      isCameraSupported.value = true;
       onNewCameraSelected(cameras[0]);
+    } else {
+      isCameraSupported.value = false;
     }
     sensorStream = accelerometerEventStream()
         .map<DeviceOrientation>(Utils.getOrientation)
@@ -73,14 +78,15 @@ class BuyMeCameraPageController extends BuyMeBaseController {
   String? currentLocation;
   String? imageLocation;
   String? createdDateTime;
+
   @override
   void onReady() async {
-    if (cameras.isEmpty) {
-      status.value = BaseStatus(
-        message: 'No camera found',
-        state: AppState.pop,
-      );
-    }
+    // if (cameras.isEmpty) {
+    //   status.value = BaseStatus(
+    //     message: 'No camera found',
+    //     state: AppState.pop,
+    //   );
+    // }
     super.onReady();
     final currentPos = await LocationServices.getLocation();
     currentLocation = await LocationServices.getLocationInfo(
@@ -387,6 +393,14 @@ class BuyMeCameraPageController extends BuyMeBaseController {
         //   );
         //   showErrorDialog(true);
         //   showRetake(true);
+      } else {
+        status(
+          BaseStatus(
+            message: l.message.toString(),
+            state: AppState.customError,
+          ),
+        );
+        showErrorDialog(true);
       }
     }, (r) {
       isLoading(false);

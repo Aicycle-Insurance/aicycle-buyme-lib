@@ -71,33 +71,34 @@ class _CameraPageState
         iconTheme: const IconThemeData(color: CColors.white),
         backgroundColor: Colors.black,
         actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 16),
-            child: InkWell(
-              onTap: controller.switchFlashMode,
-              child: Container(
-                height: 48,
-                width: 48,
-                decoration: const BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: Colors.black54,
-                ),
-                child: RotatedBox(
-                  quarterTurns: 1,
-                  child: Center(
-                    child: Obx(
-                      () => Icon(
-                        controller.flashMode() == FlashMode.off
-                            ? Icons.flash_off_outlined
-                            : Icons.flash_on_outlined,
-                        color: Colors.white,
+          if (controller.isCameraSupported.isTrue)
+            Padding(
+              padding: const EdgeInsets.only(right: 16),
+              child: InkWell(
+                onTap: controller.switchFlashMode,
+                child: Container(
+                  height: 48,
+                  width: 48,
+                  decoration: const BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Colors.black54,
+                  ),
+                  child: RotatedBox(
+                    quarterTurns: 1,
+                    child: Center(
+                      child: Obx(
+                        () => Icon(
+                          controller.flashMode() == FlashMode.off
+                              ? Icons.flash_off_outlined
+                              : Icons.flash_on_outlined,
+                          color: Colors.white,
+                        ),
                       ),
                     ),
                   ),
                 ),
               ),
             ),
-          ),
         ],
       ),
       body: LoadingView<BuyMeCameraPageController>(
@@ -106,50 +107,79 @@ class _CameraPageState
         child: GetBuilder<BuyMeCameraPageController>(
           id: 'camera',
           builder: (ctrl) {
-            if (controller.isCameraLoading.isTrue ||
-                controller.isInActive.isTrue ||
-                controller.cameraController == null ||
-                controller.cameraController?.value.isInitialized != true) {
-              return const SizedBox.expand(
+            late Widget cameraPreview;
+            if (controller.isCameraSupported.isFalse) {
+              cameraPreview = Container(
+                color: Colors.white,
                 child: Center(
-                  child: CupertinoActivityIndicator(color: CColors.white),
+                  child: InkWell(
+                    onTap: () => controller.pickedPhoto(),
+                    child: const Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.file_open_rounded,
+                          color: CColors.primaryA500,
+                          size: 60,
+                        ),
+                        Text(
+                          'Upload from gallery',
+                          style: CTextStyles.baseHyperLink,
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
               );
-            }
-            final frameAspectRatio = MediaQuery.of(context).size.width /
-                (MediaQuery.of(context).size.height - kToolbarHeight);
-            final scale = 1 /
-                (controller.cameraController!.value.aspectRatio *
-                    frameAspectRatio);
-
-            /// camera view
-            return Stack(
-              children: [
-                Center(
+            } else {
+              if (controller.isCameraLoading.isTrue ||
+                  controller.isInActive.isTrue ||
+                  controller.cameraController == null ||
+                  controller.cameraController?.value.isInitialized != true) {
+                cameraPreview = const SizedBox.expand(
+                  child: Center(
+                    child: CupertinoActivityIndicator(color: CColors.white),
+                  ),
+                );
+              } else {
+                final frameAspectRatio = MediaQuery.of(context).size.width /
+                    (MediaQuery.of(context).size.height - kToolbarHeight);
+                final scale = 1 /
+                    (controller.cameraController!.value.aspectRatio *
+                        frameAspectRatio);
+                cameraPreview = Center(
                   child: Transform.scale(
                     scale: scale,
                     child: CameraPreview(
                       controller.cameraController!,
                     ),
                   ),
-                ),
-                Obx(() {
-                  if (controller.showGuideFrame.isTrue &&
-                      controller.previewFile() == null &&
-                      widget.argument.carPartDirectionEnum.id != 31 &&
-                      widget.argument.carPartDirectionEnum.id != 22) {
-                    return Positioned.fill(
-                      bottom: 100,
-                      top: 32,
-                      child: GuideFrame(
-                        carPartDirectionEnum:
-                            widget.argument.carPartDirectionEnum,
-                        carModelEnum: CarModelEnum.kiaMorning,
-                      ),
-                    );
-                  }
-                  return const SizedBox.shrink();
-                }),
+                );
+              }
+            }
+
+            /// camera view
+            return Stack(
+              children: [
+                cameraPreview,
+                if (controller.isCameraSupported.isTrue)
+                  Obx(() {
+                    if (controller.showGuideFrame.isTrue &&
+                        controller.previewFile() == null &&
+                        widget.argument.carPartDirectionEnum.id != 31 &&
+                        widget.argument.carPartDirectionEnum.id != 22) {
+                      return Positioned.fill(
+                        bottom: 100,
+                        top: 32,
+                        child: GuideFrame(
+                          carPartDirectionEnum:
+                              widget.argument.carPartDirectionEnum,
+                          carModelEnum: CarModelEnum.kiaMorning,
+                        ),
+                      );
+                    }
+                    return const SizedBox.shrink();
+                  }),
 
                 /// Preview
                 Obx(
@@ -268,25 +298,28 @@ class _CameraPageState
                 ),
 
                 /// bottom bar buttons
-                Align(
-                  alignment: Alignment.bottomCenter,
-                  child: Obx(
-                    () => controller.previewFile() == null
-                        ? SafeArea(
-                            child: BuyMeCameraBottomBar(
-                              previewFile: controller.previewFile(),
-                              showToggleFrame: widget
-                                          .argument.carPartDirectionEnum.id !=
-                                      31 &&
-                                  widget.argument.carPartDirectionEnum.id != 22,
-                              onToggleFrameCallBack: controller.showGuideFrame,
-                              takePhoto: controller.takePhoto,
-                              pickImage: controller.pickedPhoto,
-                            ),
-                          )
-                        : const SizedBox.shrink(),
+                if (controller.isCameraSupported.isTrue)
+                  Align(
+                    alignment: Alignment.bottomCenter,
+                    child: Obx(
+                      () => controller.previewFile() == null
+                          ? SafeArea(
+                              child: BuyMeCameraBottomBar(
+                                previewFile: controller.previewFile(),
+                                showToggleFrame: widget
+                                            .argument.carPartDirectionEnum.id !=
+                                        31 &&
+                                    widget.argument.carPartDirectionEnum.id !=
+                                        22,
+                                onToggleFrameCallBack:
+                                    controller.showGuideFrame,
+                                takePhoto: controller.takePhoto,
+                                pickImage: controller.pickedPhoto,
+                              ),
+                            )
+                          : const SizedBox.shrink(),
+                    ),
                   ),
-                ),
               ],
             );
           },
