@@ -17,11 +17,13 @@ class CarPosition extends StatelessWidget {
   final String claimFolderId;
   final CarPartDirectionEnum direction;
   final List<BuyMeImage>? images;
+  final CarModelEnum? carModelEnum;
   const CarPosition({
     super.key,
     required this.direction,
     required this.claimFolderId,
     this.images,
+    this.carModelEnum,
   });
 
   @override
@@ -40,7 +42,7 @@ class CarPosition extends StatelessWidget {
           builder: (context) => CameraPage(
             argument: BuyMeCameraArgument(
               carPartDirectionEnum: direction,
-              carModelEnum: CarModelEnum.kiaMorning,
+              carModelEnum: carModelEnum ?? CarModelEnum.kiaMorning,
               claimId: claimFolderId,
             ),
           ),

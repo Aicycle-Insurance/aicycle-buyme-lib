@@ -17,6 +17,7 @@ class CameraAPI extends APIRequest {
     String? locationName,
     String? uploadLocation,
     String? utcTimeCreated,
+    bool? isTruck,
   }) : super(
           endpoint: Endpoint.callEngine,
           method: HTTPMethod.post,
@@ -36,6 +37,7 @@ class CameraAPI extends APIRequest {
             "requestedTime": utcTimeCreated,
             "uploadLocation": uploadLocation,
             "isValidate": true,
+            if (isTruck == true) "vehicleType": "truck",
           },
         );
 

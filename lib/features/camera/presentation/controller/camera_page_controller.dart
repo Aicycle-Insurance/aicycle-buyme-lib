@@ -4,6 +4,7 @@
 // import 'package:flutter/services.dart';
 import 'dart:io';
 
+import 'package:aicycle_buyme_lib/enum/car_model.dart';
 import 'package:flutter/services.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:image_picker/image_picker.dart';
@@ -362,6 +363,7 @@ class BuyMeCameraPageController extends BuyMeBaseController {
       utcTimeCreated: createdDateTime,
       uploadLocation: currentLocation,
       locationName: imageLocation,
+      isTruck: argument?.carModelEnum == CarModelEnum.truck,
     );
 
     callEngineRes.fold((l) {

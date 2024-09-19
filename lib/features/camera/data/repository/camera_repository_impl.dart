@@ -15,20 +15,22 @@ import '../remote_data/camera_api.dart';
 class BuyMeCameraRepositoryImpl implements CameraRepository {
   @override
   Future<Either<APIErrors, DamageAssessmentResponse>>
-      callAiEngineAfterTakePhotoV2(
-          {required String claimId,
-          required String imageName,
-          required String filePath,
-          required String position,
-          required String direction,
-          required String vehiclePartExcelId,
-          required bool isCapDon,
-          int? oldImageId,
-          double? timeAppUpload,
-          String? resizePath,
-          String? locationName,
-          String? uploadLocation,
-          String? utcTimeCreated}) async {
+      callAiEngineAfterTakePhotoV2({
+    required String claimId,
+    required String imageName,
+    required String filePath,
+    required String position,
+    required String direction,
+    required String vehiclePartExcelId,
+    required bool isCapDon,
+    int? oldImageId,
+    double? timeAppUpload,
+    String? resizePath,
+    String? locationName,
+    String? uploadLocation,
+    String? utcTimeCreated,
+    bool? isTruck,
+  }) async {
     try {
       final res = await CameraAPI.callEngineV2(
         claimId: claimId,
@@ -44,6 +46,7 @@ class BuyMeCameraRepositoryImpl implements CameraRepository {
         locationName: locationName,
         utcTimeCreated: utcTimeCreated,
         uploadLocation: uploadLocation,
+        isTruck: isTruck,
       ).request();
       if (res is List) {
         return right(DamageAssessmentResponse.fromJson(res[0]));

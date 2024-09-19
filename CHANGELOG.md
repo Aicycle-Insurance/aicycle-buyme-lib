@@ -138,3 +138,7 @@
 ## 0.3.5
 
 * Cập nhật cho phép upload nếu thiết bị không có camera
+
+## 0.3.6
+
+* Support truck on stage

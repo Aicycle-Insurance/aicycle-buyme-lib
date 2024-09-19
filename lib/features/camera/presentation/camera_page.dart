@@ -174,7 +174,7 @@ class _CameraPageState
                         child: GuideFrame(
                           carPartDirectionEnum:
                               widget.argument.carPartDirectionEnum,
-                          carModelEnum: CarModelEnum.kiaMorning,
+                          carModelEnum: widget.argument.carModelEnum,
                         ),
                       );
                     }

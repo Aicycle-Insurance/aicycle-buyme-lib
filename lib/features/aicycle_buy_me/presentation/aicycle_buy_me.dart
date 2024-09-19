@@ -37,6 +37,7 @@ class AiCycleBuyMeArgument {
   final Locale? locale;
   final String? aicycleClaimId;
   final bool? enableVersion2;
+  final num? vehicleTypeId;
 
   AiCycleBuyMeArgument({
     required this.externalClaimId,
@@ -47,6 +48,7 @@ class AiCycleBuyMeArgument {
     this.locale,
     this.aicycleClaimId,
     this.enableVersion2,
+    this.vehicleTypeId,
   });
 }
 

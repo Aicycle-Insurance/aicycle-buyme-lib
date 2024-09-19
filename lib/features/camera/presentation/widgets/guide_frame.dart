@@ -40,27 +40,28 @@ class GuideFrame extends StatelessWidget {
                       : const SizedBox.shrink(),
                 ),
               ),
-              Align(
-                alignment: Alignment.bottomCenter,
-                child: Padding(
-                  padding: const EdgeInsets.only(bottom: 16),
-                  child: RotatedBox(
-                    quarterTurns: 0,
-                    child: SizedBox(
-                      height: 32,
-                      width: scrWidth / 2,
-                      child: Slider.adaptive(
-                        min: 0.5,
-                        max: 1,
-                        activeColor: Colors.white,
-                        inactiveColor: Colors.white38,
-                        value: scaleImageValue(),
-                        onChanged: scaleImageValue.call,
+              if (carModelEnum != CarModelEnum.truck)
+                Align(
+                  alignment: Alignment.bottomCenter,
+                  child: Padding(
+                    padding: const EdgeInsets.only(bottom: 16),
+                    child: RotatedBox(
+                      quarterTurns: 0,
+                      child: SizedBox(
+                        height: 32,
+                        width: scrWidth / 2,
+                        child: Slider.adaptive(
+                          min: 0.5,
+                          max: 1,
+                          activeColor: Colors.white,
+                          inactiveColor: Colors.white38,
+                          value: scaleImageValue(),
+                          onChanged: scaleImageValue.call,
+                        ),
                       ),
                     ),
                   ),
                 ),
-              ),
             ],
           );
         },

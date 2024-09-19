@@ -2,6 +2,7 @@
 
 import 'dart:async';
 
+import 'package:aicycle_buyme_lib/enum/car_model.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
@@ -153,6 +154,8 @@ class _FolderDetailPageState
                                             widget.argument.externalClaimId,
                                     direction: CarPartDirectionEnum.d45LeftBack,
                                     images: controller.imageInfo.value?.images,
+                                    carModelEnum: CarModelEnum.fromId(
+                                        widget.argument.vehicleTypeId),
                                   ),
                                   CarPosition(
                                     claimFolderId:
@@ -161,6 +164,8 @@ class _FolderDetailPageState
                                     direction:
                                         CarPartDirectionEnum.d45RightBack,
                                     images: controller.imageInfo.value?.images,
+                                    carModelEnum: CarModelEnum.fromId(
+                                        widget.argument.vehicleTypeId),
                                   ),
                                 ],
                               ),
@@ -176,6 +181,8 @@ class _FolderDetailPageState
                                     widget.argument.externalClaimId,
                                 images: controller.imageInfo.value?.images,
                                 direction: CarPartDirectionEnum.leftProd,
+                                carModelEnum: CarModelEnum.fromId(
+                                    widget.argument.vehicleTypeId),
                               ),
                             ),
                           ),
@@ -190,6 +197,8 @@ class _FolderDetailPageState
                                     widget.argument.externalClaimId,
                                 images: controller.imageInfo.value?.images,
                                 direction: CarPartDirectionEnum.d45LeftFront,
+                                carModelEnum: CarModelEnum.fromId(
+                                    widget.argument.vehicleTypeId),
                               ),
                             ),
                           ),
@@ -204,6 +213,8 @@ class _FolderDetailPageState
                                     widget.argument.externalClaimId,
                                 images: controller.imageInfo.value?.images,
                                 direction: CarPartDirectionEnum.d45RightFront,
+                                carModelEnum: CarModelEnum.fromId(
+                                    widget.argument.vehicleTypeId),
                               ),
                             ),
                           ),
