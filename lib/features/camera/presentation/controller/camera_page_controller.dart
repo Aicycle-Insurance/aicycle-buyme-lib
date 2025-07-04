@@ -6,9 +6,9 @@ import 'dart:io';
 
 import 'package:aicycle_buyme_lib/enum/car_model.dart';
 import 'package:flutter/services.dart';
-import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart';
+import 'package:saver_gallery/saver_gallery.dart';
 import 'package:sensors_plus/sensors_plus.dart';
 
 import '../../../aicycle_buy_me/presentation/aicycle_buy_me.dart';
@@ -192,7 +192,11 @@ class BuyMeCameraPageController extends BuyMeBaseController {
         createdDateTime = DateTime.now().toUtc().toIso8601String();
         callEngine(resizeFile);
         if (savePhotoAfterShot == true) {
-          await ImageGallerySaver.saveFile(resizeFile.path);
+          await SaverGallery.saveImage(
+            await resizeFile.readAsBytes(),
+            name: resizeFile.name,
+            androidExistNotSave: true,
+          );
         }
       }
     } else {
