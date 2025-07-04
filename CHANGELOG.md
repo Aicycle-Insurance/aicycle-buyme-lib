@@ -142,3 +142,7 @@
 ## 0.3.6
 
 * Support truck on stage
+
+## 0.3.7
+
+* Update Android api version
