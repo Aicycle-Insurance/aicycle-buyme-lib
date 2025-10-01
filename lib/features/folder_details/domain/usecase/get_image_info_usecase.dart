@@ -8,9 +8,7 @@ class BuyMeGetImageInfoUsecase {
   final FolderDetailRepository repository;
   BuyMeGetImageInfoUsecase(this.repository);
 
-  Future<Either<APIErrors, BuyMeImageResponse>> call(
-    String claimId,
-  ) {
+  Future<Either<APIErrors, BuyMeImageResponse>> call(String claimId) {
     return repository.getImageInfo(claimId);
   }
 }

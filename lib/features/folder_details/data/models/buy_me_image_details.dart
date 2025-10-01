@@ -33,8 +33,8 @@ class GeneralInfo extends Equatable {
       carModel: json['carModel']?.toString(),
       carColor: json['carColor'] is List
           ? json['carColor']
-              .map<num?>((e) => num.tryParse(e.toString()))
-              .toList()
+                .map<num?>((e) => num.tryParse(e.toString()))
+                .toList()
           : null,
       plateNumber: json['plateNumber']?.toString(),
       carCornerEngine: json['carCornerEngine']?.toString(),
@@ -48,20 +48,19 @@ class GeneralInfo extends Equatable {
   }
 
   Map<String, dynamic> toJson() => {
-        if (carCompany != null) 'carCompany': carCompany,
-        if (carModel != null) 'carModel': carModel,
-        if (carColor != null) 'carColor': carColor,
-        if (plateNumber != null) 'plateNumber': plateNumber,
-        if (carCornerEngine != null) 'carCornerEngine': carCornerEngine,
-        if (carCornerRequest != null) 'carCornerRequest': carCornerRequest,
-        if (photoValid != null) 'photoValid': photoValid,
-        if (imageId != null) 'imageId': imageId,
-        if (carType != null) 'carType': carType,
-        if (directionEngineSlug != null)
-          'directionEngineSlug': directionEngineSlug,
-        if (directionRequestSlug != null)
-          'directionRequestSlug': directionRequestSlug,
-      };
+    if (carCompany != null) 'carCompany': carCompany,
+    if (carModel != null) 'carModel': carModel,
+    if (carColor != null) 'carColor': carColor,
+    if (plateNumber != null) 'plateNumber': plateNumber,
+    if (carCornerEngine != null) 'carCornerEngine': carCornerEngine,
+    if (carCornerRequest != null) 'carCornerRequest': carCornerRequest,
+    if (photoValid != null) 'photoValid': photoValid,
+    if (imageId != null) 'imageId': imageId,
+    if (carType != null) 'carType': carType,
+    if (directionEngineSlug != null) 'directionEngineSlug': directionEngineSlug,
+    if (directionRequestSlug != null)
+      'directionRequestSlug': directionRequestSlug,
+  };
 
   GeneralInfo copyWith({
     String? carCompany,
@@ -137,12 +136,12 @@ class Segments extends Equatable {
   }
 
   Map<String, dynamic> toJson() => {
-        if (vehiclePartName != null) 'vehiclePartName': vehiclePartName,
-        if (masksPath != null) 'masksPath': masksPath,
-        if (masksUrl != null) 'masksUrl': masksUrl,
-        if (vehicleColor != null) 'vehicleColor': vehicleColor,
-        if (boxes != null) 'boxes': boxes,
-      };
+    if (vehiclePartName != null) 'vehiclePartName': vehiclePartName,
+    if (masksPath != null) 'masksPath': masksPath,
+    if (masksUrl != null) 'masksUrl': masksUrl,
+    if (vehicleColor != null) 'vehicleColor': vehicleColor,
+    if (boxes != null) 'boxes': boxes,
+  };
 
   Segments copyWith({
     String? vehiclePartName,
@@ -162,13 +161,7 @@ class Segments extends Equatable {
 
   @override
   List<Object?> get props {
-    return [
-      vehiclePartName,
-      masksPath,
-      masksUrl,
-      vehicleColor,
-      boxes,
-    ];
+    return [vehiclePartName, masksPath, masksUrl, vehicleColor, boxes];
   }
 }
 
@@ -200,12 +193,12 @@ class DamagesDetail extends Equatable {
   }
 
   Map<String, dynamic> toJson() => {
-        if (damageName != null) 'damageName': damageName,
-        if (damagePercentage != null) 'damagePercentage': damagePercentage,
-        if (damageColor != null) 'damageColor': damageColor,
-        if (masksPath != null) 'masksPath': masksPath,
-        if (boxes != null) 'boxes': boxes,
-      };
+    if (damageName != null) 'damageName': damageName,
+    if (damagePercentage != null) 'damagePercentage': damagePercentage,
+    if (damageColor != null) 'damageColor': damageColor,
+    if (masksPath != null) 'masksPath': masksPath,
+    if (boxes != null) 'boxes': boxes,
+  };
 
   DamagesDetail copyWith({
     String? damageName,
@@ -225,13 +218,7 @@ class DamagesDetail extends Equatable {
 
   @override
   List<Object?> get props {
-    return [
-      damageName,
-      damagePercentage,
-      damageColor,
-      masksPath,
-      boxes,
-    ];
+    return [damageName, damagePercentage, damageColor, masksPath, boxes];
   }
 }
 
@@ -239,26 +226,23 @@ class Damages extends Equatable {
   final List<DamagesDetail>? damagesDetail;
   final String? vehiclePartName;
 
-  const Damages({
-    this.damagesDetail,
-    this.vehiclePartName,
-  });
+  const Damages({this.damagesDetail, this.vehiclePartName});
 
   factory Damages.fromJson(Map<String, dynamic> json) {
     return Damages(
       damagesDetail: json['damagesDetail'] is List
           ? json['damagesDetail']
-              .map<DamagesDetail>((e) => DamagesDetail.fromJson(e))
-              .toList()
+                .map<DamagesDetail>((e) => DamagesDetail.fromJson(e))
+                .toList()
           : null,
       vehiclePartName: json['vehiclePartName']?.toString(),
     );
   }
 
   Map<String, dynamic> toJson() => {
-        if (damagesDetail != null) 'damagesDetail': damagesDetail,
-        if (vehiclePartName != null) 'vehiclePartName': vehiclePartName,
-      };
+    if (damagesDetail != null) 'damagesDetail': damagesDetail,
+    if (vehiclePartName != null) 'vehiclePartName': vehiclePartName,
+  };
 
   Damages copyWith({
     List<DamagesDetail>? damagesDetail,
@@ -272,10 +256,7 @@ class Damages extends Equatable {
 
   @override
   List<Object?> get props {
-    return [
-      damagesDetail,
-      vehiclePartName,
-    ];
+    return [damagesDetail, vehiclePartName];
   }
 }
 
@@ -315,7 +296,8 @@ class BuyMeImageDetails extends Equatable {
       generalInfo: json['generalInfo'] == null
           ? null
           : GeneralInfo.fromJson(
-              Map<String, dynamic>.from(json['generalInfo'])),
+              Map<String, dynamic>.from(json['generalInfo']),
+            ),
       segments: json['segments'] is List
           ? json['segments'].map<Segments>((e) => Segments.fromJson(e)).toList()
           : null,
@@ -336,20 +318,20 @@ class BuyMeImageDetails extends Equatable {
   }
 
   Map<String, dynamic> toJson() => {
-        if (generalInfo != null) 'generalInfo': generalInfo,
-        if (segments != null) 'segments': segments,
-        if (damages != null) 'damages': damages,
-        if (errorType != null) 'errorType': errorType,
-        if (errorNote != null) 'errorNote': errorNote,
-        if (filePath != null) 'filePath': filePath,
-        if (location != null) 'location': location,
-        if (requestedTime != null) 'requestedTime': requestedTime,
-        if (uploadedTime != null) 'uploadedTime': uploadedTime,
-        if (uploadLocation != null) 'uploadLocation': uploadLocation,
-        if (traceId != null) 'traceId': traceId,
-        if (timeProcess != null) 'timeProcess': timeProcess,
-        if (timeAppUpload != null) 'timeAppUpload': timeAppUpload,
-      };
+    if (generalInfo != null) 'generalInfo': generalInfo,
+    if (segments != null) 'segments': segments,
+    if (damages != null) 'damages': damages,
+    if (errorType != null) 'errorType': errorType,
+    if (errorNote != null) 'errorNote': errorNote,
+    if (filePath != null) 'filePath': filePath,
+    if (location != null) 'location': location,
+    if (requestedTime != null) 'requestedTime': requestedTime,
+    if (uploadedTime != null) 'uploadedTime': uploadedTime,
+    if (uploadLocation != null) 'uploadLocation': uploadLocation,
+    if (traceId != null) 'traceId': traceId,
+    if (timeProcess != null) 'timeProcess': timeProcess,
+    if (timeAppUpload != null) 'timeAppUpload': timeAppUpload,
+  };
 
   BuyMeImageDetails copyWith({
     GeneralInfo? generalInfo,

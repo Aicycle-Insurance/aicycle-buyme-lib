@@ -133,8 +133,10 @@ class LocationServices {
     return '$degrees° $minutes\' $decimalSeconds" $direction';
   }
 
-  static Future<String?> getLocationOfImage(File file,
-      {Function(DateTime date)? getDateTimeCallBack}) async {
+  static Future<String?> getLocationOfImage(
+    File file, {
+    Function(DateTime date)? getDateTimeCallBack,
+  }) async {
     final data = await readExifFromFile(file);
     if (data.containsKey('Image DateTime')) {
       String dateTimeString = data['Image DateTime']!.toString();
@@ -148,10 +150,12 @@ class LocationServices {
       IfdRatios longitude = data['GPS GPSLongitude']?.values as IfdRatios;
 
       // Convert latitude and longitude from degrees, minutes, seconds to decimal format
-      double latDecimal = latitude.ratios[0].toDouble() +
+      double latDecimal =
+          latitude.ratios[0].toDouble() +
           latitude.ratios[1].toDouble() / 60 +
           latitude.ratios[2].toDouble() / 3600;
-      double lonDecimal = longitude.ratios[0].toDouble() +
+      double lonDecimal =
+          longitude.ratios[0].toDouble() +
           longitude.ratios[1].toDouble() / 60 +
           longitude.ratios[2].toDouble() / 3600;
       return await LocationServices.getLocationInfo(latDecimal, lonDecimal);

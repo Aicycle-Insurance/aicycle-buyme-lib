@@ -43,7 +43,7 @@ class _BuyMeCameraBottomBarState extends State<BuyMeCameraBottomBar> {
               quarterTurns: 1,
               child: CupertinoButton(
                 padding: const EdgeInsets.only(bottom: 16),
-                minSize: 0,
+                minimumSize: Size(0, 0),
                 onPressed: widget.pickImage,
                 child: Container(
                   decoration: BoxDecoration(
@@ -94,7 +94,7 @@ class _BuyMeCameraBottomBarState extends State<BuyMeCameraBottomBar> {
             if (widget.showToggleFrame)
               CupertinoButton(
                 padding: const EdgeInsets.only(right: 16),
-                minSize: 0,
+                minimumSize: Size(0, 0),
                 onPressed: () {
                   setState(() {
                     isShowFrame = !isShowFrame;

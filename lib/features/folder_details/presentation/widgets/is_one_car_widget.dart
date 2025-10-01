@@ -13,11 +13,7 @@ import '../../data/models/check_car_model.dart';
 class IsOneCarWidget extends StatelessWidget {
   final CheckCarModel? checkCarModel;
   final String? message;
-  const IsOneCarWidget({
-    super.key,
-    required this.checkCarModel,
-    this.message,
-  });
+  const IsOneCarWidget({super.key, required this.checkCarModel, this.message});
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +25,8 @@ class IsOneCarWidget extends StatelessWidget {
     if ((message != null && message!.isNotEmpty) ||
         (checkCarModel?.message != null &&
             checkCarModel!.message!.isNotEmpty)) {
-      bool isOneCar = checkCarModel?.state == CheckCarState.isTheSameCar.id ||
+      bool isOneCar =
+          checkCarModel?.state == CheckCarState.isTheSameCar.id ||
           checkCarModel?.state == CheckCarState.init.id;
       return Container(
         decoration: BoxDecoration(

@@ -142,17 +142,17 @@ class _CameraPageState
                   ),
                 );
               } else {
-                final frameAspectRatio = MediaQuery.of(context).size.width /
+                final frameAspectRatio =
+                    MediaQuery.of(context).size.width /
                     (MediaQuery.of(context).size.height - kToolbarHeight);
-                final scale = 1 /
+                final scale =
+                    1 /
                     (controller.cameraController!.value.aspectRatio *
                         frameAspectRatio);
                 cameraPreview = Center(
                   child: Transform.scale(
                     scale: scale,
-                    child: CameraPreview(
-                      controller.cameraController!,
-                    ),
+                    child: CameraPreview(controller.cameraController!),
                   ),
                 );
               }
@@ -182,120 +182,116 @@ class _CameraPageState
                   }),
 
                 /// Preview
-                Obx(
-                  () {
-                    if (controller.previewFile.value != null) {
-                      // double imageScale = scale;
-                      // if (controller.localImageSize.value != null) {
-                      //   if (controller.localImageSize.value!.aspectRatio < 1) {
-                      //     imageScale = 1;
-                      //   } else {
-                      //     imageScale = 1 /
-                      //         (controller.localImageSize.value!.aspectRatio *
-                      //             frameAspectRatio);
-                      //   }
-                      // }
-                      return Stack(
-                        children: [
-                          if (controller.isFromGallery.isTrue)
-                            Center(
-                              child: RotatedBox(
-                                quarterTurns: 1,
-                                child: BuyMePreviewImage(
-                                  file: File(controller.previewFile()!.path),
-                                  retake: controller.showRetake()
-                                      ? controller.retakePhoto
-                                      : null,
-                                  save: () {},
-                                ),
-                              ),
-                            ),
-                          if (controller.isResizing())
-                            RotatedBox(
+                Obx(() {
+                  if (controller.previewFile.value != null) {
+                    // double imageScale = scale;
+                    // if (controller.localImageSize.value != null) {
+                    //   if (controller.localImageSize.value!.aspectRatio < 1) {
+                    //     imageScale = 1;
+                    //   } else {
+                    //     imageScale = 1 /
+                    //         (controller.localImageSize.value!.aspectRatio *
+                    //             frameAspectRatio);
+                    //   }
+                    // }
+                    return Stack(
+                      children: [
+                        if (controller.isFromGallery.isTrue)
+                          Center(
+                            child: RotatedBox(
                               quarterTurns: 1,
-                              child: Center(
-                                child: Container(
-                                  padding: const EdgeInsets.only(bottom: 16),
-                                  width: screenWidth / 4,
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text(
-                                        LocaleKeys.compressing.trans,
-                                        style: CTextStyles.base.s14.whiteColor
-                                            .copyWith(
-                                                fontWeight: FontWeight.w500),
-                                      ),
-                                      const LinearProgressIndicator(),
-                                    ],
-                                  ),
+                              child: BuyMePreviewImage(
+                                file: File(controller.previewFile()!.path),
+                                retake: controller.showRetake()
+                                    ? controller.retakePhoto
+                                    : null,
+                                save: () {},
+                              ),
+                            ),
+                          ),
+                        if (controller.isResizing())
+                          RotatedBox(
+                            quarterTurns: 1,
+                            child: Center(
+                              child: Container(
+                                padding: const EdgeInsets.only(bottom: 16),
+                                width: screenWidth / 4,
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      LocaleKeys.compressing.trans,
+                                      style: CTextStyles.base.s14.whiteColor
+                                          .copyWith(
+                                            fontWeight: FontWeight.w500,
+                                          ),
+                                    ),
+                                    const LinearProgressIndicator(),
+                                  ],
                                 ),
                               ),
                             ),
-                        ],
-                      );
-                    }
-                    return const SizedBox.shrink();
-                  },
-                ),
+                          ),
+                      ],
+                    );
+                  }
+                  return const SizedBox.shrink();
+                }),
 
                 /// warning
-                Obx(
-                  () {
-                    if (controller.status().state == AppState.warning &&
-                        controller.status().message != null) {
-                      String message = controller.status().message ?? '';
-                      if (controller.isConfidentLevelWarning.isTrue) {
-                        message = message.split('.').join('\n');
-                      }
-                      return Center(
-                        child: RotatedBox(
-                          quarterTurns: 1,
-                          child: WarningDialog(
-                            description: message,
-                            leftButtonText:
-                                controller.cacheDamageResponse != null
-                                    ? controller.isConfidentLevelWarning.isTrue
-                                        ? LocaleKeys.next.trans
-                                        : LocaleKeys.save.trans
-                                    : LocaleKeys.next.trans,
-                            leftPressed: () =>
-                                controller.cacheDamageResponse != null
-                                    ? controller.engineWarningHandle('save')
-                                    : controller.engineWarningHandle('next'),
-                            rightPressed: () =>
-                                controller.engineWarningHandle('retake'),
-                          ),
-                        ),
-                      );
+                Obx(() {
+                  if (controller.status().state == AppState.warning &&
+                      controller.status().message != null) {
+                    String message = controller.status().message ?? '';
+                    if (controller.isConfidentLevelWarning.isTrue) {
+                      message = message.split('.').join('\n');
                     }
-                    return const SizedBox.shrink();
-                  },
-                ),
+                    return Center(
+                      child: RotatedBox(
+                        quarterTurns: 1,
+                        child: WarningDialog(
+                          description: message,
+                          leftButtonText: controller.cacheDamageResponse != null
+                              ? controller.isConfidentLevelWarning.isTrue
+                                    ? LocaleKeys.next.trans
+                                    : LocaleKeys.save.trans
+                              : LocaleKeys.next.trans,
+                          leftPressed: () =>
+                              controller.cacheDamageResponse != null
+                              ? controller.engineWarningHandle('save')
+                              : controller.engineWarningHandle('next'),
+                          rightPressed: () =>
+                              controller.engineWarningHandle('retake'),
+                        ),
+                      ),
+                    );
+                  }
+                  return const SizedBox.shrink();
+                }),
 
                 /// error
-                Obx(
-                  () {
-                    if (controller.status().state == AppState.customError &&
-                        controller.showErrorDialog.isTrue &&
-                        controller.status().message != null) {
-                      final message = controller.status().message;
-                      return Center(
-                        child: RotatedBox(
-                          quarterTurns: 1,
-                          child: ErrorDialog(
-                            retake: () =>
-                                controller.engineWarningHandle('retake'),
-                            description: LocaleKeys.error.trans,
-                            subDescription: LocaleKeys.reason.trans
-                                .replaceAll('@message', message ?? '...'),
+                Obx(() {
+                  if (controller.status().state == AppState.customError &&
+                      controller.showErrorDialog.isTrue &&
+                      controller.status().message != null) {
+                    final message = controller.status().message;
+                    return Center(
+                      child: RotatedBox(
+                        quarterTurns: 1,
+                        child: ErrorDialog(
+                          retake: () =>
+                              controller.engineWarningHandle('retake'),
+                          description: LocaleKeys.error.trans,
+                          subDescription: LocaleKeys.reason.trans.replaceAll(
+                            '@message',
+                            message ?? '...',
                           ),
                         ),
-                      );
-                    }
-                    return const SizedBox.shrink();
-                  },
-                ),
+                      ),
+                    );
+                  }
+                  return const SizedBox.shrink();
+                }),
 
                 /// bottom bar buttons
                 if (controller.isCameraSupported.isTrue)
@@ -306,13 +302,13 @@ class _CameraPageState
                           ? SafeArea(
                               child: BuyMeCameraBottomBar(
                                 previewFile: controller.previewFile(),
-                                showToggleFrame: widget
-                                            .argument.carPartDirectionEnum.id !=
+                                showToggleFrame:
+                                    widget.argument.carPartDirectionEnum.id !=
                                         31 &&
                                     widget.argument.carPartDirectionEnum.id !=
                                         22,
                                 onToggleFrameCallBack:
-                                    controller.showGuideFrame,
+                                    controller.showGuideFrame.call,
                                 takePhoto: controller.takePhoto,
                                 pickImage: controller.pickedPhoto,
                               ),

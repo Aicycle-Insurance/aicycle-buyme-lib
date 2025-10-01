@@ -23,10 +23,7 @@ enum CarPartDirectionEnum {
 
   final int id;
   final String excelId;
-  const CarPartDirectionEnum(
-    this.id,
-    this.excelId,
-  );
+  const CarPartDirectionEnum(this.id, this.excelId);
 
   factory CarPartDirectionEnum.fromId(int id) {
     switch (id) {

@@ -49,8 +49,9 @@ class BuyMeFolderDetailController extends BuyMeBaseController {
       (l) {
         isLoading(false);
         status.value = BaseStatus(
-            message: '${l.code.toString()}: ${l.details.toString()}',
-            state: AppState.failed);
+          message: '${l.code.toString()}: ${l.details.toString()}',
+          state: AppState.failed,
+        );
       },
       (r) {
         isLoading(false);
@@ -90,16 +91,11 @@ class BuyMeFolderDetailController extends BuyMeBaseController {
 
   void getImageDetails(String imageId) async {
     isLoading(true);
-    processUsecaseResult(
-      result: await getImageDetailsUsecase(imageId),
-    );
+    processUsecaseResult(result: await getImageDetailsUsecase(imageId));
   }
 
   Future<void> checkIsOneCar() async {
     final res = await checkIsOneCarUsecase(claimId!);
-    res.fold(
-      (l) => null,
-      (r) => checkCarModel.value = r,
-    );
+    res.fold((l) => null, (r) => checkCarModel.value = r);
   }
 }

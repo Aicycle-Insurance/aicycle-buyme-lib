@@ -27,120 +27,78 @@ class CTextStyles {
 
 extension CFontWeight on TextStyle {
   /// FontWeight.w100
-  TextStyle w100([double? fontSize]) => copyWith(
-        fontWeight: FontWeight.w100,
-        fontSize: fontSize,
-      );
+  TextStyle w100([double? fontSize]) =>
+      copyWith(fontWeight: FontWeight.w100, fontSize: fontSize);
 
   /// FontWeight.w200
-  TextStyle w200([double? fontSize]) => copyWith(
-        fontWeight: FontWeight.w200,
-        fontSize: fontSize,
-      );
+  TextStyle w200([double? fontSize]) =>
+      copyWith(fontWeight: FontWeight.w200, fontSize: fontSize);
 
   /// FontWeight.w300
-  TextStyle w300([double? fontSize]) => copyWith(
-        fontWeight: FontWeight.w300,
-        fontSize: fontSize,
-      );
+  TextStyle w300([double? fontSize]) =>
+      copyWith(fontWeight: FontWeight.w300, fontSize: fontSize);
 
   /// FontWeight.w400
-  TextStyle w400([double? fontSize]) => copyWith(
-        fontWeight: FontWeight.w400,
-        fontSize: fontSize,
-      );
+  TextStyle w400([double? fontSize]) =>
+      copyWith(fontWeight: FontWeight.w400, fontSize: fontSize);
 
   /// FontWeight.w500
-  TextStyle w500([double? fontSize]) => copyWith(
-        fontWeight: FontWeight.w500,
-        fontSize: fontSize,
-      );
+  TextStyle w500([double? fontSize]) =>
+      copyWith(fontWeight: FontWeight.w500, fontSize: fontSize);
 
   /// FontWeight.w600
-  TextStyle w600([double? fontSize]) => copyWith(
-        fontWeight: FontWeight.w600,
-        fontSize: fontSize,
-      );
+  TextStyle w600([double? fontSize]) =>
+      copyWith(fontWeight: FontWeight.w600, fontSize: fontSize);
 
   /// FontWeight.w700
-  TextStyle w700([double? fontSize]) => copyWith(
-        fontWeight: FontWeight.w700,
-        fontSize: fontSize,
-      );
+  TextStyle w700([double? fontSize]) =>
+      copyWith(fontWeight: FontWeight.w700, fontSize: fontSize);
 
   /// FontWeight.w800
-  TextStyle w800([double? fontSize]) => copyWith(
-        fontWeight: FontWeight.w800,
-        fontSize: fontSize,
-      );
+  TextStyle w800([double? fontSize]) =>
+      copyWith(fontWeight: FontWeight.w800, fontSize: fontSize);
 
   /// FontWeight.w900
-  TextStyle w900([double? fontSize]) => copyWith(
-        fontWeight: FontWeight.w900,
-        fontSize: fontSize,
-      );
+  TextStyle w900([double? fontSize]) =>
+      copyWith(fontWeight: FontWeight.w900, fontSize: fontSize);
 }
 
 extension CFontSize on TextStyle {
   /// custom fontSize
-  TextStyle fSize(double fontSize) => copyWith(
-        fontSize: fontSize,
-      );
+  TextStyle fSize(double fontSize) => copyWith(fontSize: fontSize);
 
   /// fontSize: 10
-  TextStyle get s10 => copyWith(
-        fontSize: 10,
-      );
+  TextStyle get s10 => copyWith(fontSize: 10);
 
   /// fontSize: 12
-  TextStyle get s12 => copyWith(
-        fontSize: 12,
-      );
+  TextStyle get s12 => copyWith(fontSize: 12);
 
   /// fontSize: 14
-  TextStyle get s14 => copyWith(
-        fontSize: 14,
-      );
+  TextStyle get s14 => copyWith(fontSize: 14);
 
   /// fontSize: 16
-  TextStyle get s16 => copyWith(
-        fontSize: 16,
-      );
+  TextStyle get s16 => copyWith(fontSize: 16);
 
   /// fontSize: 18
-  TextStyle get s18 => copyWith(
-        fontSize: 18,
-      );
+  TextStyle get s18 => copyWith(fontSize: 18);
 
   /// fontSize: 20
-  TextStyle get s20 => copyWith(
-        fontSize: 20,
-      );
+  TextStyle get s20 => copyWith(fontSize: 20);
 
   /// fontSize: 24
-  TextStyle get s24 => copyWith(
-        fontSize: 24,
-      );
+  TextStyle get s24 => copyWith(fontSize: 24);
 
   /// fontSize: 32
-  TextStyle get s32 => copyWith(
-        fontSize: 32,
-      );
+  TextStyle get s32 => copyWith(fontSize: 32);
 
   /// fontSize: 36
-  TextStyle get s36 => copyWith(
-        fontSize: 36,
-      );
+  TextStyle get s36 => copyWith(fontSize: 36);
 
   /// fontSize: 40
-  TextStyle get s40 => copyWith(
-        fontSize: 40,
-      );
+  TextStyle get s40 => copyWith(fontSize: 40);
 
   /// fontSize: 48
-  TextStyle get s48 => copyWith(
-        fontSize: 48,
-      );
+  TextStyle get s48 => copyWith(fontSize: 48);
 }
 
 extension CFontColor on TextStyle {

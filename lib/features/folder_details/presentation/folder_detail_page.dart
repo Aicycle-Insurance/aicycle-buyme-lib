@@ -94,10 +94,7 @@ class _FolderDetailPageState
     super.build(context);
     return Scaffold(
       appBar: (widget.hasAppBar ?? true)
-          ? AppBar(
-              backgroundColor: CColors.white,
-              elevation: 0.7,
-            )
+          ? AppBar(backgroundColor: CColors.white, elevation: 0.7)
           : null,
       body: LoadingView<BuyMeFolderDetailController>(
         isCustomLoading: true,
@@ -151,21 +148,23 @@ class _FolderDetailPageState
                                   CarPosition(
                                     claimFolderId:
                                         widget.argument.aicycleClaimId ??
-                                            widget.argument.externalClaimId,
+                                        widget.argument.externalClaimId,
                                     direction: CarPartDirectionEnum.d45LeftBack,
                                     images: controller.imageInfo.value?.images,
                                     carModelEnum: CarModelEnum.fromId(
-                                        widget.argument.vehicleTypeId),
+                                      widget.argument.vehicleTypeId,
+                                    ),
                                   ),
                                   CarPosition(
                                     claimFolderId:
                                         widget.argument.aicycleClaimId ??
-                                            widget.argument.externalClaimId,
+                                        widget.argument.externalClaimId,
                                     direction:
                                         CarPartDirectionEnum.d45RightBack,
                                     images: controller.imageInfo.value?.images,
                                     carModelEnum: CarModelEnum.fromId(
-                                        widget.argument.vehicleTypeId),
+                                      widget.argument.vehicleTypeId,
+                                    ),
                                   ),
                                 ],
                               ),
@@ -177,12 +176,14 @@ class _FolderDetailPageState
                             left: 0,
                             child: Obx(
                               () => CarPosition(
-                                claimFolderId: widget.argument.aicycleClaimId ??
+                                claimFolderId:
+                                    widget.argument.aicycleClaimId ??
                                     widget.argument.externalClaimId,
                                 images: controller.imageInfo.value?.images,
                                 direction: CarPartDirectionEnum.leftProd,
                                 carModelEnum: CarModelEnum.fromId(
-                                    widget.argument.vehicleTypeId),
+                                  widget.argument.vehicleTypeId,
+                                ),
                               ),
                             ),
                           ),
@@ -193,12 +194,14 @@ class _FolderDetailPageState
                             top: 0,
                             child: Obx(
                               () => CarPosition(
-                                claimFolderId: widget.argument.aicycleClaimId ??
+                                claimFolderId:
+                                    widget.argument.aicycleClaimId ??
                                     widget.argument.externalClaimId,
                                 images: controller.imageInfo.value?.images,
                                 direction: CarPartDirectionEnum.d45LeftFront,
                                 carModelEnum: CarModelEnum.fromId(
-                                    widget.argument.vehicleTypeId),
+                                  widget.argument.vehicleTypeId,
+                                ),
                               ),
                             ),
                           ),
@@ -209,12 +212,14 @@ class _FolderDetailPageState
                             top: 0,
                             child: Obx(
                               () => CarPosition(
-                                claimFolderId: widget.argument.aicycleClaimId ??
+                                claimFolderId:
+                                    widget.argument.aicycleClaimId ??
                                     widget.argument.externalClaimId,
                                 images: controller.imageInfo.value?.images,
                                 direction: CarPartDirectionEnum.d45RightFront,
                                 carModelEnum: CarModelEnum.fromId(
-                                    widget.argument.vehicleTypeId),
+                                  widget.argument.vehicleTypeId,
+                                ),
                               ),
                             ),
                           ),
@@ -235,35 +240,35 @@ class _FolderDetailPageState
                 bottom: 32,
               ),
               decoration: const BoxDecoration(color: Colors.white),
-              child: Obx(
-                () {
-                  bool isDisable = false;
-                  if (controller.imageInfo.value != null) {
-                    if (controller.imageInfo.value!.images == null ||
-                        controller.imageInfo.value!.images!.isEmpty) {
-                      isDisable = true;
-                    }
-                  } else {
+              child: Obx(() {
+                bool isDisable = false;
+                if (controller.imageInfo.value != null) {
+                  if (controller.imageInfo.value!.images == null ||
+                      controller.imageInfo.value!.images!.isEmpty) {
                     isDisable = true;
                   }
-                  return CButton(
-                    isDisable: isDisable,
-                    onPressed: () {
-                      controller.getResult().then((value) {
-                        final imagesJson = List.from(controller.imagesDetails
+                } else {
+                  isDisable = true;
+                }
+                return CButton(
+                  isDisable: isDisable,
+                  onPressed: () {
+                    controller.getResult().then((value) {
+                      final imagesJson = List.from(
+                        controller.imagesDetails
                             .map((element) => element.toJson())
-                            .toList());
-                        final Map<String, dynamic> result = {
-                          'results': imagesJson,
-                          'itemsCount': controller.imagesDetails.length
-                        };
-                        widget.onViewResultCallBack?.call(result);
-                      });
-                    },
-                    title: LocaleKeys.viewResult.trans,
-                  );
-                },
-              ),
+                            .toList(),
+                      );
+                      final Map<String, dynamic> result = {
+                        'results': imagesJson,
+                        'itemsCount': controller.imagesDetails.length,
+                      };
+                      widget.onViewResultCallBack?.call(result);
+                    });
+                  },
+                  title: LocaleKeys.viewResult.trans,
+                );
+              }),
             ),
           ],
         ),

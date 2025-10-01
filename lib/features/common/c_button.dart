@@ -48,11 +48,11 @@ class CButton extends StatelessWidget {
               padding: EdgeInsets.zero,
             )
           : ButtonStyle(
-              backgroundColor: MaterialStateProperty.all(
+              backgroundColor: WidgetStateProperty.all(
                 isDisable ? CColors.inkA200 : backgroundColor,
               ),
-              padding: MaterialStateProperty.all(EdgeInsets.zero),
-              shape: MaterialStateProperty.all<OutlinedBorder>(
+              padding: WidgetStateProperty.all(EdgeInsets.zero),
+              shape: WidgetStateProperty.all<OutlinedBorder>(
                 RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(borderRadius ?? 8),
                 ),
@@ -77,7 +77,8 @@ class CButton extends StatelessWidget {
                 textAlign: TextAlign.center,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
-                style: textStyle?.copyWith(color: textColor) ??
+                style:
+                    textStyle?.copyWith(color: textColor) ??
                     CTextStyles.base.s16.copyWith(
                       color: (isOutlined ?? false)
                           ? CColors.primaryA500
@@ -143,11 +144,11 @@ class CButton2 extends StatelessWidget {
               padding: EdgeInsets.zero,
             )
           : ButtonStyle(
-              backgroundColor: MaterialStateProperty.all(
+              backgroundColor: WidgetStateProperty.all(
                 isDisable ? CColors.inkA200 : backgroundColor,
               ),
-              padding: MaterialStateProperty.all(EdgeInsets.zero),
-              shape: MaterialStateProperty.all<OutlinedBorder>(
+              padding: WidgetStateProperty.all(EdgeInsets.zero),
+              shape: WidgetStateProperty.all<OutlinedBorder>(
                 RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(borderRadius ?? 8),
                 ),
@@ -172,12 +173,13 @@ class CButton2 extends StatelessWidget {
                 textAlign: TextAlign.center,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
-                style: textStyle?.copyWith(color: textColor) ??
+                style:
+                    textStyle?.copyWith(color: textColor) ??
                     CTextStyles.base.s16.w500().setColor(
-                          (isOutlined ?? false)
-                              ? CColors.primaryA500
-                              : CColors.white,
-                        ),
+                      (isOutlined ?? false)
+                          ? CColors.primaryA500
+                          : CColors.white,
+                    ),
               ),
               Padding(
                 padding: const EdgeInsets.only(left: 6.0),

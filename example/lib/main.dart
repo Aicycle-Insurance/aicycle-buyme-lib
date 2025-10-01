@@ -74,9 +74,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         builder: (BuildContext context) => AiCycleBuyMe(
                           onViewResultCallBack: (imagesResult) {
                             ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text("return result"),
-                              ),
+                              const SnackBar(content: Text("return result")),
                             );
                           },
                           argument: AiCycleBuyMeArgument(
@@ -98,18 +96,6 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         ),
       ),
-      // body: FolderDetailPage(),
-      // body: SafeArea(
-      //   child: AiCycleBuyMe(
-      //     onViewResultCallBack: (imagesResult) {
-      //       print(imagesResult);
-      //     },
-      //     argument: AiCycleBuyMeArgument(
-      //       externalClaimId: '101',
-      //       apiToken: '7adbbf78-a400-4953-9dbc-35abd1699dc3',
-      //     ),
-      //   ),
-      // ),
     );
   }
 }

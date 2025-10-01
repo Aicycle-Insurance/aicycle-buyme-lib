@@ -34,28 +34,16 @@ class CColors {
   static const Color inactive = Color(0xFFC3CBFF);
   static const Color active = Color(0xFF4D63FF);
   static const LinearGradient skeleton = LinearGradient(
-    colors: [
-      Color(0xFFE7E8EE),
-      Color(0xFFF7F7F8),
-    ],
+    colors: [Color(0xFFE7E8EE), Color(0xFFF7F7F8)],
   );
   static const LinearGradient gradientOrangeA500 = LinearGradient(
-    colors: [
-      Color(0xFFFFC800),
-      Color(0xFFFF9C09),
-    ],
+    colors: [Color(0xFFFFC800), Color(0xFFFF9C09)],
   );
   static const LinearGradient gradientRedA500 = LinearGradient(
-    colors: [
-      Color(0xFFE6514A),
-      Color(0xFFE57536),
-    ],
+    colors: [Color(0xFFE6514A), Color(0xFFE57536)],
   );
   static const LinearGradient gradientBlueA500 = LinearGradient(
-    colors: [
-      Color(0xFF98A2FF),
-      Color(0xFF4659FF),
-    ],
+    colors: [Color(0xFF98A2FF), Color(0xFF4659FF)],
   );
 
   static const Color scratch = Color(0xFF8FEBFF);

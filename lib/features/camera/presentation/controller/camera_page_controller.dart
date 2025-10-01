@@ -91,7 +91,9 @@ class BuyMeCameraPageController extends BuyMeBaseController {
     super.onReady();
     final currentPos = await LocationServices.getLocation();
     currentLocation = await LocationServices.getLocationInfo(
-        currentPos?.latitude, currentPos?.longitude);
+      currentPos?.latitude,
+      currentPos?.longitude,
+    );
   }
 
   var isPickingPhoto = false.obs;
@@ -167,8 +169,8 @@ class BuyMeCameraPageController extends BuyMeBaseController {
     int rotate = currentOrientation == DeviceOrientation.landscapeLeft
         ? -90
         : currentOrientation == DeviceOrientation.landscapeRight
-            ? 90
-            : 0;
+        ? 90
+        : 0;
     if (previewFile.value == null) {
       previewFile.value = await cameraController?.takePicture();
       await cameraController?.pausePreview();
@@ -194,8 +196,8 @@ class BuyMeCameraPageController extends BuyMeBaseController {
         if (savePhotoAfterShot == true) {
           await SaverGallery.saveImage(
             await resizeFile.readAsBytes(),
-            name: resizeFile.name,
-            androidExistNotSave: true,
+            fileName: resizeFile.name,
+            skipIfExists: true,
           );
         }
       }
@@ -262,8 +264,8 @@ class BuyMeCameraPageController extends BuyMeBaseController {
           isLoading(false);
           status(
             BaseStatus(
-              message:
-                  '${l.code.toString()}: ${l.details.toString()}'.toString(),
+              message: '${l.code.toString()}: ${l.details.toString()}'
+                  .toString(),
               state: AppState.customError,
             ),
           );
@@ -278,7 +280,6 @@ class BuyMeCameraPageController extends BuyMeBaseController {
               timeAppUpload: timer.elapsedMilliseconds / 1000,
             );
           }
-
           /// warning
           else if (r.level == 'warning') {
             cacheValidationModel['localFilePath'] = file.path;
@@ -287,19 +288,17 @@ class BuyMeCameraPageController extends BuyMeBaseController {
                 timer.elapsedMilliseconds / 1000;
             isLoading(false);
             showRetake(false);
-            status(BaseStatus(
-              message: r.message ?? 'Warning',
-              state: AppState.warning,
-            ));
+            status(
+              BaseStatus(
+                message: r.message ?? 'Warning',
+                state: AppState.warning,
+              ),
+            );
           }
-
           /// error
           else {
             isLoading(false);
-            status(BaseStatus(
-              message: null,
-              state: AppState.idle,
-            ));
+            status(BaseStatus(message: null, state: AppState.idle));
             showRetake(true);
           }
         },
@@ -319,7 +318,8 @@ class BuyMeCameraPageController extends BuyMeBaseController {
           );
         } else {
           status(
-              BaseStatus(message: 'Hệ thống lỗi', state: AppState.customError));
+            BaseStatus(message: 'Hệ thống lỗi', state: AppState.customError),
+          );
           showErrorDialog(true);
           damageAssessmentResponse.value = null;
           previewFile.value = null;
@@ -336,8 +336,9 @@ class BuyMeCameraPageController extends BuyMeBaseController {
         cameraController?.resumePreview();
         if (status.value.state == AppState.warning &&
             cacheDamageResponse != null) {
-          await deleteImageByIdUsecase(cacheDamageResponse!.imageId.toString())
-              .then((value) => cacheDamageResponse = null);
+          await deleteImageByIdUsecase(
+            cacheDamageResponse!.imageId.toString(),
+          ).then((value) => cacheDamageResponse = null);
         }
         localImageSize.value = null;
         previewFile.value = null;
@@ -370,79 +371,68 @@ class BuyMeCameraPageController extends BuyMeBaseController {
       isTruck: argument?.carModelEnum == CarModelEnum.truck,
     );
 
-    callEngineRes.fold((l) {
-      isLoading(false);
+    callEngineRes.fold(
+      (l) {
+        isLoading(false);
 
-      /// Code from engine
-      if (l.errorCodeFromEngine != null) {
-        status(
-          BaseStatus(
-            message: '${l.code.toString()}: ${l.details.toString()}'.toString(),
-            state: AppState.customError,
-          ),
-        );
-        showErrorDialog(true);
-        //   status(
-        //     BaseStatus(
-        //       message: l.message.toString(),
-        //       state: AppState.customError,
-        //     ),
-        //   );
-        //   showRetake(false);
-        //   showErrorDialog(true);
-        // } else {
-        //   status(
-        //     BaseStatus(
-        //       message: l.message.toString(),
-        //       state: AppState.customError,
-        //     ),
-        //   );
-        //   showErrorDialog(true);
-        //   showRetake(true);
-      } else {
-        status(
-          BaseStatus(
-            message: l.message.toString(),
-            state: AppState.customError,
-          ),
-        );
-        showErrorDialog(true);
-      }
-    }, (r) {
-      isLoading(false);
-      if (r.errorCodeFromEngine == null || r.errorCodeFromEngine == 0) {
-        updateDirection(r);
-        status(
-          BaseStatus(
-            message: null,
-            state: AppState.pop,
-          ),
-        );
-      } else {
-        cacheDamageResponse = r;
-
-        /// confident level thấp
-        if (warningCodeFromEngine.contains(r.errorCodeFromEngine)) {
+        /// Code from engine
+        if (l.errorCodeFromEngine != null) {
           status(
             BaseStatus(
-              message: r.message,
-              state: AppState.warning,
-            ),
-          );
-          showRetake(false);
-          isConfidentLevelWarning(true);
-        } else {
-          status(
-            BaseStatus(
-              message: r.message,
+              message: '${l.code.toString()}: ${l.details.toString()}'
+                  .toString(),
               state: AppState.customError,
             ),
           );
-          showRetake(false);
+          showErrorDialog(true);
+          //   status(
+          //     BaseStatus(
+          //       message: l.message.toString(),
+          //       state: AppState.customError,
+          //     ),
+          //   );
+          //   showRetake(false);
+          //   showErrorDialog(true);
+          // } else {
+          //   status(
+          //     BaseStatus(
+          //       message: l.message.toString(),
+          //       state: AppState.customError,
+          //     ),
+          //   );
+          //   showErrorDialog(true);
+          //   showRetake(true);
+        } else {
+          status(
+            BaseStatus(
+              message: l.message.toString(),
+              state: AppState.customError,
+            ),
+          );
           showErrorDialog(true);
         }
-      }
-    });
+      },
+      (r) {
+        isLoading(false);
+        if (r.errorCodeFromEngine == null || r.errorCodeFromEngine == 0) {
+          updateDirection(r);
+          status(BaseStatus(message: null, state: AppState.pop));
+        } else {
+          cacheDamageResponse = r;
+
+          /// confident level thấp
+          if (warningCodeFromEngine.contains(r.errorCodeFromEngine)) {
+            status(BaseStatus(message: r.message, state: AppState.warning));
+            showRetake(false);
+            isConfidentLevelWarning(true);
+          } else {
+            status(BaseStatus(message: r.message, state: AppState.customError));
+            showRetake(false);
+            showErrorDialog(true);
+          }
+        }
+      },
+    );
   }
 
   void updateDirection(DamageAssessmentResponse? value) {
