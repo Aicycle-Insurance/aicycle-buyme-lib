@@ -1,3 +1,7 @@
+## 0.3.9
+
+- Update vehicleType.
+
 ## 0.3.8
 
 - Update and refactor code.
