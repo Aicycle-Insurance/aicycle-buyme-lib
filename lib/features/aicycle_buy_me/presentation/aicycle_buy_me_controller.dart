@@ -23,7 +23,7 @@ class AiCycleBuyMeController extends BuyMeBaseController {
     isLoading(true);
     final res = await createFolderUsecase(
       externalClaimId: argument.externalClaimId,
-      folderName: 'Pjico - ${argument.externalClaimId}',
+      folderName: 'ID: ${argument.externalClaimId}',
       appUser: null,
       carColor: null,
       hasLicensePlate: true,
@@ -52,12 +52,13 @@ class AiCycleBuyMeController extends BuyMeBaseController {
           aicycleClaimId: r.claimId,
           environtment: argument.environtment,
           locale: argument.locale,
+          xApplication: argument.xApplication,
+          enableVersion2: argument.enableVersion2,
+          savePhotoAfterShot: argument.savePhotoAfterShot,
+          vehicleTypeId: argument.vehicleTypeId,
         );
         isLoading(false);
-        status.value = BaseStatus(
-          message: null,
-          state: AppState.redirect,
-        );
+        status.value = BaseStatus(message: null, state: AppState.redirect);
         claimFolder.value = r;
       },
     );
@@ -65,7 +66,8 @@ class AiCycleBuyMeController extends BuyMeBaseController {
 
   void getDuplicateFolder() async {
     var res = await getDuplicateFolderUsecase(
-        externalClaimId: argument.externalClaimId);
+      externalClaimId: argument.externalClaimId,
+    );
     res.fold(
       (l) {
         isLoading(false);
@@ -81,12 +83,13 @@ class AiCycleBuyMeController extends BuyMeBaseController {
           aicycleClaimId: r.claimId,
           environtment: argument.environtment,
           locale: argument.locale,
+          xApplication: argument.xApplication,
+          enableVersion2: argument.enableVersion2,
+          savePhotoAfterShot: argument.savePhotoAfterShot,
+          vehicleTypeId: argument.vehicleTypeId,
         );
         isLoading(false);
-        status.value = BaseStatus(
-          message: null,
-          state: AppState.redirect,
-        );
+        status.value = BaseStatus(message: null, state: AppState.redirect);
         claimFolder.value = r;
       },
     );

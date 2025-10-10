@@ -1,3 +1,7 @@
+## 0.4.0
+
+- Fix bugs.
+
 ## 0.3.9
 
 - Update vehicleType.
