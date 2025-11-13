@@ -1,3 +1,7 @@
+## 0.4.1
+
+- Update imageDrawUrl in result
+
 ## 0.4.0
 
 - Fix bugs.

@@ -240,7 +240,8 @@ class Damages extends Equatable {
   }
 
   Map<String, dynamic> toJson() => {
-    if (damagesDetail != null) 'damagesDetail': damagesDetail,
+    if (damagesDetail != null)
+      'damagesDetail': damagesDetail?.map((e) => e.toJson()).toList(),
     if (vehiclePartName != null) 'vehiclePartName': vehiclePartName,
   };
 
@@ -274,6 +275,9 @@ class BuyMeImageDetails extends Equatable {
   final String? traceId;
   final num? timeProcess;
   final num? timeAppUpload;
+  final String? imageUrl;
+  final String? imageDrawUrl;
+  final List<num>? resolution;
 
   const BuyMeImageDetails({
     this.generalInfo,
@@ -289,10 +293,15 @@ class BuyMeImageDetails extends Equatable {
     this.traceId,
     this.timeProcess,
     this.timeAppUpload,
+    this.imageUrl,
+    this.imageDrawUrl,
+    this.resolution,
   });
 
   factory BuyMeImageDetails.fromJson(Map<String, dynamic> json) {
     return BuyMeImageDetails(
+      imageUrl: json['imageUrl']?.toString(),
+      imageDrawUrl: json['imageDrawUrl']?.toString(),
       generalInfo: json['generalInfo'] == null
           ? null
           : GeneralInfo.fromJson(
@@ -314,13 +323,18 @@ class BuyMeImageDetails extends Equatable {
       traceId: json['traceId']?.toString(),
       timeProcess: num.tryParse(json['timeProcess'].toString()),
       timeAppUpload: num.tryParse(json['timeAppUpload'].toString()),
+      resolution: json['resolution'] is List
+          ? json['resolution'].map<num>((e) => num.parse(e.toString())).toList()
+          : null,
     );
   }
 
   Map<String, dynamic> toJson() => {
-    if (generalInfo != null) 'generalInfo': generalInfo,
-    if (segments != null) 'segments': segments,
-    if (damages != null) 'damages': damages,
+    if (imageUrl != null) 'imageUrl': imageUrl,
+    if (imageDrawUrl != null) 'imageDrawUrl': imageDrawUrl,
+    if (generalInfo != null) 'generalInfo': generalInfo?.toJson(),
+    if (segments != null) 'segments': segments?.map((e) => e.toJson()).toList(),
+    if (damages != null) 'damages': damages?.map((e) => e.toJson()).toList(),
     if (errorType != null) 'errorType': errorType,
     if (errorNote != null) 'errorNote': errorNote,
     if (filePath != null) 'filePath': filePath,
@@ -331,6 +345,7 @@ class BuyMeImageDetails extends Equatable {
     if (traceId != null) 'traceId': traceId,
     if (timeProcess != null) 'timeProcess': timeProcess,
     if (timeAppUpload != null) 'timeAppUpload': timeAppUpload,
+    if (resolution != null) 'resolution': resolution,
   };
 
   BuyMeImageDetails copyWith({
@@ -347,6 +362,9 @@ class BuyMeImageDetails extends Equatable {
     String? traceId,
     num? timeProcess,
     num? timeAppUpload,
+    String? imageUrl,
+    String? imageDrawUrl,
+    List<num>? resolution,
   }) {
     return BuyMeImageDetails(
       generalInfo: generalInfo ?? this.generalInfo,
@@ -362,6 +380,9 @@ class BuyMeImageDetails extends Equatable {
       traceId: traceId ?? this.traceId,
       timeProcess: timeProcess ?? this.timeProcess,
       timeAppUpload: timeAppUpload ?? this.timeAppUpload,
+      imageUrl: imageUrl ?? this.imageUrl,
+      imageDrawUrl: imageDrawUrl ?? this.imageDrawUrl,
+      resolution: resolution ?? this.resolution,
     );
   }
 
@@ -381,6 +402,9 @@ class BuyMeImageDetails extends Equatable {
       traceId,
       timeProcess,
       timeAppUpload,
+      imageUrl,
+      imageDrawUrl,
+      resolution,
     ];
   }
 }

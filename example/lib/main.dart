@@ -73,14 +73,14 @@ class _MyHomePageState extends State<MyHomePage> {
                       MaterialPageRoute<void>(
                         builder: (BuildContext context) => AiCycleBuyMe(
                           onViewResultCallBack: (imagesResult) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(content: Text("return result")),
-                            );
+                            /// TODO: Handle result here.
                           },
                           argument: AiCycleBuyMeArgument(
                             externalClaimId: externalClaimIdController.text,
                             apiToken: '',
-                            locale: const Locale('en', 'US'),
+                            enableVersion2: true,
+                            environtment: Evn.stage,
+                            locale: const Locale('vi', 'VN'),
                           ),
                         ),
                       ),
