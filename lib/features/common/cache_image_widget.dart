@@ -30,8 +30,9 @@ class CachedImageWidget extends StatelessWidget {
         height: height,
         width: width,
         decoration: BoxDecoration(
-          borderRadius:
-              shape == null ? BorderRadius.circular(borderRadius ?? 0) : null,
+          borderRadius: shape == null
+              ? BorderRadius.circular(borderRadius ?? 0)
+              : null,
           shape: shape ?? BoxShape.rectangle,
           image: DecorationImage(
             image: imageProvider,
@@ -47,9 +48,7 @@ class CachedImageWidget extends StatelessWidget {
         height: height,
         width: width,
         child: const Center(
-          child: CupertinoActivityIndicator(
-            color: Colors.white,
-          ),
+          child: CupertinoActivityIndicator(color: Colors.white),
         ),
       ),
       errorWidget: (context, url, error) => SizedBox(
@@ -62,6 +61,4 @@ class CachedImageWidget extends StatelessWidget {
 }
 
 CachedNetworkImageProvider cachedNetworkImageProvider(url) =>
-    CachedNetworkImageProvider(
-      url,
-    );
+    CachedNetworkImageProvider(url);

@@ -26,8 +26,12 @@ class Utils {
   Utils._();
   static final Utils instance = Utils._();
 
-  static Future<XFile> compressImage(XFile source, int quality,
-      {Function(Size)? imageSizeCallBack, bool fromGallery = false}) async {
+  static Future<XFile> compressImage(
+    XFile source,
+    int quality, {
+    Function(Size)? imageSizeCallBack,
+    bool fromGallery = false,
+  }) async {
     File sourceFile = File(source.path);
     try {
       img.Image? input = await img.decodeJpgFile(source.path);
@@ -65,8 +69,9 @@ class Utils {
       logger.i(
         'Resize successfully:${imageWidth}x$imageHeight => ${input.width}x${input.height}',
       );
-      imageSizeCallBack
-          ?.call(Size(input.width.toDouble(), input.height.toDouble()));
+      imageSizeCallBack?.call(
+        Size(input.width.toDouble(), input.height.toDouble()),
+      );
       return compressedXFile;
     } catch (e) {
       return source;
@@ -83,13 +88,15 @@ class Utils {
     XFile? compressedXFile;
     try {
       // var sourceSize = await _calculateImageSize(sourceFile);
-      var decodeImage =
-          await decodeImageFromList(await sourceFile.readAsBytes());
+      var decodeImage = await decodeImageFromList(
+        await sourceFile.readAsBytes(),
+      );
       int imageWidth = decodeImage.width;
       int imageHeight = decodeImage.height;
       final Directory extDir = await getTemporaryDirectory();
-      final appImageDir =
-          await Directory('${extDir.path}/app_images').create(recursive: true);
+      final appImageDir = await Directory(
+        '${extDir.path}/app_images',
+      ).create(recursive: true);
       final String targetPath =
           '${appImageDir.path}/${DateTime.now().millisecondsSinceEpoch}.jpg';
       compressedXFile = await FlutterImageCompress.compressAndGetFile(
@@ -99,7 +106,8 @@ class Utils {
         minHeight: imageHeight > imageWidth ? 1600 : 1080,
         minWidth: imageHeight > imageWidth ? 1080 : 1600,
         // rotate: !fromGallery ? -90 : 0,
-        rotate: rotate, keepExif: true,
+        rotate: rotate,
+        keepExif: true,
       );
       // Nếu vẫn lớn hơn 2MB thì giảm chất lượng ảnh
       File? compressedFile;
@@ -114,16 +122,18 @@ class Utils {
         }
       }
       // var compressedSize = await _calculateImageSize(compressedFile);
-      final compressedImg =
-          await decodeImageFromList(compressedFile.readAsBytesSync());
+      final compressedImg = await decodeImageFromList(
+        compressedFile.readAsBytesSync(),
+      );
       logger.i(
         'Resize successfully: ${(await sourceFile.length()) / 1000000}MB to ${compressedFile.readAsBytesSync().lengthInBytes / 1000000}MB',
       );
       logger.i(
         'Resize successfully:${imageWidth}x$imageHeight => ${compressedImg.width}x${compressedImg.height}',
       );
-      imageSizeCallBack?.call(Size(
-          compressedImg.width.toDouble(), compressedImg.height.toDouble()));
+      imageSizeCallBack?.call(
+        Size(compressedImg.width.toDouble(), compressedImg.height.toDouble()),
+      );
       return XFile(compressedFile.path);
     } catch (e) {
       return sourceFile;
@@ -173,12 +183,7 @@ class Utils {
     bool? keepCurrentDialogOpen,
     Widget? prefix,
   }) {
-    _showSnackBar(
-      context,
-      message,
-      type: SnackBarType.success,
-      prefix: prefix,
-    );
+    _showSnackBar(context, message, type: SnackBarType.success, prefix: prefix);
   }
 
   void showWarning(
@@ -188,12 +193,7 @@ class Utils {
     bool? keepCurrentDialogOpen,
     Widget? prefix,
   }) {
-    _showSnackBar(
-      context,
-      message,
-      type: SnackBarType.warning,
-      prefix: prefix,
-    );
+    _showSnackBar(context, message, type: SnackBarType.warning, prefix: prefix);
   }
 }
 
@@ -224,10 +224,6 @@ void _showSnackBar(
       icon = Assets.icons.icWarningFilled.svg(package: packageName);
       color = CColors.orangeA500;
       break;
-    default:
-      icon = Assets.icons.icWarningFilled.svg(package: packageName);
-      color = CColors.greenA500;
-      break;
   }
   if (prefix != null) {
     icon = prefix;
@@ -244,12 +240,7 @@ void _showSnackBar(
         children: [
           icon,
           const Gap(16),
-          Expanded(
-            child: Text(
-              message,
-              style: CTextStyles.baseWhite.s14,
-            ),
-          )
+          Expanded(child: Text(message, style: CTextStyles.baseWhite.s14)),
         ],
       ),
     ),

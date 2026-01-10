@@ -10,7 +10,8 @@ import '../remote_data/folder_detail_api.dart';
 class BuyMeFolderDetailRepositoryImpl implements FolderDetailRepository {
   @override
   Future<Either<APIErrors, BuyMeImageResponse>> getImageInfo(
-      String claimId) async {
+    String claimId,
+  ) async {
     try {
       final res = await FolderDetailApi.getImageInfo(claimId).request();
       return Right(BuyMeImageResponse.fromJson(res));
@@ -53,7 +54,8 @@ class BuyMeFolderDetailRepositoryImpl implements FolderDetailRepository {
 
   @override
   Future<Either<APIErrors, BuyMeImageDetails>> getImageDetails(
-      String imageId) async {
+    String imageId,
+  ) async {
     try {
       final res = await FolderDetailApi.getImageDetails(imageId).request();
       return Right(BuyMeImageDetails.fromJson(res));

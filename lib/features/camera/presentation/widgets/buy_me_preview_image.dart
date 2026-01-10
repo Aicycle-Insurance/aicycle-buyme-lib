@@ -21,7 +21,8 @@ class BuyMePreviewImage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: double.maxFinite,
-      width: double.maxFinite, color: Colors.black,
+      width: double.maxFinite,
+      color: Colors.black,
       // decoration: BoxDecoration(
       //   color: Colors.black,
       //   image: DecorationImage(
@@ -62,18 +63,15 @@ class BuyMePreviewImage extends StatelessWidget {
           ),
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
           decoration: BoxDecoration(
-            color: Colors.black.withOpacity(0.5),
+            color: Colors.black.withValues(alpha: 0.5),
             borderRadius: BorderRadius.circular(4),
           ),
           child: CupertinoButton(
             padding: EdgeInsets.zero,
-            minSize: 0,
+            minimumSize: Size(0, 0),
             onPressed: retake,
             child: Container(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 16,
-                vertical: 6,
-              ),
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(4),
                 border: Border.all(color: Colors.white),
@@ -99,7 +97,7 @@ class BuyMePreviewImage extends StatelessWidget {
   //         child: Container(
   //           padding: EdgeInsets.symmetric(horizontal: 12.h, vertical: 4.w),
   //           decoration: BoxDecoration(
-  //             color: Colors.black.withOpacity(0.5),
+  //             color: Colors.black.withValues(alpha: 0.5),
   //             borderRadius: BorderRadius.circular(4),
   //           ),
   //           child: Row(

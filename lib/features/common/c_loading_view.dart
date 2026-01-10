@@ -51,8 +51,8 @@ class LoadingView<T> extends StatelessWidget {
                             BoxShadow(
                               offset: const Offset(0, 4),
                               blurRadius: 6,
-                              color: CColors.black.withOpacity(0.08),
-                            )
+                              color: CColors.black.withValues(alpha: 0.08),
+                            ),
                           ]
                         : null,
                   ),
@@ -77,8 +77,8 @@ class LoadingView<T> extends StatelessWidget {
                               BoxShadow(
                                 offset: const Offset(0, 4),
                                 blurRadius: 6,
-                                color: CColors.black.withOpacity(0.08),
-                              )
+                                color: CColors.black.withValues(alpha: 0.08),
+                              ),
                             ]
                           : null,
                     ),
@@ -94,7 +94,7 @@ class LoadingView<T> extends StatelessWidget {
                           LocaleKeys.isProcessing.trans,
                           style: CTextStyles.base.s14.w500(),
                           textAlign: TextAlign.center,
-                        )
+                        ),
                       ],
                     ),
                   ),
@@ -116,7 +116,7 @@ class LoadingView<T> extends StatelessWidget {
             return const SizedBox.shrink();
           })
         else
-          loadingWidget
+          loadingWidget,
       ],
     );
   }

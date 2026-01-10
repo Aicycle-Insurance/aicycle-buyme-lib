@@ -45,8 +45,8 @@ class BuyMeImage extends Equatable {
       directionSlug: json['directionSlug']?.toString(),
       imageSize: json['imageSize'] is List
           ? json['imageSize']
-              .map<num?>((e) => num.tryParse(e.toString()))
-              .toList()
+                .map<num?>((e) => num.tryParse(e.toString()))
+                .toList()
           : null,
       traceId: json['traceId']?.toString(),
       timeAppUpload: num.tryParse(json['timeAppUpload'].toString()),
@@ -57,21 +57,21 @@ class BuyMeImage extends Equatable {
   }
 
   Map<String, dynamic> toJson() => {
-        if (imageId != null) 'imageId': imageId,
-        if (location != null) 'location': location,
-        if (requestedTime != null) 'requestedTime': requestedTime,
-        if (uploadedTime != null) 'uploadedTime': uploadedTime,
-        if (uploadLocation != null) 'uploadLocation': uploadLocation,
-        if (imageUrl != null) 'imageUrl': imageUrl,
-        if (resizeImageUrl != null) 'resizeImageUrl': resizeImageUrl,
-        if (directionSlug != null) 'directionSlug': directionSlug,
-        if (imageSize != null) 'imageSize': imageSize,
-        if (traceId != null) 'traceId': traceId,
-        if (timeAppUpload != null) 'timeAppUpload': timeAppUpload,
-        if (timeProcess != null) 'timeProcess': timeProcess,
-        if (directionName != null) 'directionName': directionName,
-        if (engineCorner != null) 'engineCorner': engineCorner,
-      };
+    if (imageId != null) 'imageId': imageId,
+    if (location != null) 'location': location,
+    if (requestedTime != null) 'requestedTime': requestedTime,
+    if (uploadedTime != null) 'uploadedTime': uploadedTime,
+    if (uploadLocation != null) 'uploadLocation': uploadLocation,
+    if (imageUrl != null) 'imageUrl': imageUrl,
+    if (resizeImageUrl != null) 'resizeImageUrl': resizeImageUrl,
+    if (directionSlug != null) 'directionSlug': directionSlug,
+    if (imageSize != null) 'imageSize': imageSize,
+    if (traceId != null) 'traceId': traceId,
+    if (timeAppUpload != null) 'timeAppUpload': timeAppUpload,
+    if (timeProcess != null) 'timeProcess': timeProcess,
+    if (directionName != null) 'directionName': directionName,
+    if (engineCorner != null) 'engineCorner': engineCorner,
+  };
 
   BuyMeImage copyWith({
     num? imageId,
@@ -131,36 +131,26 @@ class BuyMeImage extends Equatable {
 class BuyMeImageResponse extends Equatable {
   final List<BuyMeImage>? images;
 
-  const BuyMeImageResponse({
-    this.images,
-  });
+  const BuyMeImageResponse({this.images});
 
   factory BuyMeImageResponse.fromJson(Map<String, dynamic> json) {
     return BuyMeImageResponse(
       images: json['images'] is List
           ? json['images']
-              .map<BuyMeImage>((e) => BuyMeImage.fromJson(e))
-              .toList()
+                .map<BuyMeImage>((e) => BuyMeImage.fromJson(e))
+                .toList()
           : null,
     );
   }
 
-  Map<String, dynamic> toJson() => {
-        if (images != null) 'images': images,
-      };
+  Map<String, dynamic> toJson() => {if (images != null) 'images': images};
 
-  BuyMeImageResponse copyWith({
-    List<BuyMeImage>? images,
-  }) {
-    return BuyMeImageResponse(
-      images: images ?? this.images,
-    );
+  BuyMeImageResponse copyWith({List<BuyMeImage>? images}) {
+    return BuyMeImageResponse(images: images ?? this.images);
   }
 
   @override
   List<Object?> get props {
-    return [
-      images,
-    ];
+    return [images];
   }
 }

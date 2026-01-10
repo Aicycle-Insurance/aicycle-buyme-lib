@@ -44,8 +44,9 @@ class AicycleBuyMeRepositoryImpl implements AiCycleBuyMeRepository {
   }
 
   @override
-  Future<Either<APIErrors, ClaimFolderModel>> getDuplicateFolder(
-      {required String externalClaimId}) async {
+  Future<Either<APIErrors, ClaimFolderModel>> getDuplicateFolder({
+    required String externalClaimId,
+  }) async {
     try {
       final res = await AicycleBuyMeApi.getDuplicateFolder(
         externalClaimId: externalClaimId,

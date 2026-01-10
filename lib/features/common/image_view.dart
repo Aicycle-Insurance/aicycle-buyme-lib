@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:photo_view/photo_view.dart';
 
 class ImageView extends StatelessWidget {
-  const ImageView({Key? key, required this.imageUrl}) : super(key: key);
+  const ImageView({super.key, required this.imageUrl});
 
   /// network image or file image
   final String imageUrl;
@@ -31,21 +31,17 @@ class ImageView extends StatelessWidget {
             top: 16,
             child: CupertinoButton(
               padding: EdgeInsets.zero,
-              minSize: 0,
+              minimumSize: Size(0, 0),
               child: const CircleAvatar(
                 radius: 24,
                 backgroundColor: Colors.black54,
                 child: Center(
-                  child: Icon(
-                    Icons.arrow_back,
-                    color: Colors.white,
-                    size: 24,
-                  ),
+                  child: Icon(Icons.arrow_back, color: Colors.white, size: 24),
                 ),
               ),
               onPressed: () => Navigator.pop(context),
             ),
-          )
+          ),
         ],
       ),
     );

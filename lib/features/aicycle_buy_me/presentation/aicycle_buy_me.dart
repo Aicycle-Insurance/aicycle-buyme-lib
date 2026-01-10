@@ -14,11 +14,7 @@ import '../../folder_details/presentation/folder_detail_page.dart';
 import '../../common/extension/translation_ext.dart';
 import 'aicycle_buy_me_controller.dart';
 
-enum Evn {
-  dev,
-  stage,
-  production,
-}
+enum Evn { dev, stage, production }
 
 String? apiToken;
 String? xApplication;
@@ -111,20 +107,14 @@ class _AiCycleBuyMeState
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
-            colors: [
-              CColors.primaryA400,
-              CColors.primaryA500,
-            ],
+            colors: [CColors.primaryA400, CColors.primaryA500],
           ),
         ),
         child: Column(
           mainAxisSize: MainAxisSize.max,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Assets.images.logo.image(
-              package: packageName,
-              width: 300,
-            ),
+            Assets.images.logo.image(package: packageName, width: 300),
             const Gap(24),
             Text(
               LocaleKeys.pleaseWait.trans,
@@ -137,7 +127,7 @@ class _AiCycleBuyMeState
                 borderRadius: BorderRadius.circular(2),
                 color: CColors.active,
               ),
-            )
+            ),
           ],
         ),
       ),

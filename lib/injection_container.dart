@@ -22,10 +22,7 @@ class InjectionContainer {
   }
 
   static void _folderDetail() {
-    Get.lazyPut(
-      () => BuyMeFolderDetailRepositoryImpl(),
-      fenix: true,
-    );
+    Get.lazyPut(() => BuyMeFolderDetailRepositoryImpl(), fenix: true);
     Get.lazyPut(
       () =>
           BuyMeGetImageInfoUsecase(Get.find<BuyMeFolderDetailRepositoryImpl>()),
@@ -33,26 +30,26 @@ class InjectionContainer {
     );
     Get.lazyPut(
       () => BuyMeGetImageDetailsUsecase(
-          Get.find<BuyMeFolderDetailRepositoryImpl>()),
+        Get.find<BuyMeFolderDetailRepositoryImpl>(),
+      ),
       fenix: true,
     );
     Get.lazyPut(
       () => BuyMeDeleteImageByIdUsecase(
-          Get.find<BuyMeFolderDetailRepositoryImpl>()),
+        Get.find<BuyMeFolderDetailRepositoryImpl>(),
+      ),
       fenix: true,
     );
     Get.lazyPut(
       () => BuyMeCheckIsOneCarUsecase(
-          Get.find<BuyMeFolderDetailRepositoryImpl>()),
+        Get.find<BuyMeFolderDetailRepositoryImpl>(),
+      ),
       fenix: true,
     );
   }
 
   static void _camera() {
-    Get.lazyPut(
-      () => BuyMeCameraRepositoryImpl(),
-      fenix: true,
-    );
+    Get.lazyPut(() => BuyMeCameraRepositoryImpl(), fenix: true);
     Get.lazyPut(
       () => BuyMeCallEngineUsecase(Get.find<BuyMeCameraRepositoryImpl>()),
       fenix: true,
@@ -64,17 +61,15 @@ class InjectionContainer {
   }
 
   static void _folder() {
-    Get.lazyPut(
-      () => AicycleBuyMeRepositoryImpl(),
-      fenix: true,
-    );
+    Get.lazyPut(() => AicycleBuyMeRepositoryImpl(), fenix: true);
     Get.lazyPut(
       () => BuyMeCreateFolderUsecase(Get.find<AicycleBuyMeRepositoryImpl>()),
       fenix: true,
     );
     Get.lazyPut(
       () => BuyMeGetDuplicateFolderUsecase(
-          Get.find<AicycleBuyMeRepositoryImpl>()),
+        Get.find<AicycleBuyMeRepositoryImpl>(),
+      ),
       fenix: true,
     );
   }

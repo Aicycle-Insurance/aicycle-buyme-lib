@@ -40,7 +40,7 @@ class WarningDialog extends StatelessWidget {
             package: packageName,
             width: 40,
             height: 40,
-            color: CColors.redA500,
+            colorFilter: ColorFilter.mode(CColors.redA500, BlendMode.srcIn),
           ),
           Text(
             description,
@@ -74,8 +74,8 @@ class WarningDialog extends StatelessWidget {
                       borderRadius: 6,
                       textStyle: CTextStyles.base.s14.whiteColor.w300(),
                     ),
-                  )
-                ]
+                  ),
+                ],
               ],
             ),
           ),
