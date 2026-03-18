@@ -1,0 +1,144 @@
+import 'package:aicycle_buyme_plus/src/core/theme/app_strings.dart';
+
+enum AiCycleEnvironment { develop, stage, production }
+
+enum AicycleCarCorner {
+  /// Góc trước
+  front,
+
+  /// Góc trước bên trái
+  frontLeft,
+
+  /// Góc trước bên phải
+  frontRight,
+
+  /// Góc sau
+  rear,
+
+  /// Góc sau bên trái
+  rearLeft,
+
+  /// Góc sau bên phải
+  rearRight,
+
+  /// Góc sườn trái
+  left,
+
+  /// Góc sườn phải
+  right,
+
+  // /// Góc tem đăng kiểm
+  // regStamp,
+
+  // /// Góc số khung
+  // vinNumber,
+
+  // /// Góc taplo
+  // taplo,
+
+  // /// Tổng thể
+  // overall,
+}
+
+const Map<AicycleCarCorner, String> _kdefaultCarCornersWithDisplayName = {
+  AicycleCarCorner.front: AppStrings.front,
+  AicycleCarCorner.frontLeft: AppStrings.frontLeft,
+  AicycleCarCorner.frontRight: AppStrings.frontRight,
+  AicycleCarCorner.rear: AppStrings.rear,
+  AicycleCarCorner.rearLeft: AppStrings.rearLeft,
+  AicycleCarCorner.rearRight: AppStrings.rearRight,
+  // AicycleCarCorner.regStamp: AppStrings.regStamp,
+  // AicycleCarCorner.vinNumber: AppStrings.vinNumber,
+  // AicycleCarCorner.taplo: AppStrings.taplo,
+  // AicycleCarCorner.overall: AppStrings.overall,
+};
+
+/// Public configuration for the AiCycle BuyMe SDK.
+class AiCycleConfig {
+  /// Token API
+  final String apiToken;
+
+  /// ID của hồ sơ
+  final String documentId;
+
+  /// Tên của hồ sơ
+  final String? documentName;
+
+  /// Môi trường
+  final AiCycleEnvironment environment;
+
+  /// Tên hiển thị của các góc xe
+  final Map<AicycleCarCorner, String>? carCornersWithDisplayName;
+
+  /// Thông tin xe
+  final CarInformation carInformation;
+
+  /// Cấu hình validation
+  final ValidationConfig? validationConfig;
+
+  /// Hiển thị màn hình kết quả
+  final bool? showResultScreen;
+
+  /// Cho phép log hay không
+  final bool loggingEnabled;
+
+  const AiCycleConfig({
+    required this.apiToken,
+    required this.documentId,
+    required this.carInformation,
+    this.documentName,
+    this.environment = AiCycleEnvironment.develop,
+    this.validationConfig = const ValidationConfig(
+      isPartOfCarValidation: true,
+      isTheSameCarValidation: true,
+    ),
+    this.carCornersWithDisplayName = _kdefaultCarCornersWithDisplayName,
+    this.showResultScreen = true,
+    this.loggingEnabled = true,
+  });
+}
+
+class CarInformation {
+  /// Hãng xe (ví dụ: "mazda")
+  final String brand;
+
+  /// Dòng xe/Hiệu xe (ví dụ: "mazda.bt_50")
+  final String model;
+
+  /// Năm sản xuất (ví dụ: 2022)
+  final int? vehicleYear;
+
+  /// Spec xe (ví dụ: "luxury_1_9l_4x2_at")
+  final String? vehicleSpec;
+
+  /// Biển số xe (ví dụ: "30A1983")
+  /// Nếu không có thì coi như hồ sơ không có biển số xe.
+  final String? licensePlate;
+
+  /// Loại xe (ví dụ: "pickup")
+  final String? vehicleType;
+
+  /// Màu xe (nếu có)
+  /// Dạng hex #RRGGBB
+  final String? color;
+
+  CarInformation({
+    required this.brand,
+    required this.model,
+    this.vehicleYear,
+    this.vehicleSpec,
+    required this.licensePlate,
+    this.vehicleType,
+    this.color,
+  });
+}
+
+class ValidationConfig {
+  final bool isTheSameCarValidation;
+  final bool isPartOfCarValidation;
+
+  const ValidationConfig({
+    this.isTheSameCarValidation = true,
+    this.isPartOfCarValidation = true,
+  });
+}

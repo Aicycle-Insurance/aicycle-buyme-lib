@@ -1,82 +1,39 @@
+<!--
+This README describes the package. If you publish this package to pub.dev,
+this README's contents appear on the landing page for your package.
 
-An Aicycle BuyMe package for Aicycle Insurance's partners.
+For information about how to write a good package README, see the guide for
+[writing package pages](https://dart.dev/tools/pub/writing-package-pages).
 
-### Usage
+For general information about developing packages, see the Dart guide for
+[creating packages](https://dart.dev/guides/libraries/create-packages)
+and the Flutter guide for
+[developing packages and plugins](https://flutter.dev/to/develop-packages).
+-->
 
->
->1. Add the following to your "gradle.properties" file:
->
->```
->android.useAndroidX=true
->android.enableJetifier=true
->```
->2. Make sure you set the `compileSdkVersion` in your "android/app/build.gradle" file to 33:
->
->```
->android {
->  compileSdkVersion 33
->
->  ...
->}
->```
->3. Make sure you replace all the `android.` dependencies to their AndroidX counterparts (a full list can be found [Android migration guide](https://developer.android.com/jetpack/androidx/migrate)).
+TODO: Put a short description of the package here that helps potential users
+know whether this package might be useful for them.
 
-### Set permissions
-   - **iOS** add these on ```ios/Runner/Info.plist``` file
+## Features
 
-```xml
-<key>NSCameraUsageDescription</key>
-<string>Your own description</string>
+TODO: List what your package can do. Maybe include images, gifs, or videos.
 
-<key>NSMicrophoneUsageDescription</key>
-<string>Your own description</string>
+## Getting started
 
-<key>NSPhotoLibraryUsageDescription</key>
-<string>Your own description</string>
+TODO: List prerequisites and provide or point to information on how to
+start using the package.
 
-<key>NSLocationWhenInUseUsageDescription</key>
-<string>Your own description</string>
+## Usage
 
-<key>NSPhotoLibraryAddUsageDescription</key>
-<string>Your own description</string>
-```
+TODO: Include short and useful examples for package users. Add longer examples
+to `/example` folder.
 
-  - **Android**
-    - You need to ask for storage permission to save an image to the gallery. You can handle the storage permission using flutter_permission_handler. In Android version 10, Open the manifest file and add this line to your application tag
-    <br />
-    ```xml
-    <application android:requestLegacyExternalStorage="true" .....>
-    ```
-    
-    - Set permissions before ```<application>```
-    <br />
-
-    ```xml
-    <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.ACCESS_MEDIA_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    ```
-
-    - Change the minimum SDK version to 21 (or higher) in ```android/app/build.gradle```
-    <br />
-
-    ```
-    minSdkVersion 22
-    ```
-### Import the package
 ```dart
-import 'package:aicycle_buyme_lib/aicycle_buyme_lib.dart';
+const like = 'sample';
 ```
 
-### Required
-```dart
-Future<void> main() async {
-  /// add this two lines below
-  WidgetsFlutterBinding.ensureInitialized();
-  await AICycle.initial();
+## Additional information
 
-  runApp(const CameraApp());
-}
-```
+TODO: Tell users more about the package: where to find more information, how to
+contribute to the package, how to file issues, what response they can expect
+from the package authors, and more.

@@ -1,47 +1,40 @@
-name: aicycle_buyme_lib
-description: An AiCycle BuyMe package.
-version: 0.4.1
-homepage: https://aicycle.ai/
+name: aicycle_buyme_plus
+description: "A new Flutter package project."
+version: 0.0.1
+homepage:
 
 environment:
-  sdk: ^3.9.0
+  sdk: ^3.11.1
   flutter: ">=1.17.0"
 
 dependencies:
+  cached_network_image: ^3.4.1
+  dio: ^5.9.2
   flutter:
     sdk: flutter
-  cached_network_image: ^3.4.1
-  camera: ^0.11.2
-  dartz: ^0.10.1
-  equatable: ^2.0.7
-  flutter_image_compress: ^2.4.0
-  flutter_svg: ^2.2.1
-  gap: ^3.0.1
-  geolocator: ^14.0.2
-  latlong2: ^0.9.1
-  geocoding: ^4.0.0
-  exif: ^3.3.0
-  get: ^4.7.2
-  image: ^4.5.4
-  saver_gallery: ^4.0.1
-  image_picker: ^1.2.0
-  logger: ^2.6.1
-  mime: ^2.0.0
-  path: ^1.9.1
-  path_provider: ^2.1.5
-  photo_view: ^0.15.0
-  readmore: ^3.0.0
-  sensors_plus: ^7.0.0
-  top_snackbar_flutter: ^3.3.0
-  dio: ^5.9.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^5.0.0
-  
+  flutter_lints: ^6.0.0
 flutter:
+  uses-material-design: true
   assets:
-      - assets/icons/
-      - assets/images/
-      - assets/gif/
+    - assets/images/
+    - assets/images/front/
+    - assets/images/rear/
+    - assets/images/left/
+    - assets/images/right/
+    - assets/images/front_left/
+    - assets/images/front_right/
+    - assets/images/rear_left/
+    - assets/images/rear_right/
+  fonts:
+    - family: Inter
+      fonts:
+        - asset: assets/fonts/Inter-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/Inter-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/Inter-Bold.ttf
+          weight: 700
