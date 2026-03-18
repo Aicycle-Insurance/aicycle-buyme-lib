@@ -44,6 +44,14 @@ class $AssetsImagesGen {
   AssetGenImage get icColors =>
       const AssetGenImage('assets/images/ic_colors.png');
 
+  /// File path: assets/images/ic_frame_off.png
+  AssetGenImage get icFrameOff =>
+      const AssetGenImage('assets/images/ic_frame_off.png');
+
+  /// File path: assets/images/ic_frame_on.png
+  AssetGenImage get icFrameOn =>
+      const AssetGenImage('assets/images/ic_frame_on.png');
+
   /// File path: assets/images/ic_info_circle.png
   AssetGenImage get icInfoCircle =>
       const AssetGenImage('assets/images/ic_info_circle.png');
@@ -103,6 +111,8 @@ class $AssetsImagesGen {
     icCarGuideClear,
     icCleanWater,
     icColors,
+    icFrameOff,
+    icFrameOn,
     icInfoCircle,
     icSun,
     icTrash01,
@@ -119,16 +129,24 @@ class $AssetsImagesGen {
 class $AssetsImagesFrontGen {
   const $AssetsImagesFrontGen();
 
+  /// File path: assets/images/front/img_frame_front.png
+  AssetGenImage get imgFrameFront =>
+      const AssetGenImage('assets/images/front/img_frame_front.png');
+
   /// File path: assets/images/front/img_front.png
   AssetGenImage get imgFront =>
       const AssetGenImage('assets/images/front/img_front.png');
 
   /// List of all assets
-  List<AssetGenImage> get values => [imgFront];
+  List<AssetGenImage> get values => [imgFrameFront, imgFront];
 }
 
 class $AssetsImagesFrontLeftGen {
   const $AssetsImagesFrontLeftGen();
+
+  /// File path: assets/images/front_left/img_frame_front_left.png
+  AssetGenImage get imgFrameFrontLeft =>
+      const AssetGenImage('assets/images/front_left/img_frame_front_left.png');
 
   /// File path: assets/images/front_left/img_front_left_1.png
   AssetGenImage get imgFrontLeft1 =>
@@ -148,6 +166,7 @@ class $AssetsImagesFrontLeftGen {
 
   /// List of all assets
   List<AssetGenImage> get values => [
+    imgFrameFrontLeft,
     imgFrontLeft1,
     imgFrontLeft2,
     imgFrontLeft3,
@@ -157,6 +176,11 @@ class $AssetsImagesFrontLeftGen {
 
 class $AssetsImagesFrontRightGen {
   const $AssetsImagesFrontRightGen();
+
+  /// File path: assets/images/front_right/img_frame_front_right.png
+  AssetGenImage get imgFrameFrontRight => const AssetGenImage(
+    'assets/images/front_right/img_frame_front_right.png',
+  );
 
   /// File path: assets/images/front_right/img_front_right_1.png
   AssetGenImage get imgFrontRight1 =>
@@ -176,6 +200,7 @@ class $AssetsImagesFrontRightGen {
 
   /// List of all assets
   List<AssetGenImage> get values => [
+    imgFrameFrontRight,
     imgFrontRight1,
     imgFrontRight2,
     imgFrontRight3,
@@ -197,16 +222,24 @@ class $AssetsImagesLeftGen {
 class $AssetsImagesRearGen {
   const $AssetsImagesRearGen();
 
+  /// File path: assets/images/rear/img_frame_rear.png
+  AssetGenImage get imgFrameRear =>
+      const AssetGenImage('assets/images/rear/img_frame_rear.png');
+
   /// File path: assets/images/rear/img_rear.png
   AssetGenImage get imgRear =>
       const AssetGenImage('assets/images/rear/img_rear.png');
 
   /// List of all assets
-  List<AssetGenImage> get values => [imgRear];
+  List<AssetGenImage> get values => [imgFrameRear, imgRear];
 }
 
 class $AssetsImagesRearLeftGen {
   const $AssetsImagesRearLeftGen();
+
+  /// File path: assets/images/rear_left/img_frame_rear_left.png
+  AssetGenImage get imgFrameRearLeft =>
+      const AssetGenImage('assets/images/rear_left/img_frame_rear_left.png');
 
   /// File path: assets/images/rear_left/img_rear_left_1.png
   AssetGenImage get imgRearLeft1 =>
@@ -221,11 +254,20 @@ class $AssetsImagesRearLeftGen {
       const AssetGenImage('assets/images/rear_left/img_rear_left_3.png');
 
   /// List of all assets
-  List<AssetGenImage> get values => [imgRearLeft1, imgRearLeft2, imgRearLeft3];
+  List<AssetGenImage> get values => [
+    imgFrameRearLeft,
+    imgRearLeft1,
+    imgRearLeft2,
+    imgRearLeft3,
+  ];
 }
 
 class $AssetsImagesRearRightGen {
   const $AssetsImagesRearRightGen();
+
+  /// File path: assets/images/rear_right/img_frame_rear_right.png
+  AssetGenImage get imgFrameRearRight =>
+      const AssetGenImage('assets/images/rear_right/img_frame_rear_right.png');
 
   /// File path: assets/images/rear_right/img_rear_right_1.png
   AssetGenImage get imgRearRight1 =>
@@ -241,6 +283,7 @@ class $AssetsImagesRearRightGen {
 
   /// List of all assets
   List<AssetGenImage> get values => [
+    imgFrameRearRight,
     imgRearRight1,
     imgRearRight2,
     imgRearRight3,

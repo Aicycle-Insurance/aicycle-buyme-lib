@@ -16,6 +16,8 @@ class AppStrings {
   static const String btnDelete = 'Xóa';
   static const String btnCaptureMore = 'Chụp thêm';
   static const String btnOtherAngle = 'Chụp góc khác';
+  static const String btnRetake = 'Chụp lại';
+  static const String btnSave = 'Lưu';
 
   // Instructions Header
   static const String instructionTitle = 'Hướng dẫn chụp xe';

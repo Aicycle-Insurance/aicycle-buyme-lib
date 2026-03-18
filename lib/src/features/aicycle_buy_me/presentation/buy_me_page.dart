@@ -8,27 +8,9 @@ import 'controllers/buy_me_controller.dart';
 import 'widgets/car_capture_guide.dart';
 import 'widgets/car_capture_section.dart';
 
-class BuyMePage extends StatefulWidget {
-  const BuyMePage({super.key});
-
-  @override
-  State<BuyMePage> createState() => _BuyMePageState();
-}
-
-class _BuyMePageState extends State<BuyMePage> {
-  late final BuyMeController controller;
-
-  @override
-  void initState() {
-    super.initState();
-    controller = BuyMeController();
-  }
-
-  @override
-  void dispose() {
-    controller.dispose();
-    super.dispose();
-  }
+class BuyMePage extends StatelessWidget {
+  final BuyMeController controller;
+  const BuyMePage({super.key, required this.controller});
 
   @override
   Widget build(BuildContext context) {
@@ -55,43 +37,89 @@ class _BuyMePageState extends State<BuyMePage> {
 
                   /// Hình ảnh xe
                   Expanded(
-                    child: GridView.count(
-                      shrinkWrap: true,
-                      crossAxisCount: 2,
-                      crossAxisSpacing: 16.r,
-                      mainAxisSpacing: 16.r,
-                      padding: EdgeInsets.all(16.r),
-                      children: [
-                        /// Đăng kiểm
-                        CarCaptureSection(
-                          type: CarCaptureSectionType.regCert,
-                          images: controller.regCertImages,
-                        ),
-
-                        /// Tem đăng kiểm
-                        CarCaptureSection(
-                          type: CarCaptureSectionType.regStamp,
-                          images: controller.regStampImages,
-                        ),
-
-                        /// Số khung
-                        CarCaptureSection(
-                          type: CarCaptureSectionType.vinNumber,
-                          images: controller.vinNumberImages,
-                        ),
-
-                        /// Taplo
-                        CarCaptureSection(
-                          type: CarCaptureSectionType.taplo,
-                          images: controller.taploImages,
-                        ),
-
-                        /// Tổng thể
-                        CarCaptureSection(
-                          type: CarCaptureSectionType.exterior,
-                          images: controller.exteriorImages,
-                        ),
-                      ],
+                    child: SingleChildScrollView(
+                      padding: EdgeInsets.all(16.h),
+                      child: Column(
+                        spacing: 16.h,
+                        children: [
+                          Row(
+                            spacing: 16.h,
+                            children: [
+                              Expanded(
+                                child: CarCaptureSection(
+                                  type: CarCaptureSectionType.regCert,
+                                  images: controller.regCertImages,
+                                  onImageCaptured: (file, index) =>
+                                      controller.addImage(
+                                        CarCaptureSectionType.regCert,
+                                        file.path,
+                                        index: index,
+                                      ),
+                                ),
+                              ),
+                              Expanded(
+                                child: CarCaptureSection(
+                                  type: CarCaptureSectionType.regStamp,
+                                  images: controller.regStampImages,
+                                  onImageCaptured: (file, index) =>
+                                      controller.addImage(
+                                        CarCaptureSectionType.regStamp,
+                                        file.path,
+                                        index: index,
+                                      ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          Row(
+                            spacing: 16.h,
+                            children: [
+                              Expanded(
+                                child: CarCaptureSection(
+                                  type: CarCaptureSectionType.vinNumber,
+                                  images: controller.vinNumberImages,
+                                  onImageCaptured: (file, index) =>
+                                      controller.addImage(
+                                        CarCaptureSectionType.vinNumber,
+                                        file.path,
+                                        index: index,
+                                      ),
+                                ),
+                              ),
+                              Expanded(
+                                child: CarCaptureSection(
+                                  type: CarCaptureSectionType.taplo,
+                                  images: controller.taploImages,
+                                  onImageCaptured: (file, index) =>
+                                      controller.addImage(
+                                        CarCaptureSectionType.taplo,
+                                        file.path,
+                                        index: index,
+                                      ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          Row(
+                            spacing: 16.h,
+                            children: [
+                              Expanded(
+                                child: CarCaptureSection(
+                                  type: CarCaptureSectionType.exterior,
+                                  images: controller.exteriorImages,
+                                  onImageCaptured: (file, index) =>
+                                      controller.addImage(
+                                        CarCaptureSectionType.exterior,
+                                        file.path,
+                                        index: index,
+                                      ),
+                                ),
+                              ),
+                              Expanded(child: SizedBox()),
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ],

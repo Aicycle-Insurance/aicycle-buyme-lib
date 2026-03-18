@@ -11,34 +11,34 @@ import '../pages/car_capture_guide_page.dart';
 class CornerButton extends StatelessWidget {
   const CornerButton({super.key, required this.corner, this.images = const []});
 
-  final AicycleCarCorner corner;
+  final AicycleCarAngle corner;
   final List<String> images;
 
   double get rotateAngle {
     double degrees = 0;
     switch (corner) {
-      case AicycleCarCorner.front:
+      case AicycleCarAngle.front:
         degrees = 90;
         break;
-      case AicycleCarCorner.frontLeft:
+      case AicycleCarAngle.frontLeft:
         degrees = 45;
         break;
-      case AicycleCarCorner.frontRight:
+      case AicycleCarAngle.frontRight:
         degrees = 135;
         break;
-      case AicycleCarCorner.rear:
+      case AicycleCarAngle.rear:
         degrees = -90;
         break;
-      case AicycleCarCorner.rearLeft:
+      case AicycleCarAngle.rearLeft:
         degrees = -45;
         break;
-      case AicycleCarCorner.rearRight:
+      case AicycleCarAngle.rearRight:
         degrees = -135;
         break;
-      case AicycleCarCorner.left:
+      case AicycleCarAngle.left:
         degrees = 0;
         break;
-      case AicycleCarCorner.right:
+      case AicycleCarAngle.right:
         degrees = 180;
         break;
     }

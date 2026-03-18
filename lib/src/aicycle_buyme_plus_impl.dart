@@ -1,10 +1,10 @@
 import 'package:aicycle_buyme_plus/src/core/utils/screen_utils.dart';
 import 'package:aicycle_buyme_plus/src/core/theme/app_colors.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import '../../../../aicycle_buyme_plus.dart';
-import 'core/di/injection.dart';
-import 'features/aicycle_buy_me/domain/use_cases/create_buyme_folder_use_case.dart';
 import 'features/aicycle_buy_me/presentation/buy_me_page.dart';
+import 'features/aicycle_buy_me/presentation/controllers/buy_me_controller.dart';
 
 /// The main entry point for the SDK as a Widget.
 ///
@@ -32,16 +32,16 @@ class AiCycleBuyMe extends StatefulWidget {
     this.loadingWidget,
   });
 
-  static AiCycleConfig? _config;
+  static AiCycleConfig? configInternal;
 
   /// Get the current configuration. Throws if not initialized.
   static AiCycleConfig get config {
-    if (_config == null) {
+    if (configInternal == null) {
       throw StateError(
         'AiCycleBuyMe has not been initialized. Ensure AiCycleBuyMe widget is in the tree.',
       );
     }
-    return _config!;
+    return configInternal!;
   }
 
   @override
@@ -49,59 +49,43 @@ class AiCycleBuyMe extends StatefulWidget {
 }
 
 class _AiCycleBuyMeState extends State<AiCycleBuyMe> {
-  final ValueNotifier<bool> _loadingNotifier = ValueNotifier<bool>(true);
+  late final BuyMeController _controller;
 
   @override
   void initState() {
     super.initState();
-    _initSDK();
+    // Lock orientation to portrait when using the package
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+    ]);
+    _controller = BuyMeController();
+    _controller.addListener(_onStatusChanged);
+    _controller.init(widget.aiCycleConfig);
+  }
+
+  void _onStatusChanged() {
+    if (_controller.status == BuyMeStatus.error) {
+      if (widget.onError != null) {
+        widget.onError!(_controller.errorMessage);
+      }
+      if (mounted) {
+        Navigator.pop(context);
+      }
+    }
   }
 
   @override
   void dispose() {
-    _loadingNotifier.dispose();
+    // Reset orientation to allow all when leaving the package
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+      DeviceOrientation.landscapeLeft,
+      DeviceOrientation.landscapeRight,
+    ]);
+    _controller.removeListener(_onStatusChanged);
+    _controller.dispose();
     super.dispose();
-  }
-
-  Future<void> _initSDK() async {
-    try {
-      _loadingNotifier.value = true;
-      // 1. Set global configuration
-      AiCycleBuyMe._config = widget.aiCycleConfig;
-
-      // 2. Simulate or perform any async initialization
-      // 2. Create the document in the backend
-      await sl.createBuyMeFolderUseCase(
-        CreateBuyMeFolderParams(
-          externalClaimId: widget.aiCycleConfig.documentId,
-          claimName:
-              widget.aiCycleConfig.documentName ??
-              widget.aiCycleConfig.documentId,
-          vehicleBrandId: '5',
-          priceTypeId: 10,
-          isClaim: false,
-          brand: widget.aiCycleConfig.carInformation.brand,
-          model: widget.aiCycleConfig.carInformation.model,
-          vehicleYear: widget.aiCycleConfig.carInformation.vehicleYear,
-          vehicleSpec: widget.aiCycleConfig.carInformation.vehicleSpec,
-          licensePlate: widget.aiCycleConfig.carInformation.licensePlate,
-          vehicleType:
-              widget.aiCycleConfig.carInformation.vehicleType ?? 'truck',
-          hasLicensePlate:
-              widget.aiCycleConfig.carInformation.licensePlate?.isNotEmpty ==
-              true,
-        ),
-      );
-
-      if (!mounted) return;
-      _loadingNotifier.value = false;
-    } catch (e) {
-      if (!mounted) return;
-      _loadingNotifier.value = false;
-      if (widget.onError != null) {
-        widget.onError!(e.toString());
-      }
-    }
   }
 
   @override
@@ -109,13 +93,19 @@ class _AiCycleBuyMeState extends State<AiCycleBuyMe> {
     ScreenUtil.init(context);
     return Scaffold(
       backgroundColor: AppColors.background,
-      body: ValueListenableBuilder<bool>(
-        valueListenable: _loadingNotifier,
-        builder: (context, isLoading, child) {
-          if (isLoading) {
-            return Center(child: CircularProgressIndicator());
+      body: ListenableBuilder(
+        listenable: _controller,
+        builder: (context, child) {
+          if (_controller.status == BuyMeStatus.loading ||
+              _controller.status == BuyMeStatus.initial) {
+            return const Center(child: CircularProgressIndicator());
           }
-          return const BuyMePage();
+
+          if (_controller.status == BuyMeStatus.success) {
+            return BuyMePage(controller: _controller);
+          }
+
+          return const SizedBox.shrink();
         },
       ),
     );

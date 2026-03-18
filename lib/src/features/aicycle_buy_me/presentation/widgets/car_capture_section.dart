@@ -1,6 +1,10 @@
+import 'dart:io';
+
 import 'package:aicycle_buyme_plus/src/core/theme/app_text_styles.dart';
 import 'package:aicycle_buyme_plus/src/core/utils/screen_utils.dart';
+import 'package:aicycle_buyme_plus/src/features/camera/presentation/pages/common_camera_page.dart';
 import 'package:aicycle_buyme_plus/src/features/guide_line/presentation/guide_line_page.dart';
+import 'package:camera/camera.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
@@ -10,7 +14,7 @@ import '../../../../core/theme/app_strings.dart';
 import '../../../../core/widgets/dashed_container.dart';
 import '../../../car_capture/presentation/pages/car_capture_page.dart';
 
-enum CarCaptureSectionType { regCert, regStamp, vinNumber, taplo, exterior }
+import '../controllers/buy_me_controller.dart';
 
 class CarCaptureSection extends StatelessWidget {
   const CarCaptureSection({
@@ -18,11 +22,13 @@ class CarCaptureSection extends StatelessWidget {
     required this.type,
     required this.images,
     this.onAddTapped,
+    this.onImageCaptured,
     this.errorMessage,
   });
   final CarCaptureSectionType type;
   final List<String> images;
   final Function()? onAddTapped;
+  final Function(XFile file, int index)? onImageCaptured;
   final String? errorMessage;
 
   String get title {
@@ -77,28 +83,58 @@ class CarCaptureSection extends StatelessWidget {
     );
   }
 
-  Widget _buildImageContainer() {
-    return DashedContainer(
-      height: 90.h,
-      backgroundColor: AppColors.backgroundGray,
-      borderRadius: 8.r,
-      color: AppColors.borderGray,
-      dashPattern: const [8, 8],
-      child: InkWell(
-        onTap: onAddTapped,
-        child: Center(
-          child: Icon(Icons.add_rounded, size: 20.r, color: AppColors.black),
-        ),
-      ),
+  Widget _buildImageContainer(BuildContext context, {int index = 0}) {
+    final hasImage = images.length > index && images[index].isNotEmpty;
+    return InkWell(
+      onTap: () async {
+        if (type == CarCaptureSectionType.exterior) {
+          onGuideTapped(context);
+        } else {
+          final result = await Navigator.push<XFile?>(
+            context,
+            MaterialPageRoute(builder: (context) => const CommonCameraPage()),
+          );
+          if (result != null) {
+            onImageCaptured?.call(result, index);
+          }
+        }
+        onAddTapped?.call();
+      },
+      child: hasImage
+          ? ClipRRect(
+              borderRadius: BorderRadius.circular(8.r),
+              child: Image.file(
+                File(images[index]),
+                fit: BoxFit.cover,
+                height: 90.h,
+                width: double.infinity,
+              ),
+            )
+          : DashedContainer(
+              height: 90.h,
+              backgroundColor: AppColors.backgroundGray,
+              borderRadius: 8.r,
+              color: AppColors.borderGray,
+              dashPattern: hasImage ? [] : const [8, 8],
+              child: Center(
+                child: Icon(
+                  Icons.add_rounded,
+                  size: 20.r,
+                  color: AppColors.black,
+                ),
+              ),
+            ),
     );
   }
 
   @override
   Widget build(BuildContext context) {
     return Column(
+      mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Container(
+          height: 170.h,
           decoration: BoxDecoration(
             color: AppColors.surface,
             borderRadius: BorderRadius.circular(8),
@@ -108,21 +144,25 @@ class CarCaptureSection extends StatelessWidget {
                   : AppColors.borderGray,
             ),
           ),
-          padding: const EdgeInsets.fromLTRB(8, 8, 8, 12),
+          padding: EdgeInsets.all(8.h).copyWith(bottom: 12.h),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(title, style: AppTextStyles.body12Medium),
-              const SizedBox(height: 8),
+              SizedBox(height: 8.h),
               numberImageContainer > 1
                   ? Row(
                       spacing: 8.w,
                       children: [
-                        Expanded(child: _buildImageContainer()),
-                        Expanded(child: _buildImageContainer()),
+                        Expanded(
+                          child: _buildImageContainer(context, index: 0),
+                        ),
+                        Expanded(
+                          child: _buildImageContainer(context, index: 1),
+                        ),
                       ],
                     )
-                  : _buildImageContainer(),
+                  : _buildImageContainer(context, index: 0),
               const SizedBox(height: 12),
               RichText(
                 text: TextSpan(

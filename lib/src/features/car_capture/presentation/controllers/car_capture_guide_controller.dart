@@ -9,7 +9,7 @@ class CarCaptureGuideController extends ChangeNotifier {
     List<String> initialImages = const [],
   }) : _images = initialImages;
 
-  final AicycleCarCorner corner;
+  final AicycleCarAngle corner;
   final List<String> _images;
   final List<String> _selectedImages = [];
 
@@ -19,81 +19,81 @@ class CarCaptureGuideController extends ChangeNotifier {
 
   String get title {
     switch (corner) {
-      case AicycleCarCorner.front:
+      case AicycleCarAngle.front:
         return AppStrings.frontCaptureTitle;
-      case AicycleCarCorner.frontLeft:
+      case AicycleCarAngle.frontLeft:
         return AppStrings.frontLeftCaptureTitle;
-      case AicycleCarCorner.frontRight:
+      case AicycleCarAngle.frontRight:
         return AppStrings.frontRightCaptureTitle;
-      case AicycleCarCorner.rear:
+      case AicycleCarAngle.rear:
         return AppStrings.rearCaptureTitle;
-      case AicycleCarCorner.rearLeft:
+      case AicycleCarAngle.rearLeft:
         return AppStrings.rearLeftCaptureTitle;
-      case AicycleCarCorner.rearRight:
+      case AicycleCarAngle.rearRight:
         return AppStrings.rearRightCaptureTitle;
-      case AicycleCarCorner.left:
+      case AicycleCarAngle.left:
         return AppStrings.leftCaptureTitle;
-      case AicycleCarCorner.right:
+      case AicycleCarAngle.right:
         return AppStrings.rightCaptureTitle;
     }
   }
 
   String get description {
     switch (corner) {
-      case AicycleCarCorner.front:
+      case AicycleCarAngle.front:
         return AppStrings.frontCaptureDescription;
-      case AicycleCarCorner.frontLeft:
+      case AicycleCarAngle.frontLeft:
         return AppStrings.frontLeftCaptureDescription;
-      case AicycleCarCorner.frontRight:
+      case AicycleCarAngle.frontRight:
         return AppStrings.frontRightCaptureDescription;
-      case AicycleCarCorner.rear:
+      case AicycleCarAngle.rear:
         return AppStrings.rearCaptureDescription;
-      case AicycleCarCorner.rearLeft:
+      case AicycleCarAngle.rearLeft:
         return AppStrings.rearLeftCaptureDescription;
-      case AicycleCarCorner.rearRight:
+      case AicycleCarAngle.rearRight:
         return AppStrings.rearRightCaptureDescription;
-      case AicycleCarCorner.left:
+      case AicycleCarAngle.left:
         return AppStrings.leftCaptureDescription;
-      case AicycleCarCorner.right:
+      case AicycleCarAngle.right:
         return AppStrings.rightCaptureDescription;
     }
   }
 
   List<String> get sampleImages {
     switch (corner) {
-      case AicycleCarCorner.front:
+      case AicycleCarAngle.front:
         return [Assets.images.front.imgFront.path];
-      case AicycleCarCorner.frontLeft:
+      case AicycleCarAngle.frontLeft:
         return [
           Assets.images.frontLeft.imgFrontLeft1.path,
           Assets.images.frontLeft.imgFrontLeft2.path,
           Assets.images.frontLeft.imgFrontLeft3.path,
           Assets.images.frontLeft.imgFrontLeft4.path,
         ];
-      case AicycleCarCorner.frontRight:
+      case AicycleCarAngle.frontRight:
         return [
           Assets.images.frontRight.imgFrontRight1.path,
           Assets.images.frontRight.imgFrontRight2.path,
           Assets.images.frontRight.imgFrontRight3.path,
           Assets.images.frontRight.imgFrontRight4.path,
         ];
-      case AicycleCarCorner.rear:
+      case AicycleCarAngle.rear:
         return [Assets.images.rear.imgRear.path];
-      case AicycleCarCorner.rearLeft:
+      case AicycleCarAngle.rearLeft:
         return [
           Assets.images.rearLeft.imgRearLeft1.path,
           Assets.images.rearLeft.imgRearLeft2.path,
           Assets.images.rearLeft.imgRearLeft3.path,
         ];
-      case AicycleCarCorner.rearRight:
+      case AicycleCarAngle.rearRight:
         return [
           Assets.images.rearRight.imgRearRight1.path,
           Assets.images.rearRight.imgRearRight2.path,
           Assets.images.rearRight.imgRearRight3.path,
         ];
-      case AicycleCarCorner.left:
+      case AicycleCarAngle.left:
         return [Assets.images.left.imgLeft.path];
-      case AicycleCarCorner.right:
+      case AicycleCarAngle.right:
         return [Assets.images.right.imgRight.path];
     }
   }

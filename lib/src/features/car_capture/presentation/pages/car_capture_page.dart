@@ -11,36 +11,36 @@ import '../widgets/corner_button.dart';
 class CarCapturePage extends StatelessWidget {
   const CarCapturePage({super.key});
 
-  double getLeftPosition(AicycleCarCorner corner) {
+  double getLeftPosition(AicycleCarAngle corner) {
     switch (corner) {
-      case AicycleCarCorner.front:
-      case AicycleCarCorner.rear:
+      case AicycleCarAngle.front:
+      case AicycleCarAngle.rear:
         return 142; // Center (324/2 - 20)
-      case AicycleCarCorner.left:
-      case AicycleCarCorner.frontLeft:
-      case AicycleCarCorner.rearLeft:
+      case AicycleCarAngle.left:
+      case AicycleCarAngle.frontLeft:
+      case AicycleCarAngle.rearLeft:
         return 15;
-      case AicycleCarCorner.right:
-      case AicycleCarCorner.frontRight:
-      case AicycleCarCorner.rearRight:
+      case AicycleCarAngle.right:
+      case AicycleCarAngle.frontRight:
+      case AicycleCarAngle.rearRight:
         return 270;
     }
   }
 
-  double getTopPosition(AicycleCarCorner corner) {
+  double getTopPosition(AicycleCarAngle corner) {
     switch (corner) {
-      case AicycleCarCorner.front:
+      case AicycleCarAngle.front:
         return 0;
-      case AicycleCarCorner.frontLeft:
-      case AicycleCarCorner.frontRight:
+      case AicycleCarAngle.frontLeft:
+      case AicycleCarAngle.frontRight:
         return 50;
-      case AicycleCarCorner.rear:
+      case AicycleCarAngle.rear:
         return 460;
-      case AicycleCarCorner.rearLeft:
-      case AicycleCarCorner.rearRight:
+      case AicycleCarAngle.rearLeft:
+      case AicycleCarAngle.rearRight:
         return 410;
-      case AicycleCarCorner.left:
-      case AicycleCarCorner.right:
+      case AicycleCarAngle.left:
+      case AicycleCarAngle.right:
         return 230;
     }
   }
@@ -66,7 +66,7 @@ class CarCapturePage extends StatelessWidget {
                     width: 200.w,
                   ),
                 ),
-                ...AicycleCarCorner.values.map((corner) {
+                ...AicycleCarAngle.values.map((corner) {
                   return Positioned(
                     left: getLeftPosition(corner).w,
                     top: getTopPosition(corner).h,

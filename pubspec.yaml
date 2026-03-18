@@ -1,7 +1,7 @@
 name: aicycle_buyme_plus
-description: "A new Flutter package project."
-version: 0.0.1
-homepage:
+description: "An Aicycle BuyMe Plus package."
+version: 1.0.0
+homepage: https://aicycle.ai/
 
 environment:
   sdk: ^3.11.1
@@ -9,9 +9,14 @@ environment:
 
 dependencies:
   cached_network_image: ^3.4.1
+  camera: ^0.12.0
   dio: ^5.9.2
   flutter:
     sdk: flutter
+  image_picker: ^1.2.1
+  native_device_orientation: ^2.1.0
+  image: ^4.5.3
+  path_provider: ^2.1.5
 
 dev_dependencies:
   flutter_test:

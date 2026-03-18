@@ -2,7 +2,7 @@ import 'package:aicycle_buyme_plus/src/core/theme/app_strings.dart';
 
 enum AiCycleEnvironment { develop, stage, production }
 
-enum AicycleCarCorner {
+enum AicycleCarAngle {
   /// Góc trước
   front,
 
@@ -40,13 +40,13 @@ enum AicycleCarCorner {
   // overall,
 }
 
-const Map<AicycleCarCorner, String> _kdefaultCarCornersWithDisplayName = {
-  AicycleCarCorner.front: AppStrings.front,
-  AicycleCarCorner.frontLeft: AppStrings.frontLeft,
-  AicycleCarCorner.frontRight: AppStrings.frontRight,
-  AicycleCarCorner.rear: AppStrings.rear,
-  AicycleCarCorner.rearLeft: AppStrings.rearLeft,
-  AicycleCarCorner.rearRight: AppStrings.rearRight,
+const Map<AicycleCarAngle, String> _kdefaultCarCornersWithDisplayName = {
+  AicycleCarAngle.front: AppStrings.front,
+  AicycleCarAngle.frontLeft: AppStrings.frontLeft,
+  AicycleCarAngle.frontRight: AppStrings.frontRight,
+  AicycleCarAngle.rear: AppStrings.rear,
+  AicycleCarAngle.rearLeft: AppStrings.rearLeft,
+  AicycleCarAngle.rearRight: AppStrings.rearRight,
   // AicycleCarCorner.regStamp: AppStrings.regStamp,
   // AicycleCarCorner.vinNumber: AppStrings.vinNumber,
   // AicycleCarCorner.taplo: AppStrings.taplo,
@@ -68,7 +68,7 @@ class AiCycleConfig {
   final AiCycleEnvironment environment;
 
   /// Tên hiển thị của các góc xe
-  final Map<AicycleCarCorner, String>? carCornersWithDisplayName;
+  final Map<AicycleCarAngle, String>? carCornersWithDisplayName;
 
   /// Thông tin xe
   final CarInformation carInformation;

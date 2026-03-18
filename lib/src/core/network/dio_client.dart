@@ -32,24 +32,30 @@ class DioClient {
           } catch (_) {
             // Config not yet initialized
           }
-
-          _logger.d('REQUEST[${options.method}] => PATH: ${options.path}');
-          _logger.d('BASE_URL: ${options.baseUrl}');
-          _logger.d('DATA: ${options.data}');
+          _logger.d('====================REQUEST===================');
+          _logger.d(
+            '[${options.method}] => PATH: ${options.baseUrl}${options.path}',
+          );
+          _logger.d('DATA: ${options.data ?? options.queryParameters}');
+          _logger.d('\n');
 
           return handler.next(options);
         },
         onResponse: (response, handler) {
+          _logger.d('====================RESPONSE===================');
           _logger.d(
-            'RESPONSE[${response.statusCode}] => PATH: ${response.requestOptions.path}',
+            '[${response.statusCode}] => PATH: ${response.requestOptions.baseUrl}${response.requestOptions.path}',
           );
+          _logger.d('\n');
           return handler.next(response);
         },
         onError: (e, handler) {
+          _logger.d('====================ERROR===================');
           _logger.e(
-            'ERROR[${e.response?.statusCode}] => PATH: ${e.requestOptions.path}',
+            '[${e.response?.statusCode}] => PATH: ${e.requestOptions.baseUrl}${e.requestOptions.path}',
             e.error,
           );
+          _logger.d('\n');
           return handler.next(e);
         },
       ),

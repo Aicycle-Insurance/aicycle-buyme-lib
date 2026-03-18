@@ -19,7 +19,7 @@ class CarCaptureGuidePage extends StatefulWidget {
     this.images = const [],
   });
 
-  final AicycleCarCorner corner;
+  final AicycleCarAngle corner;
   final List<String> images;
 
   @override
