@@ -1,16 +1,28 @@
 import 'package:aicycle_buyme_plus/src/core/utils/screen_utils.dart';
+import 'package:aicycle_buyme_plus/src/core/xx_file.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../../gen/assets.gen.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_strings.dart';
 import '../../../../core/theme/app_text_styles.dart';
-import '../controllers/car_capture_guide_controller.dart';
+import '../../../camera/presentation/pages/camera_page.dart';
+import '../controllers/car_capture_controller.dart';
 
 class GuidePageBottomBar extends StatelessWidget {
   const GuidePageBottomBar({super.key, required this.controller});
 
-  final CarCaptureGuideController controller;
+  final CarCaptureController controller;
+
+  void _goToCameraPage(BuildContext context) async {
+    final result = await Navigator.push<XXFile>(
+      context,
+      MaterialPageRoute(builder: (context) => CameraPage(args: CameraArgs())),
+    );
+    if (result != null) {
+      controller.addImage(result);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +41,7 @@ class GuidePageBottomBar extends StatelessWidget {
       child: SafeArea(
         child: controller.images.isEmpty
             ? ElevatedButton.icon(
-                onPressed: controller.goToCameraPage,
+                onPressed: () => _goToCameraPage(context),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.primary,
                   foregroundColor: Colors.white,
@@ -49,13 +61,14 @@ class GuidePageBottomBar extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Row(
-                    spacing: 16,
+                    spacing: 16.w,
                     children: [
                       Expanded(
                         child: OutlinedButton.icon(
-                          onPressed: controller.goToCameraPage,
+                          onPressed: () => _goToCameraPage(context),
                           style: OutlinedButton.styleFrom(
                             foregroundColor: AppColors.textPrimary,
+                            padding: EdgeInsets.zero,
                             side: const BorderSide(color: AppColors.borderGray),
                             minimumSize: Size(double.infinity, 40.h),
                             shape: RoundedRectangleBorder(
@@ -66,8 +79,8 @@ class GuidePageBottomBar extends StatelessWidget {
                             Assets.images.icCameraPlus.path,
                             package: AppStrings.package,
                             color: AppColors.iconGray,
-                            height: 20.h,
-                            width: 20.h,
+                            height: 20.w,
+                            width: 20.w,
                           ),
                           label: Text(
                             AppStrings.btnCaptureMore,
@@ -83,6 +96,7 @@ class GuidePageBottomBar extends StatelessWidget {
                           style: OutlinedButton.styleFrom(
                             foregroundColor: AppColors.textPrimary,
                             side: const BorderSide(color: AppColors.borderGray),
+                            padding: EdgeInsets.zero,
                             minimumSize: Size(double.infinity, 40.h),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(6.r),
@@ -92,8 +106,8 @@ class GuidePageBottomBar extends StatelessWidget {
                             Assets.images.icColors.path,
                             package: AppStrings.package,
                             color: AppColors.iconGray,
-                            height: 20.h,
-                            width: 20.h,
+                            height: 20.w,
+                            width: 20.w,
                           ),
                           label: Text(
                             AppStrings.btnOtherAngle,

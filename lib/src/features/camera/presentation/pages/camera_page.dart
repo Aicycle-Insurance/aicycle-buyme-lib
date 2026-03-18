@@ -3,31 +3,48 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:native_device_orientation/native_device_orientation.dart';
 
+import '../../../../../aicycle_buyme_plus.dart';
 import '../../../../core/utils/orientation_utils.dart';
 import '../../../../core/utils/screen_utils.dart';
-import '../controllers/common_camera_controller.dart';
+import '../controllers/camera_controller.dart';
+import '../widgets/camera_bottom_bar.dart';
+import '../widgets/guide_frame.dart';
 import '../widgets/photo_preview.dart';
 
-class CommonCameraPage extends StatefulWidget {
-  const CommonCameraPage({super.key});
+class CameraArgs {
+  final AicycleCarAngle? vehicleAngle;
 
-  @override
-  State<CommonCameraPage> createState() => _CommonCameraPageState();
+  const CameraArgs({this.vehicleAngle});
 }
 
-class _CommonCameraPageState extends State<CommonCameraPage> {
-  late final CommonCameraController _controller;
+class CameraPage extends StatefulWidget {
+  const CameraPage({super.key, required this.args});
+
+  final CameraArgs args;
+
+  @override
+  State<CameraPage> createState() => _CameraPageState();
+}
+
+class _CameraPageState extends State<CameraPage> {
+  late final XCameraController _controller;
+
+  bool get supportGuide =>
+      widget.args.vehicleAngle != AicycleCarAngle.regCert &&
+      widget.args.vehicleAngle != AicycleCarAngle.regStamp &&
+      widget.args.vehicleAngle != AicycleCarAngle.vinNumber &&
+      widget.args.vehicleAngle != AicycleCarAngle.taplo;
 
   @override
   void initState() {
     super.initState();
-    _controller = CommonCameraController();
+    _controller = XCameraController();
     _controller.addListener(_onStatusChanged);
     _controller.initialize();
   }
 
   void _onStatusChanged() {
-    if (_controller.status == CommonCameraStatus.error) {
+    if (_controller.status == CameraStatus.error) {
       debugPrint(_controller.errorMessage);
       if (mounted) {
         Navigator.pop(context);
@@ -53,15 +70,15 @@ class _CommonCameraPageState extends State<CommonCameraPage> {
         return ListenableBuilder(
           listenable: _controller,
           builder: (context, child) {
-            if (_controller.status == CommonCameraStatus.initializing ||
-                _controller.status == CommonCameraStatus.initial) {
+            if (_controller.status == CameraStatus.initializing ||
+                _controller.status == CameraStatus.initial) {
               return const Scaffold(
                 backgroundColor: Colors.black,
                 body: Center(child: CircularProgressIndicator()),
               );
             }
 
-            if (_controller.status == CommonCameraStatus.ready &&
+            if (_controller.status == CameraStatus.ready &&
                 _controller.controller != null) {
               return Scaffold(
                 backgroundColor: Colors.black,
@@ -74,8 +91,7 @@ class _CommonCameraPageState extends State<CommonCameraPage> {
                   child: Stack(
                     fit: StackFit.expand,
                     children: [
-                      Align(
-                        alignment: Alignment.topCenter,
+                      Center(
                         child: ClipRect(
                           child: FittedBox(
                             fit: BoxFit.cover,
@@ -88,6 +104,15 @@ class _CommonCameraPageState extends State<CommonCameraPage> {
                                 _controller.controller!,
                                 child: Stack(
                                   children: [
+                                    /// Guide Frame
+                                    if (supportGuide && _controller.showFrame)
+                                      Center(
+                                        child: GuideFrame(
+                                          carCorner: widget.args.vehicleAngle!,
+                                          orientation: orientation,
+                                        ),
+                                      ),
+
                                     /// Top Buttons
                                     Positioned(
                                       top: 16.r,
@@ -147,39 +172,15 @@ class _CommonCameraPageState extends State<CommonCameraPage> {
                                     ),
 
                                     /// Bottom Controls
-                                    Align(
-                                      alignment: Alignment.bottomCenter,
-                                      child: Visibility(
-                                        visible:
-                                            _controller.capturedImage == null,
-                                        child: SafeArea(
-                                          minimum: EdgeInsets.only(
-                                            bottom: 24.r,
-                                          ),
-                                          child: GestureDetector(
-                                            onTap: () => _controller
-                                                .takePicture(orientation),
-                                            child: Container(
-                                              width: 58.r,
-                                              height: 58.r,
-                                              decoration: const BoxDecoration(
-                                                color: Colors.white,
-                                                shape: BoxShape.circle,
-                                              ),
-                                              child: AnimatedRotation(
-                                                turns: turns,
-                                                duration: const Duration(
-                                                  milliseconds: 300,
-                                                ),
-                                                child: Icon(
-                                                  Icons.camera_alt,
-                                                  color: Colors.black,
-                                                  size: 24.r,
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
+                                    Visibility(
+                                      visible:
+                                          _controller.capturedImage == null,
+                                      child: CameraBottomBar(
+                                        controller: _controller,
+                                        orientation: orientation,
+                                        turns: turns,
+                                        args: widget.args,
+                                        supportGuide: supportGuide,
                                       ),
                                     ),
 
@@ -208,7 +209,7 @@ class _CommonCameraPageState extends State<CommonCameraPage> {
 
             return const Scaffold(
               backgroundColor: Colors.black,
-              body: Center(child: CircularProgressIndicator()),
+              body: SizedBox.shrink(),
             );
           },
         );
@@ -219,13 +220,13 @@ class _CommonCameraPageState extends State<CommonCameraPage> {
   IconData _getFlashIcon(FlashMode mode) {
     switch (mode) {
       case FlashMode.off:
-        return Icons.flash_off;
+        return Icons.flash_off_rounded;
       case FlashMode.always:
-        return Icons.flash_on;
+        return Icons.flash_on_rounded;
       case FlashMode.auto:
-        return Icons.flash_auto;
-      case FlashMode.torch:
-        return Icons.flashlight_on;
+        return Icons.flash_auto_rounded;
+      default:
+        return Icons.flash_off_rounded;
     }
   }
 }

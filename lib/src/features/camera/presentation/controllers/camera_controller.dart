@@ -1,32 +1,35 @@
 import 'package:aicycle_buyme_plus/src/core/utils/image_utils.dart';
+import 'package:aicycle_buyme_plus/src/core/xx_file.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:native_device_orientation/native_device_orientation.dart';
 
-enum AngleCameraStatus { initial, initializing, ready, error }
+enum CameraStatus { initial, initializing, ready, error }
 
-class AngleCameraController extends ChangeNotifier {
+class XCameraController extends ChangeNotifier {
   CameraController? _controller;
-  AngleCameraStatus _status = AngleCameraStatus.initial;
+  CameraStatus _status = CameraStatus.initial;
   String _errorMessage = '';
   FlashMode _flashMode = FlashMode.off;
   bool _showFrame = false;
+  XXFile? _capturedImage;
 
   CameraController? get controller => _controller;
-  AngleCameraStatus get status => _status;
+  CameraStatus get status => _status;
   String get errorMessage => _errorMessage;
   FlashMode get flashMode => _flashMode;
   bool get showFrame => _showFrame;
+  XXFile? get capturedImage => _capturedImage;
 
   Future<void> initialize() async {
     try {
-      _status = AngleCameraStatus.initializing;
+      _status = CameraStatus.initializing;
       notifyListeners();
 
       final cameras = await availableCameras();
       if (cameras.isEmpty) {
-        _status = AngleCameraStatus.error;
+        _status = CameraStatus.error;
         _errorMessage = 'No cameras found';
         notifyListeners();
         return;
@@ -46,27 +49,37 @@ class AngleCameraController extends ChangeNotifier {
       await _controller!.initialize();
       await _controller!.setFlashMode(FlashMode.off);
 
-      _status = AngleCameraStatus.ready;
+      _status = CameraStatus.ready;
       notifyListeners();
     } catch (e) {
-      _status = AngleCameraStatus.error;
+      _status = CameraStatus.error;
       _errorMessage = 'Camera initialization failed: $e';
       notifyListeners();
     }
   }
 
-  Future<XFile?> takePicture(NativeDeviceOrientation orientation) async {
-    if (_controller == null || !_controller!.value.isInitialized) return null;
-    if (_controller!.value.isTakingPicture) return null;
+  Future<void> takePicture(NativeDeviceOrientation orientation) async {
+    if (_controller == null || !_controller!.value.isInitialized) return;
+    if (_controller!.value.isTakingPicture) return;
 
     try {
       final XFile rawImage = await _controller!.takePicture();
 
-      return await ImageUtils.rotateImageIfNecessary(rawImage, orientation);
+      final rotatedImage = await ImageUtils.rotateImageIfNecessary(
+        rawImage,
+        orientation,
+      );
+
+      _capturedImage = XXFile.fromXFile(rotatedImage, orientation: orientation);
+      notifyListeners();
     } catch (e) {
       debugPrint('Error taking picture: $e');
-      return null;
     }
+  }
+
+  void retake() {
+    _capturedImage = null;
+    notifyListeners();
   }
 
   Future<void> toggleFlash() async {
@@ -86,13 +99,17 @@ class AngleCameraController extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<XFile?> pickImageFromGallery() async {
+  Future<void> pickImageFromGallery(NativeDeviceOrientation orientation) async {
     final picker = ImagePicker();
     final file = await picker.pickImage(source: ImageSource.gallery);
     if (file != null) {
-      return XFile(file.path);
+      final rotatedImage = await ImageUtils.rotateImageIfNecessary(
+        file,
+        orientation,
+      );
+      _capturedImage = XXFile.fromXFile(rotatedImage, orientation: orientation);
+      notifyListeners();
     }
-    return null;
   }
 
   @override

@@ -28,16 +28,16 @@ enum AicycleCarAngle {
   right,
 
   // /// Góc tem đăng kiểm
-  // regStamp,
+  regStamp,
 
   // /// Góc số khung
-  // vinNumber,
+  vinNumber,
 
   // /// Góc taplo
-  // taplo,
+  taplo,
 
   // /// Tổng thể
-  // overall,
+  regCert,
 }
 
 const Map<AicycleCarAngle, String> _kdefaultCarCornersWithDisplayName = {
@@ -47,10 +47,10 @@ const Map<AicycleCarAngle, String> _kdefaultCarCornersWithDisplayName = {
   AicycleCarAngle.rear: AppStrings.rear,
   AicycleCarAngle.rearLeft: AppStrings.rearLeft,
   AicycleCarAngle.rearRight: AppStrings.rearRight,
-  // AicycleCarCorner.regStamp: AppStrings.regStamp,
-  // AicycleCarCorner.vinNumber: AppStrings.vinNumber,
-  // AicycleCarCorner.taplo: AppStrings.taplo,
-  // AicycleCarCorner.overall: AppStrings.overall,
+  AicycleCarAngle.regStamp: AppStrings.regStamp,
+  AicycleCarAngle.vinNumber: AppStrings.vinNumber,
+  AicycleCarAngle.taplo: AppStrings.taplo,
+  AicycleCarAngle.regCert: AppStrings.regCert,
 };
 
 /// Public configuration for the AiCycle BuyMe SDK.

@@ -54,7 +54,7 @@ class AppStrings {
   static const String regStamp = "Góc tem đăng kiểm";
   static const String vinNumber = "Góc số khung";
   static const String taplo = "Góc taplo";
-  static const String overall = "Tổng thể";
+  static const String regCert = "Góc đăng kiểm";
 
   static const String captureCarGuideTitle = "Hướng dẫn chụp ảnh xe";
   static const String captureCarGuideClear =

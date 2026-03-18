@@ -3,10 +3,15 @@ import 'package:flutter/material.dart';
 import '../../../../core/di/injection.dart';
 import '../../domain/use_cases/create_buyme_folder_use_case.dart';
 
+/// Enum representing the different sections of the car capture process.
 enum CarCaptureSectionType { regCert, regStamp, vinNumber, taplo, exterior }
 
+/// Status of the BuyMe folder creation or initialization process.
 enum BuyMeStatus { initial, loading, success, error }
 
+/// Main controller for the BuyMe flow.
+/// Orchestrates folder creation, image management for all sections,
+/// and synchronization with the backend.
 class BuyMeController extends ChangeNotifier {
   final CreateBuyMeFolderUseCase _createBuyMeFolderUseCase;
 
@@ -20,19 +25,36 @@ class BuyMeController extends ChangeNotifier {
   String _errorMessage = '';
   String get errorMessage => _errorMessage;
 
+  // Internal lists for each document section
   final List<String> _regCertImages = ['', ''];
   final List<String> _regStampImages = [''];
   final List<String> _vinNumberImages = [''];
   final List<String> _taploImages = [''];
-  final List<String> _exteriorImages = [];
+
+  /// Exterior images categorized by vehicle angle for precise tracking.
+  final Map<AicycleCarAngle, List<String>> _exteriorImages = {};
 
   List<String> get regCertImages => List.unmodifiable(_regCertImages);
   List<String> get regStampImages => List.unmodifiable(_regStampImages);
   List<String> get vinNumberImages => List.unmodifiable(_vinNumberImages);
   List<String> get taploImages => List.unmodifiable(_taploImages);
-  List<String> get exteriorImages => List.unmodifiable(_exteriorImages);
 
-  void addImage(CarCaptureSectionType type, String path, {int index = 0}) {
+  /// Returns the full map of exterior images keyed by vehicle angle.
+  Map<AicycleCarAngle, List<String>> get exteriorImagesMap =>
+      Map.unmodifiable(_exteriorImages);
+
+  /// Returns a flat list of all exterior images for general display.
+  List<String> get exteriorImages =>
+      _exteriorImages.values.expand((element) => element).toList();
+
+  /// Adds an image to a specific section.
+  /// For [CarCaptureSectionType.exterior], the [vehicleAngle] is required.
+  void addImage(
+    CarCaptureSectionType type,
+    String path, {
+    int index = 0,
+    AicycleCarAngle? vehicleAngle,
+  }) {
     switch (type) {
       case CarCaptureSectionType.regCert:
         _regCertImages[index] = path;
@@ -47,13 +69,26 @@ class BuyMeController extends ChangeNotifier {
         _taploImages[index] = path;
         break;
       case CarCaptureSectionType.exterior:
-        _exteriorImages.add(path);
+        if (vehicleAngle != null) {
+          final list = _exteriorImages[vehicleAngle] ?? [];
+          if (!list.contains(path)) {
+            list.add(path);
+            _exteriorImages[vehicleAngle] = list;
+          }
+        }
         break;
     }
     notifyListeners();
   }
 
-  void removeImage(CarCaptureSectionType type, {int index = 0}) {
+  /// Removes an image from a specific section.
+  /// If [path] is provided, it searches and removes that specific entry (useful for exterior).
+  void removeImage(
+    CarCaptureSectionType type, {
+    int index = 0,
+    AicycleCarAngle? vehicleAngle,
+    String? path,
+  }) {
     switch (type) {
       case CarCaptureSectionType.regCert:
         _regCertImages[index] = '';
@@ -68,8 +103,15 @@ class BuyMeController extends ChangeNotifier {
         _taploImages[index] = '';
         break;
       case CarCaptureSectionType.exterior:
-        if (_exteriorImages.length > index) {
-          _exteriorImages.removeAt(index);
+        if (vehicleAngle != null) {
+          if (path != null) {
+            _exteriorImages[vehicleAngle]?.remove(path);
+          } else {
+            final list = _exteriorImages[vehicleAngle];
+            if (list != null && list.length > index) {
+              list.removeAt(index);
+            }
+          }
         }
         break;
     }

@@ -2,20 +2,24 @@ import 'dart:io';
 
 import 'package:aicycle_buyme_plus/src/core/theme/app_text_styles.dart';
 import 'package:aicycle_buyme_plus/src/core/utils/screen_utils.dart';
-import 'package:aicycle_buyme_plus/src/features/camera/presentation/pages/common_camera_page.dart';
 import 'package:aicycle_buyme_plus/src/features/guide_line/presentation/guide_line_page.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
+import '../../../../../aicycle_buyme_plus.dart';
 import '../../../../../gen/assets.gen.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_strings.dart';
 import '../../../../core/widgets/dashed_container.dart';
+import '../../../camera/presentation/pages/camera_page.dart';
 import '../../../car_capture/presentation/pages/car_capture_page.dart';
 
 import '../controllers/buy_me_controller.dart';
 
+/// A section in the [BuyMePage] representing a specific document or exterior photo requirement.
+/// Handles navigating to the appropriate capture flow (Camera or Guide).
 class CarCaptureSection extends StatelessWidget {
   const CarCaptureSection({
     super.key,
@@ -23,12 +27,18 @@ class CarCaptureSection extends StatelessWidget {
     required this.images,
     this.onAddTapped,
     this.onImageCaptured,
+    this.onImageAdded,
+    this.onImageDeleted,
+    this.imagesMap = const {},
     this.errorMessage,
   });
   final CarCaptureSectionType type;
   final List<String> images;
+  final Map<AicycleCarAngle, List<String>> imagesMap;
   final Function()? onAddTapped;
   final Function(XFile file, int index)? onImageCaptured;
+  final Function(AicycleCarAngle angle, String path)? onImageAdded;
+  final Function(AicycleCarAngle angle, String path)? onImageDeleted;
   final String? errorMessage;
 
   String get title {
@@ -53,6 +63,21 @@ class CarCaptureSection extends StatelessWidget {
     return 1;
   }
 
+  AicycleCarAngle getAngle() {
+    switch (type) {
+      case CarCaptureSectionType.regCert:
+        return AicycleCarAngle.regCert;
+      case CarCaptureSectionType.regStamp:
+        return AicycleCarAngle.regStamp;
+      case CarCaptureSectionType.vinNumber:
+        return AicycleCarAngle.vinNumber;
+      case CarCaptureSectionType.taplo:
+        return AicycleCarAngle.taplo;
+      case CarCaptureSectionType.exterior:
+        return AicycleCarAngle.front;
+    }
+  }
+
   void onGuideTapped(BuildContext context) {
     GuideType guideType = GuideType.vinNumber;
     switch (type) {
@@ -71,7 +96,13 @@ class CarCaptureSection extends StatelessWidget {
       case CarCaptureSectionType.exterior:
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => CarCapturePage()),
+          MaterialPageRoute(
+            builder: (context) => CarCapturePage(
+              onImageAdded: onImageAdded,
+              onImageDeleted: onImageDeleted,
+              imagesMap: imagesMap,
+            ),
+          ),
         );
         return;
     }
@@ -92,7 +123,10 @@ class CarCaptureSection extends StatelessWidget {
         } else {
           final result = await Navigator.push<XFile?>(
             context,
-            MaterialPageRoute(builder: (context) => const CommonCameraPage()),
+            MaterialPageRoute(
+              builder: (context) =>
+                  CameraPage(args: CameraArgs(vehicleAngle: getAngle())),
+            ),
           );
           if (result != null) {
             onImageCaptured?.call(result, index);
@@ -100,30 +134,68 @@ class CarCaptureSection extends StatelessWidget {
         }
         onAddTapped?.call();
       },
-      child: hasImage
-          ? ClipRRect(
+      child: Builder(
+        builder: (context) {
+          final imagePath = images[index];
+          final isNetworkImage = imagePath.startsWith('http');
+
+          if (hasImage) {
+            return ClipRRect(
               borderRadius: BorderRadius.circular(8.r),
-              child: Image.file(
-                File(images[index]),
-                fit: BoxFit.cover,
+              child: SizedBox(
                 height: 90.h,
                 width: double.infinity,
-              ),
-            )
-          : DashedContainer(
-              height: 90.h,
-              backgroundColor: AppColors.backgroundGray,
-              borderRadius: 8.r,
-              color: AppColors.borderGray,
-              dashPattern: hasImage ? [] : const [8, 8],
-              child: Center(
-                child: Icon(
-                  Icons.add_rounded,
-                  size: 20.r,
-                  color: AppColors.black,
+                child: Stack(
+                  fit: StackFit.expand,
+                  children: [
+                    isNetworkImage
+                        ? CachedNetworkImage(
+                            imageUrl: imagePath,
+                            fit: BoxFit.cover,
+                            height: 90.h,
+                            width: double.infinity,
+                          )
+                        : Image.file(
+                            File(images[index]),
+                            fit: BoxFit.cover,
+                            height: 90.h,
+                            width: double.infinity,
+                          ),
+                    if (images.length > 1)
+                      Container(
+                        height: double.infinity,
+                        width: double.infinity,
+                        color: Colors.black54,
+                        child: Center(
+                          child: Text(
+                            '+${images.length}',
+                            style: AppTextStyles.body12Medium.copyWith(
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      ),
+                  ],
                 ),
               ),
+            );
+          }
+          return DashedContainer(
+            height: 90.h,
+            backgroundColor: AppColors.backgroundGray,
+            borderRadius: 8.r,
+            color: AppColors.borderGray,
+            dashPattern: hasImage ? [] : const [8, 8],
+            child: Center(
+              child: Icon(
+                Icons.add_rounded,
+                size: 20.r,
+                color: AppColors.black,
+              ),
             ),
+          );
+        },
+      ),
     );
   }
 
@@ -162,7 +234,7 @@ class CarCaptureSection extends StatelessWidget {
                         ),
                       ],
                     )
-                  : _buildImageContainer(context, index: 0),
+                  : _buildImageContainer(context, index: images.length - 1),
               const SizedBox(height: 12),
               RichText(
                 text: TextSpan(
