@@ -1,3 +1,5 @@
+import '../entities/directional_image.dart';
+
 abstract class BuyMeRepository {
   Future<String> createNewAiCycleDocument({
     required String externalClaimId,
@@ -12,5 +14,10 @@ abstract class BuyMeRepository {
     String? licensePlate,
     String? vehicleType,
     bool? hasLicensePlate,
+  });
+
+  Future<List<DirectionalImage>> getDirectionalImages({
+    required String claimId,
+    required String angleId,
   });
 }

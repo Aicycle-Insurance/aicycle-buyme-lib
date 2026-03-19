@@ -12,10 +12,22 @@ class CarCaptureController extends ChangeNotifier {
     Map<AicycleCarAngle, List<String>> initialImages = const {},
     this.onImageAdded,
     this.onImageDeleted,
+    this.serverImagesNotifier,
   }) : _imagesMap = Map.from(
          initialImages,
        ).map((key, value) => MapEntry(key, List<String>.from(value))),
-       _angle = angle;
+       _angle = angle {
+    // Subscribe ngay khi khởi tạo nếu có notifier
+    serverImagesNotifier?.addListener(_onServerImagesUpdated);
+    // Sync giá trị hiện tại ngay lập tức (nếu data đã sẵn)
+    if (serverImagesNotifier?.value.isNotEmpty == true) {
+      syncImages(serverImagesNotifier!.value);
+    }
+  }
+
+  /// Notifier từ [BuyMeController] — CarCaptureController không biết
+  /// BuyMeController là ai, chỉ biết nó sẽ nhận Map ảnh từ notifier này.
+  final ValueNotifier<Map<AicycleCarAngle, List<String>>>? serverImagesNotifier;
 
   /// The currently active vehicle angle being captured or viewed.
   AicycleCarAngle? _angle;
@@ -45,6 +57,23 @@ class CarCaptureController extends ChangeNotifier {
   /// Retrieves the list of images for a specific vehicle angle.
   List<String> getImagesForAngle(AicycleCarAngle angle) =>
       _imagesMap[angle] ?? [];
+
+  /// Sync ảnh từ server vào map nội bộ.
+  /// Với mỗi góc, nếu url server chưa có trong list thì prepend vào đầu
+  /// (ảnh local mới chụp vẫn giữ nguyên ở cuối).
+  void syncImages(Map<AicycleCarAngle, List<String>> serverImages) {
+    for (final entry in serverImages.entries) {
+      final angle = entry.key;
+      final serverUrls = entry.value;
+      final existing = _imagesMap[angle] ?? [];
+      // Thêm url server chưa có trong existing (tránh duplicate)
+      final toAdd = serverUrls.where((u) => !existing.contains(u)).toList();
+      if (toAdd.isNotEmpty) {
+        _imagesMap[angle] = [...toAdd, ...existing];
+      }
+    }
+    notifyListeners();
+  }
 
   static const List<AicycleCarAngle> supportedAngle = [
     AicycleCarAngle.front,
@@ -257,5 +286,16 @@ class CarCaptureController extends ChangeNotifier {
     _imagesMap[_angle!] = list;
     _selectedImages.clear();
     notifyListeners();
+  }
+
+  void _onServerImagesUpdated() {
+    final data = serverImagesNotifier?.value;
+    if (data != null && data.isNotEmpty) syncImages(data);
+  }
+
+  @override
+  void dispose() {
+    serverImagesNotifier?.removeListener(_onServerImagesUpdated);
+    super.dispose();
   }
 }

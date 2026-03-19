@@ -1,5 +1,5 @@
 import 'package:aicycle_buyme_plus/src/core/utils/image_utils.dart';
-import 'package:aicycle_buyme_plus/src/core/xx_file.dart';
+import 'package:aicycle_buyme_plus/src/core/extension/xx_file.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';

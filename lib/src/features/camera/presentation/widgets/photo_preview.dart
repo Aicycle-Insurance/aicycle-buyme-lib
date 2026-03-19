@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:native_device_orientation/native_device_orientation.dart';
 
 import '../../../../core/theme/app_strings.dart';
-import '../../../../core/xx_file.dart';
+import '../../../../core/extension/xx_file.dart';
 
 class PhotoPreview extends StatelessWidget {
   const PhotoPreview({

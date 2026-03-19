@@ -16,12 +16,16 @@ class CarCapturePage extends StatefulWidget {
     super.key,
     this.onImageAdded,
     this.onImageDeleted,
-    required this.imagesMap,
+    this.imagesMap = const {},
+    this.carCaptureController,
   });
 
   final Function(AicycleCarAngle, String)? onImageAdded;
   final Function(AicycleCarAngle, String)? onImageDeleted;
   final Map<AicycleCarAngle, List<String>> imagesMap;
+  /// Controller được inject từ ngoài (BuyMeController).
+  /// Nếu null, page tự khởi tạo với [imagesMap].
+  final CarCaptureController? carCaptureController;
 
   @override
   State<CarCapturePage> createState() => _CarCapturePageState();
@@ -33,16 +37,19 @@ class _CarCapturePageState extends State<CarCapturePage> {
   @override
   void initState() {
     super.initState();
-    _controller = CarCaptureController(
-      initialImages: widget.imagesMap,
-      onImageAdded: widget.onImageAdded,
-      onImageDeleted: widget.onImageDeleted,
-    );
+    // Dùng controller được inject nếu có, ngược lại tự tạo mới.
+    _controller = widget.carCaptureController ??
+        CarCaptureController(
+          initialImages: widget.imagesMap,
+          onImageAdded: widget.onImageAdded,
+          onImageDeleted: widget.onImageDeleted,
+        );
   }
 
   @override
   void dispose() {
-    _controller.dispose();
+    // Chỉ dispose nếu controller do page tự tạo, không dispose controller được inject.
+    if (widget.carCaptureController == null) _controller.dispose();
     super.dispose();
   }
 

@@ -1,6 +1,9 @@
+import 'package:aicycle_buyme_plus/src/features/aicycle_buy_me/domain/entities/directional_image.dart';
+
 import '../../domain/repositories/buy_me_repository.dart';
 import '../../../../core/utils/internal_cache.dart';
 import '../data_sources/buy_me_remote_data_source.dart';
+import '../mapper/directional_image_mapper.dart';
 import '../models/buy_folder_model.dart';
 
 class BuyMeRepositoryImpl implements BuyMeRepository {
@@ -58,5 +61,17 @@ class BuyMeRepositoryImpl implements BuyMeRepository {
     final id = model.claimId ?? model.id ?? model.buyFolderId ?? '';
     InternalCache.folderId = id;
     return id;
+  }
+
+  @override
+  Future<List<DirectionalImage>> getDirectionalImages({
+    required String claimId,
+    required String angleId,
+  }) async {
+    final models = await _remoteDataSource.getDirectionalImages(
+      claimId: claimId,
+      angleId: angleId,
+    );
+    return models.map((m) => m.toEntity()).toList();
   }
 }

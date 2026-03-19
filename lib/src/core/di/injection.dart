@@ -3,6 +3,7 @@ import '../../features/aicycle_buy_me/data/data_sources/buy_me_remote_data_sourc
 import '../../features/aicycle_buy_me/data/repositories/buy_me_repository_impl.dart';
 import '../../features/aicycle_buy_me/domain/repositories/buy_me_repository.dart';
 import '../../features/aicycle_buy_me/domain/use_cases/create_buyme_folder_use_case.dart';
+import '../../features/aicycle_buy_me/domain/use_cases/get_directional_image_use_case.dart';
 
 import '../utils/logger.dart';
 
@@ -31,6 +32,9 @@ class AiCycleInjection {
   // --- Use Cases ---
   late final CreateBuyMeFolderUseCase createBuyMeFolderUseCase =
       CreateBuyMeFolderUseCase(_buyMeRepository);
+
+  late final GetDirectionalImagesUseCase getDirectionalImagesUseCase =
+      GetDirectionalImagesUseCase(_buyMeRepository);
 }
 
 /// Global instance for accessing dependencies.

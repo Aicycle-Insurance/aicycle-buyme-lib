@@ -14,6 +14,7 @@ import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_strings.dart';
 import '../../../../core/widgets/dashed_container.dart';
 import '../../../camera/presentation/pages/camera_page.dart';
+import '../../../car_capture/presentation/controllers/car_capture_controller.dart';
 import '../../../car_capture/presentation/pages/car_capture_page.dart';
 
 import '../controllers/buy_me_controller.dart';
@@ -31,6 +32,7 @@ class CarCaptureSection extends StatelessWidget {
     this.onImageDeleted,
     this.imagesMap = const {},
     this.errorMessage,
+    this.carCaptureController,
   });
   final CarCaptureSectionType type;
   final List<String> images;
@@ -40,6 +42,8 @@ class CarCaptureSection extends StatelessWidget {
   final Function(AicycleCarAngle angle, String path)? onImageAdded;
   final Function(AicycleCarAngle angle, String path)? onImageDeleted;
   final String? errorMessage;
+  /// Controller được inject từ BuyMeController — đã có ảnh server pre-loaded.
+  final CarCaptureController? carCaptureController;
 
   String get title {
     switch (type) {
@@ -98,9 +102,11 @@ class CarCaptureSection extends StatelessWidget {
           context,
           MaterialPageRoute(
             builder: (context) => CarCapturePage(
-              onImageAdded: onImageAdded,
-              onImageDeleted: onImageDeleted,
-              imagesMap: imagesMap,
+              carCaptureController: carCaptureController,
+              // Fallback nếu không có controller inject
+              onImageAdded: carCaptureController == null ? onImageAdded : null,
+              onImageDeleted: carCaptureController == null ? onImageDeleted : null,
+              imagesMap: carCaptureController == null ? imagesMap : const {},
             ),
           ),
         );
@@ -136,7 +142,7 @@ class CarCaptureSection extends StatelessWidget {
       },
       child: Builder(
         builder: (context) {
-          final imagePath = images[index];
+          final imagePath = hasImage ? images[index] : '';
           final isNetworkImage = imagePath.startsWith('http');
 
           if (hasImage) {
@@ -156,7 +162,7 @@ class CarCaptureSection extends StatelessWidget {
                             width: double.infinity,
                           )
                         : Image.file(
-                            File(images[index]),
+                            File(imagePath),
                             fit: BoxFit.cover,
                             height: 90.h,
                             width: double.infinity,
@@ -234,7 +240,10 @@ class CarCaptureSection extends StatelessWidget {
                         ),
                       ],
                     )
-                  : _buildImageContainer(context, index: images.length - 1),
+                  : _buildImageContainer(
+                      context,
+                      index: images.isEmpty ? 0 : images.length - 1,
+                    ),
               const SizedBox(height: 12),
               RichText(
                 text: TextSpan(

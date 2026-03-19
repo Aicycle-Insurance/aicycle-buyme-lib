@@ -48,7 +48,7 @@ class BuyMePage extends StatelessWidget {
                               Expanded(
                                 child: CarCaptureSection(
                                   type: CarCaptureSectionType.regCert,
-                                  images: controller.regCertImages,
+                                  images: controller.regCertImageUrls,
                                   onImageCaptured: (file, index) =>
                                       controller.addImage(
                                         CarCaptureSectionType.regCert,
@@ -60,7 +60,7 @@ class BuyMePage extends StatelessWidget {
                               Expanded(
                                 child: CarCaptureSection(
                                   type: CarCaptureSectionType.regStamp,
-                                  images: controller.regStampImages,
+                                  images: controller.regStampImageUrls,
                                   onImageCaptured: (file, index) =>
                                       controller.addImage(
                                         CarCaptureSectionType.regStamp,
@@ -77,7 +77,7 @@ class BuyMePage extends StatelessWidget {
                               Expanded(
                                 child: CarCaptureSection(
                                   type: CarCaptureSectionType.vinNumber,
-                                  images: controller.vinNumberImages,
+                                  images: controller.vinNumberImageUrls,
                                   onImageCaptured: (file, index) =>
                                       controller.addImage(
                                         CarCaptureSectionType.vinNumber,
@@ -89,7 +89,7 @@ class BuyMePage extends StatelessWidget {
                               Expanded(
                                 child: CarCaptureSection(
                                   type: CarCaptureSectionType.taplo,
-                                  images: controller.taploImages,
+                                  images: controller.taploImageUrls,
                                   onImageCaptured: (file, index) =>
                                       controller.addImage(
                                         CarCaptureSectionType.taplo,
@@ -106,21 +106,8 @@ class BuyMePage extends StatelessWidget {
                               Expanded(
                                 child: CarCaptureSection(
                                   type: CarCaptureSectionType.exterior,
-                                  images: controller.exteriorImages,
-                                  imagesMap: controller.exteriorImagesMap,
-                                  onImageAdded: (angle, path) =>
-                                      controller.addImage(
-                                        CarCaptureSectionType.exterior,
-                                        path,
-                                        vehicleAngle: angle,
-                                      ),
-                                  onImageDeleted: (angle, path) {
-                                    controller.removeImage(
-                                      CarCaptureSectionType.exterior,
-                                      path: path,
-                                      vehicleAngle: angle,
-                                    );
-                                  },
+                                  images: controller.exteriorImageUrls,
+                                  imagesMap: controller.exteriorImageUrlsMap,
                                 ),
                               ),
                               Expanded(child: SizedBox()),
