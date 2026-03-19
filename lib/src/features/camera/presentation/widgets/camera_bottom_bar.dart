@@ -38,7 +38,7 @@ class CameraBottomBar extends StatelessWidget {
             children: [
               /// Gallery Button
               InkWell(
-                onTap: () => controller.pickImageFromGallery(orientation),
+                onTap: () => controller.pickImageFromGallery(),
                 child: Container(
                   width: 48.r,
                   height: 48.r,

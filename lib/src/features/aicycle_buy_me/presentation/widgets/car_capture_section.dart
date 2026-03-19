@@ -42,6 +42,7 @@ class CarCaptureSection extends StatelessWidget {
   final Function(AicycleCarAngle angle, String path)? onImageAdded;
   final Function(AicycleCarAngle angle, String path)? onImageDeleted;
   final String? errorMessage;
+
   /// Controller được inject từ BuyMeController — đã có ảnh server pre-loaded.
   final CarCaptureController? carCaptureController;
 
@@ -103,9 +104,10 @@ class CarCaptureSection extends StatelessWidget {
           MaterialPageRoute(
             builder: (context) => CarCapturePage(
               carCaptureController: carCaptureController,
-              // Fallback nếu không có controller inject
               onImageAdded: carCaptureController == null ? onImageAdded : null,
-              onImageDeleted: carCaptureController == null ? onImageDeleted : null,
+              onImageDeleted: carCaptureController == null
+                  ? onImageDeleted
+                  : null,
               imagesMap: carCaptureController == null ? imagesMap : const {},
             ),
           ),
@@ -120,10 +122,16 @@ class CarCaptureSection extends StatelessWidget {
     );
   }
 
-  Widget _buildImageContainer(BuildContext context, {int index = 0}) {
+  Widget _buildImageContainer(
+    BuildContext context, {
+    int index = 0,
+    bool showCount = true,
+    bool disableTap = false,
+  }) {
     final hasImage = images.length > index && images[index].isNotEmpty;
     return InkWell(
       onTap: () async {
+        if (disableTap) return;
         if (type == CarCaptureSectionType.exterior) {
           onGuideTapped(context);
         } else {
@@ -167,7 +175,7 @@ class CarCaptureSection extends StatelessWidget {
                             height: 90.h,
                             width: double.infinity,
                           ),
-                    if (images.length > 1)
+                    if (showCount && images.length > 1)
                       Container(
                         height: double.infinity,
                         width: double.infinity,
@@ -233,7 +241,12 @@ class CarCaptureSection extends StatelessWidget {
                       spacing: 8.w,
                       children: [
                         Expanded(
-                          child: _buildImageContainer(context, index: 0),
+                          child: _buildImageContainer(
+                            context,
+                            index: 0,
+                            showCount: false,
+                            disableTap: images.length >= numberImageContainer,
+                          ),
                         ),
                         Expanded(
                           child: _buildImageContainer(context, index: 1),

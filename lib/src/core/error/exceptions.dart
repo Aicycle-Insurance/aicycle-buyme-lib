@@ -46,3 +46,12 @@ class CacheException implements Exception {
   @override
   String toString() => 'CacheException: $message';
 }
+
+class EngineException implements Exception {
+  final String? message;
+  final int? engineCode;
+  const EngineException([this.message, this.engineCode]);
+
+  @override
+  String toString() => 'EngineException($engineCode): $message';
+}

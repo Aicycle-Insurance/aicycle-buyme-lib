@@ -1,19 +1,36 @@
+import 'package:aicycle_buyme_plus/aicycle_buyme_plus.dart';
+import 'package:aicycle_buyme_plus/src/core/di/injection.dart';
 import 'package:aicycle_buyme_plus/src/core/utils/image_utils.dart';
 import 'package:aicycle_buyme_plus/src/core/extension/xx_file.dart';
+import 'package:aicycle_buyme_plus/src/core/utils/internal_cache.dart';
+import 'package:aicycle_buyme_plus/src/features/camera/domain/usecases/upload_vehicle_inspection_use_case.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:native_device_orientation/native_device_orientation.dart';
 
+import '../../../../core/error/exceptions.dart';
+
 enum CameraStatus { initial, initializing, ready, error }
 
 class XCameraController extends ChangeNotifier {
+  XCameraController({this.angle});
+
+  final AicycleCarAngle? angle;
   CameraController? _controller;
   CameraStatus _status = CameraStatus.initial;
   String _errorMessage = '';
   FlashMode _flashMode = FlashMode.off;
   bool _showFrame = false;
   XXFile? _capturedImage;
+  bool _isUploading = false;
+  static const List<int> warningEngineCodes = [
+    23212,
+    77704,
+    60006,
+    60007,
+    66616,
+  ];
 
   CameraController? get controller => _controller;
   CameraStatus get status => _status;
@@ -21,6 +38,7 @@ class XCameraController extends ChangeNotifier {
   FlashMode get flashMode => _flashMode;
   bool get showFrame => _showFrame;
   XXFile? get capturedImage => _capturedImage;
+  bool get isUploading => _isUploading;
 
   Future<void> initialize() async {
     try {
@@ -99,17 +117,65 @@ class XCameraController extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> pickImageFromGallery(NativeDeviceOrientation orientation) async {
+  Future<void> pickImageFromGallery() async {
     final picker = ImagePicker();
     final file = await picker.pickImage(source: ImageSource.gallery);
     if (file != null) {
-      final rotatedImage = await ImageUtils.rotateImageIfNecessary(
+      _capturedImage = XXFile.fromXFile(
         file,
-        orientation,
+        orientation: NativeDeviceOrientation.landscapeLeft,
       );
-      _capturedImage = XXFile.fromXFile(rotatedImage, orientation: orientation);
       notifyListeners();
     }
+  }
+
+  /// Thực hiện upload ảnh nếu cần (dành riêng cho luồng regCert)
+  Future<void> upload({
+    required VoidCallback onSuccess,
+    required void Function(EngineException warning) onWarning,
+    required void Function(String message) onError,
+  }) async {
+    if (_capturedImage == null) return;
+
+    try {
+      _setUploading(true);
+
+      // Chỉ upload nếu góc chụp là regCert (đăng kiểm)
+      if (angle == AicycleCarAngle.regCert) {
+        await _uploadRegCert();
+      } else {
+        // TODO: upload for other angles
+      }
+
+      _setUploading(false);
+      onSuccess();
+    } on EngineException catch (e) {
+      _setUploading(false);
+      if (warningEngineCodes.contains(e.engineCode)) {
+        onWarning(e);
+      } else {
+        onError(e.message ?? 'Something went wrong.');
+      }
+    } catch (e) {
+      _setUploading(false);
+      onError(e.toString());
+    }
+  }
+
+  void _setUploading(bool value) {
+    _isUploading = value;
+    notifyListeners();
+  }
+
+  Future<void> _uploadRegCert() async {
+    final claimId = InternalCache.folderId ?? '';
+
+    await sl.uploadVehicleInspectionUseCase(
+      UploadVehicleInspectionParams(
+        imagePath: _capturedImage!.path,
+        claimId: claimId,
+      ),
+    );
   }
 
   @override

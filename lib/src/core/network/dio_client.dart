@@ -46,6 +46,7 @@ class DioClient {
           _logger.d(
             '[${response.statusCode}] => PATH: ${response.requestOptions.baseUrl}${response.requestOptions.path}',
           );
+          _logger.d('RESPONSE DATA: ${response.data}');
           _logger.d('\n');
           return handler.next(response);
         },
@@ -55,6 +56,8 @@ class DioClient {
             '[${e.response?.statusCode}] => PATH: ${e.requestOptions.baseUrl}${e.requestOptions.path}',
             e.error,
           );
+          _logger.d('ERROR: ${e.message}');
+          _logger.d('ERROR RESPONSE: ${e.response?.data}');
           _logger.d('\n');
           return handler.next(e);
         },
@@ -91,7 +94,17 @@ class DioClient {
       final data = e.response?.data;
       final message = (data is Map && data.containsKey('message'))
           ? data['message'].toString()
+          : (data is Map && data.containsKey('errorMessage'))
+          ? data['errorMessage'].toString()
           : e.message;
+      final engineCode =
+          (data is Map && data.containsKey('errorCodeFromEngine'))
+          ? data['errorCodeFromEngine'] as int
+          : null;
+
+      if (engineCode != null && engineCode != 0) {
+        return EngineException(message, engineCode);
+      }
 
       if (statusCode == 401 || statusCode == 403) {
         return UnauthorizedException(message);
@@ -135,5 +148,15 @@ class DioClient {
     return safeCall<T>(
       () => _dio.delete(path, queryParameters: queryParameters),
     );
+  }
+
+  /// Creates a FormData object for multipart requests.
+  Future<FormData> createFormData(Map<String, dynamic> data) async {
+    return FormData.fromMap(data);
+  }
+
+  /// Creates a MultipartFile from a local path.
+  Future<MultipartFile> createMultipartFile(String filePath) async {
+    return MultipartFile.fromFile(filePath);
   }
 }

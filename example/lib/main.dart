@@ -41,11 +41,11 @@ class ExampleHomePage extends StatelessWidget {
                     aiCycleConfig: AiCycleConfig(
                       apiToken:
                           '61a688:b97cd78259f945de8672bba778cdf67ff8ce214b59104fe588ab78dffe438ec2',
-                      documentId: '123',
+                      documentId: '1234',
                       environment: AiCycleEnvironment.stage,
                       carInformation: CarInformation(
-                        brand: 'Toyota',
-                        model: 'Camry',
+                        brand: 'TOYOTA',
+                        model: 'VIOS',
                         licensePlate: '12A-345.67',
                         color: '#FFFFFF',
                       ),

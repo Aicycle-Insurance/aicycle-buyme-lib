@@ -8,6 +8,10 @@ class ApiEndpoints {
   /// Endpoint for fetching directional images of a claim folder.
   static const String directionalImages = '/v2/claimfolders/directional-images';
 
+  /// Endpoint for uploading vehicle inspection (đăng kiểm) images.
+  static const String uploadVehicleInspection =
+      '/v2/buy-me/vehicle-inspection/upload';
+
   // Add more endpoints here as the SDK grows
   // static const String uploadImage = '/images/upload';
 }

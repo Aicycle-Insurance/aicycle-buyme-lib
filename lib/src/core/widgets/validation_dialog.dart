@@ -13,17 +13,25 @@ class CommonValidationDialog {
     String? secondaryButtonLabel,
     VoidCallback? onPrimaryTapped,
     VoidCallback? onSecondaryTapped,
+    int quarterTurns = 0,
   }) {
     showDialog(
       context: context,
-      builder: (context) => ValidationDialog(
-        title: title,
-        message: message,
-        primaryButtonLabel: primaryButtonLabel,
-        secondaryButtonLabel: secondaryButtonLabel,
-        onPrimaryTapped: onPrimaryTapped,
-        onSecondaryTapped: onSecondaryTapped,
-      ),
+      builder: (context) {
+        final isLandscape = quarterTurns == 1 || quarterTurns == 3;
+        return RotatedBox(
+          quarterTurns: quarterTurns,
+          child: ValidationDialog(
+            title: title,
+            message: message,
+            primaryButtonLabel: primaryButtonLabel,
+            secondaryButtonLabel: secondaryButtonLabel,
+            onPrimaryTapped: onPrimaryTapped,
+            onSecondaryTapped: onSecondaryTapped,
+            width: isLandscape ? 360.w : null,
+          ),
+        );
+      },
     );
   }
 }
@@ -37,6 +45,7 @@ class ValidationDialog extends StatelessWidget {
     this.secondaryButtonLabel,
     this.onPrimaryTapped,
     this.onSecondaryTapped,
+    this.width,
   });
 
   final String title;
@@ -45,14 +54,19 @@ class ValidationDialog extends StatelessWidget {
   final String? secondaryButtonLabel;
   final VoidCallback? onPrimaryTapped;
   final VoidCallback? onSecondaryTapped;
+  final double? width;
 
   @override
   Widget build(BuildContext context) {
     return Dialog(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.r)),
       backgroundColor: AppColors.surface,
       elevation: 0,
-      child: Padding(
+      insetPadding: width != null
+          ? EdgeInsets.zero
+          : const EdgeInsets.symmetric(horizontal: 40.0, vertical: 24.0),
+      child: Container(
+        width: width,
         padding: const EdgeInsets.all(16.0),
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -62,7 +76,7 @@ class ValidationDialog extends StatelessWidget {
             Container(
               width: 48.r,
               height: 48.r,
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 color: AppColors.backgroundError,
                 shape: BoxShape.circle,
               ),
