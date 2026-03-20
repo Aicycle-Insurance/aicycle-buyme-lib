@@ -1,4 +1,6 @@
 import 'package:aicycle_buyme_plus/src/config/aicycle_config.dart';
+import 'package:aicycle_buyme_plus/src/core/theme/app_strings.dart';
+import 'package:aicycle_buyme_plus/gen/assets.gen.dart';
 
 extension CarAngleExt on AicycleCarAngle {
   String get id {
@@ -27,6 +29,94 @@ extension CarAngleExt on AicycleCarAngle {
         return 'tap-lo-H4SHs1';
       case AicycleCarAngle.regCert:
         return 'dang-kiem-xe-82YjAa';
+      case AicycleCarAngle.exterior:
+        return '45-trai-truoc-C1xM02';
+    }
+  }
+  String get title {
+    switch (this) {
+      case AicycleCarAngle.front:
+        return AppStrings.frontCaptureTitle;
+      case AicycleCarAngle.frontLeft:
+        return AppStrings.frontLeftCaptureTitle;
+      case AicycleCarAngle.frontRight:
+        return AppStrings.frontRightCaptureTitle;
+      case AicycleCarAngle.rear:
+        return AppStrings.rearCaptureTitle;
+      case AicycleCarAngle.rearLeft:
+        return AppStrings.rearLeftCaptureTitle;
+      case AicycleCarAngle.rearRight:
+        return AppStrings.rearRightCaptureTitle;
+      case AicycleCarAngle.left:
+        return AppStrings.leftCaptureTitle;
+      case AicycleCarAngle.right:
+        return AppStrings.rightCaptureTitle;
+      default:
+        return '';
+    }
+  }
+
+  String get description {
+    switch (this) {
+      case AicycleCarAngle.front:
+        return AppStrings.frontCaptureDescription;
+      case AicycleCarAngle.frontLeft:
+        return AppStrings.frontLeftCaptureDescription;
+      case AicycleCarAngle.frontRight:
+        return AppStrings.frontRightCaptureDescription;
+      case AicycleCarAngle.rear:
+        return AppStrings.rearCaptureDescription;
+      case AicycleCarAngle.rearLeft:
+        return AppStrings.rearLeftCaptureDescription;
+      case AicycleCarAngle.rearRight:
+        return AppStrings.rearRightCaptureDescription;
+      case AicycleCarAngle.left:
+        return AppStrings.leftCaptureDescription;
+      case AicycleCarAngle.right:
+        return AppStrings.rightCaptureDescription;
+      default:
+        return '';
+    }
+  }
+
+  List<String> get sampleImages {
+    switch (this) {
+      case AicycleCarAngle.front:
+        return [Assets.images.front.imgFront.path];
+      case AicycleCarAngle.frontLeft:
+        return [
+          Assets.images.frontLeft.imgFrontLeft1.path,
+          Assets.images.frontLeft.imgFrontLeft2.path,
+          Assets.images.frontLeft.imgFrontLeft3.path,
+          Assets.images.frontLeft.imgFrontLeft4.path,
+        ];
+      case AicycleCarAngle.frontRight:
+        return [
+          Assets.images.frontRight.imgFrontRight1.path,
+          Assets.images.frontRight.imgFrontRight2.path,
+          Assets.images.frontRight.imgFrontRight3.path,
+          Assets.images.frontRight.imgFrontRight4.path,
+        ];
+      case AicycleCarAngle.rear:
+        return [Assets.images.rear.imgRear.path];
+      case AicycleCarAngle.rearLeft:
+        return [
+          Assets.images.rearLeft.imgRearLeft1.path,
+          Assets.images.rearLeft.imgRearLeft2.path,
+          Assets.images.rearLeft.imgRearLeft3.path,
+        ];
+      case AicycleCarAngle.rearRight:
+        return [
+          Assets.images.rearRight.imgRearRight1.path,
+          Assets.images.rearRight.imgRearRight2.path,
+          Assets.images.rearRight.imgRearRight3.path,
+        ];
+      case AicycleCarAngle.left:
+        return [Assets.images.left.imgLeft.path];
+      case AicycleCarAngle.right:
+        return [Assets.images.right.imgRight.path];
+      default:
+        return [];
     }
   }
 }

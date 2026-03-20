@@ -2,6 +2,7 @@ import 'package:aicycle_buyme_plus/src/core/theme/app_colors.dart';
 import 'package:aicycle_buyme_plus/src/core/utils/screen_utils.dart';
 import 'package:flutter/material.dart';
 
+import '../../../../aicycle_buyme_plus.dart';
 import '../../../core/theme/app_strings.dart';
 import '../../../core/theme/app_text_styles.dart';
 import 'controllers/buy_me_controller.dart';
@@ -47,26 +48,12 @@ class BuyMePage extends StatelessWidget {
                             children: [
                               Expanded(
                                 child: CarCaptureSection(
-                                  type: CarCaptureSectionType.regCert,
-                                  images: controller.regCertImageUrls,
-                                  onImageCaptured: (file, index) =>
-                                      controller.addImage(
-                                        CarCaptureSectionType.regCert,
-                                        file.path,
-                                        index: index,
-                                      ),
+                                  angle: AicycleCarAngle.regCert,
                                 ),
                               ),
                               Expanded(
                                 child: CarCaptureSection(
-                                  type: CarCaptureSectionType.regStamp,
-                                  images: controller.regStampImageUrls,
-                                  onImageCaptured: (file, index) =>
-                                      controller.addImage(
-                                        CarCaptureSectionType.regStamp,
-                                        file.path,
-                                        index: index,
-                                      ),
+                                  angle: AicycleCarAngle.regStamp,
                                 ),
                               ),
                             ],
@@ -76,26 +63,12 @@ class BuyMePage extends StatelessWidget {
                             children: [
                               Expanded(
                                 child: CarCaptureSection(
-                                  type: CarCaptureSectionType.vinNumber,
-                                  images: controller.vinNumberImageUrls,
-                                  onImageCaptured: (file, index) =>
-                                      controller.addImage(
-                                        CarCaptureSectionType.vinNumber,
-                                        file.path,
-                                        index: index,
-                                      ),
+                                  angle: AicycleCarAngle.vinNumber,
                                 ),
                               ),
                               Expanded(
                                 child: CarCaptureSection(
-                                  type: CarCaptureSectionType.taplo,
-                                  images: controller.taploImageUrls,
-                                  onImageCaptured: (file, index) =>
-                                      controller.addImage(
-                                        CarCaptureSectionType.taplo,
-                                        file.path,
-                                        index: index,
-                                      ),
+                                  angle: AicycleCarAngle.taplo,
                                 ),
                               ),
                             ],
@@ -105,21 +78,7 @@ class BuyMePage extends StatelessWidget {
                             children: [
                               Expanded(
                                 child: CarCaptureSection(
-                                  type: CarCaptureSectionType.exterior,
-                                  images: controller.exteriorImageUrls,
-                                  imagesMap: controller.exteriorImageUrlsMap,
-                                  onImageAdded: (angle, path) =>
-                                      controller.addImage(
-                                        CarCaptureSectionType.exterior,
-                                        path,
-                                        vehicleAngle: angle,
-                                      ),
-                                  onImageDeleted: (angle, path) =>
-                                      controller.removeImage(
-                                        CarCaptureSectionType.exterior,
-                                        vehicleAngle: angle,
-                                        path: path,
-                                      ),
+                                  angle: AicycleCarAngle.exterior,
                                 ),
                               ),
                               Expanded(child: SizedBox()),

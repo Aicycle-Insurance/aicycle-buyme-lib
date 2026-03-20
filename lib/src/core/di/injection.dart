@@ -11,6 +11,7 @@ import '../../features/camera/domain/usecases/upload_image_use_case.dart';
 import '../../features/camera/domain/usecases/upload_vehicle_inspection_use_case.dart';
 
 import '../utils/logger.dart';
+import '../../features/aicycle_buy_me/presentation/controllers/vehicle_image_vault.dart';
 
 /// Centralized dependency injection for the AiCycle SDK.
 /// This class manages the instantiation of all core components,
@@ -24,6 +25,7 @@ class AiCycleInjection {
   // --- Core ---
   late final LoggerService logger = LoggerService();
   late final DioClient _dioClient = DioClient(logger);
+  late final VehicleImageVault vehicleImageVault = VehicleImageVault();
 
   // --- Data Sources ---
   late final BuyMeRemoteDataSource _buyMeRemoteDataSource =

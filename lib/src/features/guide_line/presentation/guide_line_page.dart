@@ -10,40 +10,35 @@ import '../../camera/presentation/pages/camera_page.dart';
 import '../domain/entities/guide.dart';
 import 'guide_constants.dart';
 
-enum GuideType { vinNumber, regStamp, regCert, taplo }
-
 class GuideLinePage extends StatelessWidget {
-  final GuideType guideType;
-  final Function(XFile file)? onImageCaptured;
+  final AicycleCarAngle vehicleAngle;
 
-  const GuideLinePage({
-    super.key,
-    required this.guideType,
-    this.onImageCaptured,
-  });
+  const GuideLinePage({super.key, required this.vehicleAngle});
 
   Guide get _guide => {
-    GuideType.vinNumber: GuideConstants.vinNumberGuide,
-    GuideType.regStamp: GuideConstants.regStampGuide,
-    GuideType.regCert: GuideConstants.regCertGuide,
-    GuideType.taplo: GuideConstants.taploGuide,
-  }[guideType]!;
+    AicycleCarAngle.vinNumber: GuideConstants.vinNumberGuide,
+    AicycleCarAngle.regStamp: GuideConstants.regStampGuide,
+    AicycleCarAngle.regCert: GuideConstants.regCertGuide,
+    AicycleCarAngle.taplo: GuideConstants.taploGuide,
+  }[vehicleAngle]!;
 
   String get buttonLabel {
     String label = "${AppStrings.capturePhoto} ";
-    switch (guideType) {
-      case GuideType.vinNumber:
+    switch (vehicleAngle) {
+      case AicycleCarAngle.vinNumber:
         label += AppStrings.photoVinNumber.toLowerCase();
         break;
-      case GuideType.regStamp:
+      case AicycleCarAngle.regStamp:
         label += AppStrings.photoRegStamp.toLowerCase();
         break;
-      case GuideType.regCert:
+      case AicycleCarAngle.regCert:
         label += AppStrings.photoRegCert.toLowerCase();
         break;
-      case GuideType.taplo:
+      case AicycleCarAngle.taplo:
         label += AppStrings.photoTaplo.toLowerCase();
         break;
+      default:
+        return '';
     }
     return label;
   }
@@ -100,46 +95,35 @@ class GuideLinePage extends StatelessWidget {
 
   Text _buildGuideTitle() {
     String title = AppStrings.captureGuide;
-    switch (guideType) {
-      case GuideType.vinNumber:
+    switch (vehicleAngle) {
+      case AicycleCarAngle.vinNumber:
         title += ' ${AppStrings.photoVinNumber.toLowerCase()}';
         break;
-      case GuideType.regStamp:
+      case AicycleCarAngle.regStamp:
         title += ' ${AppStrings.photoRegStamp.toLowerCase()}';
         break;
-      case GuideType.regCert:
+      case AicycleCarAngle.regCert:
         title += ' ${AppStrings.photoRegCert.toLowerCase()}';
         break;
-      case GuideType.taplo:
+      case AicycleCarAngle.taplo:
         title += ' ${AppStrings.photoTaplo.toLowerCase()}';
+        break;
+      default:
         break;
     }
     return Text(title, style: AppTextStyles.heading2);
-  }
-
-  AicycleCarAngle get _vehicleAngle {
-    switch (guideType) {
-      case GuideType.vinNumber:
-        return AicycleCarAngle.vinNumber;
-      case GuideType.regStamp:
-        return AicycleCarAngle.regStamp;
-      case GuideType.regCert:
-        return AicycleCarAngle.regCert;
-      case GuideType.taplo:
-        return AicycleCarAngle.taplo;
-    }
   }
 
   void _gotoCameraPage(BuildContext context) async {
     final result = await Navigator.push<XFile?>(
       context,
       MaterialPageRoute(
-        builder: (context) =>
-            CameraPage(args: CameraArgs(vehicleAngle: _vehicleAngle)),
+        builder: (context) => CameraPage(
+          args: CameraArgs(vehicleAngle: vehicleAngle, isFramedPhoto: false),
+        ),
       ),
     );
     if (result != null) {
-      onImageCaptured?.call(result);
       if (context.mounted) {
         Navigator.pop(context);
       }

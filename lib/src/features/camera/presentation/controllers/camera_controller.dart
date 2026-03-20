@@ -5,6 +5,7 @@ import 'package:aicycle_buyme_plus/src/core/extension/xx_file.dart';
 import 'package:aicycle_buyme_plus/src/core/utils/internal_cache.dart';
 import 'package:aicycle_buyme_plus/src/features/camera/domain/usecases/upload_image_use_case.dart';
 import 'package:aicycle_buyme_plus/src/features/camera/domain/usecases/upload_vehicle_inspection_use_case.dart';
+import 'package:aicycle_buyme_plus/src/features/aicycle_buy_me/domain/entities/directional_image.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -16,9 +17,9 @@ import '../../../../core/extension/car_angle_ext.dart';
 enum CameraStatus { initial, initializing, ready, error }
 
 class XCameraController extends ChangeNotifier {
-  XCameraController({this.angle});
+  XCameraController({required this.angle});
 
-  final AicycleCarAngle? angle;
+  final AicycleCarAngle angle;
   CameraController? _controller;
   CameraStatus _status = CameraStatus.initial;
   String _errorMessage = '';
@@ -172,31 +173,43 @@ class XCameraController extends ChangeNotifier {
   Future<void> _uploadRegCert() async {
     final claimId = InternalCache.folderId ?? '';
 
-    await sl.uploadVehicleInspectionUseCase(
+    final result = await sl.uploadVehicleInspectionUseCase(
       UploadVehicleInspectionParams(
         imagePath: _capturedImage!.path,
         claimId: claimId,
       ),
     );
+
+    if (result.imgUrl != null) {
+      sl.vehicleImageVault.addImagesFromServer(angle, [
+        DirectionalImage(imageId: result.imageId, imageUrl: result.imgUrl),
+      ]);
+    }
   }
 
   Future<void> _uploadRegularImage() async {
     final claimId = InternalCache.folderId ?? '';
     final bool isFramedPhoto =
-        angle != null &&
         angle != AicycleCarAngle.regCert &&
         angle != AicycleCarAngle.regStamp &&
         angle != AicycleCarAngle.vinNumber &&
-        angle != AicycleCarAngle.taplo;
+        angle != AicycleCarAngle.taplo &&
+        angle != AicycleCarAngle.exterior;
 
-    await sl.uploadImageUseCase(
+    final result = await sl.uploadImageUseCase(
       UploadImageParams(
         imagePath: _capturedImage!.path,
         claimId: claimId,
-        angleId: angle?.id,
+        angleId: angle.id,
         isFramedPhoto: isFramedPhoto,
       ),
     );
+
+    if (result.imgUrl != null) {
+      sl.vehicleImageVault.addImagesFromServer(angle, [
+        DirectionalImage(imageId: result.imageId, imageUrl: result.imgUrl),
+      ]);
+    }
   }
 
   @override

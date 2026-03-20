@@ -10,4 +10,16 @@ class DirectionalImage {
       imageUrl: imageUrl ?? this.imageUrl,
     );
   }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+
+    return other is DirectionalImage &&
+        other.imageId == imageId &&
+        other.imageUrl == imageUrl;
+  }
+
+  @override
+  int get hashCode => Object.hash(imageId, imageUrl);
 }

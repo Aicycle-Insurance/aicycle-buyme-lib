@@ -1,3 +1,5 @@
+import 'package:aicycle_buyme_plus/src/config/aicycle_config.dart';
+import 'package:aicycle_buyme_plus/src/core/di/injection.dart';
 import 'package:aicycle_buyme_plus/src/core/utils/screen_utils.dart';
 import 'package:aicycle_buyme_plus/src/core/extension/xx_file.dart';
 import 'package:flutter/material.dart';
@@ -7,24 +9,21 @@ import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_strings.dart';
 import '../../../../core/theme/app_text_styles.dart';
 import '../../../camera/presentation/pages/camera_page.dart';
-import '../controllers/car_capture_controller.dart';
 
 class GuidePageBottomBar extends StatelessWidget {
-  const GuidePageBottomBar({super.key, required this.controller});
+  const GuidePageBottomBar({super.key, required this.angle});
 
-  final CarCaptureController controller;
+  final AicycleCarAngle angle;
 
   void _goToCameraPage(BuildContext context) async {
-    final result = await Navigator.push<XXFile>(
+    await Navigator.push<XXFile>(
       context,
       MaterialPageRoute(
-        builder: (context) =>
-            CameraPage(args: CameraArgs(vehicleAngle: controller.angle)),
+        builder: (context) => CameraPage(
+          args: CameraArgs(vehicleAngle: angle, isFramedPhoto: true),
+        ),
       ),
     );
-    if (result != null) {
-      controller.addImage(result);
-    }
   }
 
   @override
@@ -42,7 +41,7 @@ class GuidePageBottomBar extends StatelessWidget {
         ],
       ),
       child: SafeArea(
-        child: controller.images.isEmpty
+        child: sl.vehicleImageVault.getImagesForAngle(angle).isEmpty
             ? ElevatedButton.icon(
                 onPressed: () => _goToCameraPage(context),
                 style: ElevatedButton.styleFrom(

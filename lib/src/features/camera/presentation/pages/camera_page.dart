@@ -15,9 +15,10 @@ import '../widgets/photo_preview.dart';
 import '../../../../core/widgets/validation_dialog.dart';
 
 class CameraArgs {
-  final AicycleCarAngle? vehicleAngle;
+  final AicycleCarAngle vehicleAngle;
+  final bool isFramedPhoto;
 
-  const CameraArgs({this.vehicleAngle});
+  const CameraArgs({required this.vehicleAngle, required this.isFramedPhoto});
 }
 
 class CameraPage extends StatefulWidget {
@@ -32,11 +33,7 @@ class CameraPage extends StatefulWidget {
 class _CameraPageState extends State<CameraPage> {
   late final XCameraController _controller;
 
-  bool get supportGuide =>
-      widget.args.vehicleAngle != AicycleCarAngle.regCert &&
-      widget.args.vehicleAngle != AicycleCarAngle.regStamp &&
-      widget.args.vehicleAngle != AicycleCarAngle.vinNumber &&
-      widget.args.vehicleAngle != AicycleCarAngle.taplo;
+  bool get supportGuide => widget.args.isFramedPhoto;
 
   @override
   void initState() {
@@ -148,8 +145,7 @@ class _CameraPageState extends State<CameraPage> {
                                     if (supportGuide && _controller.showFrame)
                                       Center(
                                         child: GuideFrame(
-                                          carCorner: widget.args.vehicleAngle!,
-                                          orientation: orientation,
+                                          carCorner: widget.args.vehicleAngle,
                                         ),
                                       ),
 
@@ -185,11 +181,12 @@ class _CameraPageState extends State<CameraPage> {
                                         onSave: () async {
                                           await _controller.upload(
                                             onSuccess: () {
-                                              if (mounted) {
-                                                Navigator.pop(
-                                                  context,
-                                                  _controller.capturedImage,
-                                                );
+                                              /// Biz: Nếu là người có kinh nghiệm thì cho chụp liên tiếp
+                                              if (widget.args.vehicleAngle !=
+                                                  AicycleCarAngle.exterior) {
+                                                Navigator.pop(context);
+                                              } else {
+                                                _controller.retake();
                                               }
                                             },
                                             onWarning: _onWarning,

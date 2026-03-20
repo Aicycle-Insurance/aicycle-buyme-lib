@@ -1,21 +1,14 @@
 import 'package:aicycle_buyme_plus/src/config/aicycle_config.dart';
-import 'package:aicycle_buyme_plus/src/core/utils/orientation_utils.dart';
 import 'package:flutter/material.dart';
-import 'package:native_device_orientation/native_device_orientation.dart';
 
 import '../../../../../gen/assets.gen.dart';
 import '../../../../core/theme/app_strings.dart';
 import '../../../../core/utils/screen_utils.dart';
 
 class GuideFrame extends StatelessWidget {
-  GuideFrame({
-    super.key,
-    required this.carCorner,
-    this.orientation = NativeDeviceOrientation.portraitUp,
-  });
+  GuideFrame({super.key, required this.carCorner});
 
   final AicycleCarAngle carCorner;
-  final NativeDeviceOrientation orientation;
 
   String get imagePath {
     switch (carCorner) {
@@ -44,11 +37,8 @@ class GuideFrame extends StatelessWidget {
       return const SizedBox.shrink();
     }
 
-    final turns = OrientationUtils.getTurns(orientation);
-
-    return AnimatedRotation(
-      turns: turns,
-      duration: const Duration(milliseconds: 300),
+    return RotatedBox(
+      quarterTurns: 1,
       child: ValueListenableBuilder(
         valueListenable: _scaleValue,
         builder: (context, value, child) {
@@ -56,8 +46,8 @@ class GuideFrame extends StatelessWidget {
             children: [
               Padding(
                 padding: EdgeInsets.only(
-                  top: 16.h,
-                  bottom: 16.h,
+                  top: 40.h,
+                  bottom: 40.h,
                   left: 16.h,
                   right: 122.h,
                 ),
@@ -75,19 +65,30 @@ class GuideFrame extends StatelessWidget {
               Align(
                 alignment: Alignment.topRight,
                 child: Padding(
-                  padding: EdgeInsets.only(top: 40.h, right: (60 + 122).h),
+                  padding: EdgeInsets.only(top: 40.h, right: (24 + 122).h),
                   child: SizedBox(
                     height: 14.h,
                     width: 155.h,
-                    child: Slider.adaptive(
-                      min: 0.5,
-                      max: 1,
-                      activeColor: Colors.white,
-                      inactiveColor: Colors.white38,
-                      value: _scaleValue.value,
-                      onChanged: (value) {
-                        _scaleValue.value = value;
-                      },
+                    child: SliderTheme(
+                      data: SliderTheme.of(context).copyWith(
+                        trackHeight: 6.h,
+                        thumbShape: RoundSliderThumbShape(
+                          enabledThumbRadius: 12.h,
+                        ),
+                        overlayShape: RoundSliderOverlayShape(
+                          overlayRadius: 16.h,
+                        ),
+                      ),
+                      child: Slider(
+                        min: 0.5,
+                        max: 1,
+                        activeColor: Colors.white,
+                        inactiveColor: Colors.white38,
+                        value: _scaleValue.value,
+                        onChanged: (value) {
+                          _scaleValue.value = value;
+                        },
+                      ),
                     ),
                   ),
                 ),

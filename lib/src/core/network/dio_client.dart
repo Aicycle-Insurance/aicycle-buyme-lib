@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'package:dio/dio.dart';
 import '../../../aicycle_buyme_plus.dart';
 import '../../config/aicycle_config_internal.dart';
@@ -53,7 +54,8 @@ class DioClient {
           _logger.d(
             '[${options.method}] => PATH: ${options.baseUrl}${options.path}',
           );
-          _logger.d('DATA: ${options.data ?? options.queryParameters}');
+          _logger.d('JSON DATA: ${options.data ?? options.queryParameters}');
+          _logger.d('cURL:\n${_renderCurl(options)}');
           _logger.d('\n');
 
           return handler.next(options);
@@ -175,5 +177,46 @@ class DioClient {
   /// Creates a MultipartFile from a local path.
   Future<MultipartFile> createMultipartFile(String filePath) async {
     return MultipartFile.fromFile(filePath);
+  }
+
+  String _renderCurl(RequestOptions options) {
+    List<String> components = ['curl -i'];
+    if (options.method.toUpperCase() != 'GET') {
+      components.add('-X ${options.method.toUpperCase()}');
+    }
+
+    options.headers.forEach((k, v) {
+      if (k != 'Cookie') {
+        components.add('-H "$k: $v"');
+      }
+    });
+
+    if (options.data != null) {
+      if (options.data is FormData) {
+        final formData = options.data as FormData;
+        for (final field in formData.fields) {
+          components.add('-F "${field.key}=${field.value}"');
+        }
+        for (final file in formData.files) {
+          components.add('-F "${file.key}=@${file.value.filename}"');
+        }
+      } else {
+        try {
+          final data = json.encode(options.data);
+          components.add("-d '$data'");
+        } catch (_) {
+          components.add("-d '${options.data}'");
+        }
+      }
+    }
+
+    final query = options.queryParameters.entries
+        .map((e) => '${e.key}=${e.value}')
+        .join('&');
+    final url =
+        options.baseUrl + options.path + (query.isEmpty ? '' : '?$query');
+    components.add('"$url"');
+
+    return components.join(' \\\n  ');
   }
 }

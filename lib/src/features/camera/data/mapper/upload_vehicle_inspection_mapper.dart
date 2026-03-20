@@ -6,6 +6,8 @@ extension UploadVehicleInspectionMapper on UploadVehicleInspectionResponse {
     return UploadVehicleInspection(
       errorCodeFromEngine: errorCodeFromEngine,
       errorMessage: errorMessage,
+      imageId: imageId,
+      imgUrl: imgUrl,
     );
   }
 }

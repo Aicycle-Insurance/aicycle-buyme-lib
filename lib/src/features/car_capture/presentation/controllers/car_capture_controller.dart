@@ -1,4 +1,5 @@
-import 'package:camera/camera.dart';
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:aicycle_buyme_plus/aicycle_buyme_plus.dart';
 import 'package:aicycle_buyme_plus/gen/assets.gen.dart';
@@ -7,73 +8,10 @@ import 'package:aicycle_buyme_plus/src/core/theme/app_strings.dart';
 /// Controller for managing car image capture state.
 /// Handles image storage, selection, and UI state for different vehicle angles.
 class CarCaptureController extends ChangeNotifier {
-  CarCaptureController({
-    AicycleCarAngle? angle,
-    Map<AicycleCarAngle, List<String>> initialImages = const {},
-    this.onImageAdded,
-    this.onImageDeleted,
-    this.serverImagesNotifier,
-  }) : _imagesMap = Map.from(
-         initialImages,
-       ).map((key, value) => MapEntry(key, List<String>.from(value))),
-       _angle = angle {
-    // Subscribe ngay khi khởi tạo nếu có notifier
-    serverImagesNotifier?.addListener(_onServerImagesUpdated);
-    // Sync giá trị hiện tại ngay lập tức (nếu data đã sẵn)
-    if (serverImagesNotifier?.value.isNotEmpty == true) {
-      syncImages(serverImagesNotifier!.value);
-    }
-  }
-
-  /// Notifier từ [BuyMeController] — CarCaptureController không biết
-  /// BuyMeController là ai, chỉ biết nó sẽ nhận Map ảnh từ notifier này.
-  final ValueNotifier<Map<AicycleCarAngle, List<String>>>? serverImagesNotifier;
+  CarCaptureController(AicycleCarAngle angle) : _angle = angle;
 
   /// The currently active vehicle angle being captured or viewed.
-  AicycleCarAngle? _angle;
-  AicycleCarAngle? get angle => _angle;
-
-  /// Internal storage for images categorized by vehicle angle.
-  final Map<AicycleCarAngle, List<String>> _imagesMap;
-
-  /// Temporary storage for image selection in the guide page.
-  final List<String> _selectedImages = [];
-
-  /// Callback triggered when a new image is added to a specific angle.
-  final Function(AicycleCarAngle, String)? onImageAdded;
-
-  /// Callback triggered when an image is deleted from a specific angle.
-  final Function(AicycleCarAngle, String)? onImageDeleted;
-
-  /// Returns the list of images for the currently active angle.
-  List<String> get images => _angle != null ? (_imagesMap[_angle] ?? []) : [];
-
-  /// Returns the list of selected image paths for deletion.
-  List<String> get selectedImages => List.unmodifiable(_selectedImages);
-
-  /// Whether to show the delete button in the UI.
-  bool get showDeleteButton => _selectedImages.isNotEmpty;
-
-  /// Retrieves the list of images for a specific vehicle angle.
-  List<String> getImagesForAngle(AicycleCarAngle angle) =>
-      _imagesMap[angle] ?? [];
-
-  /// Sync ảnh từ server vào map nội bộ.
-  /// Với mỗi góc, nếu url server chưa có trong list thì prepend vào đầu
-  /// (ảnh local mới chụp vẫn giữ nguyên ở cuối).
-  void syncImages(Map<AicycleCarAngle, List<String>> serverImages) {
-    for (final entry in serverImages.entries) {
-      final angle = entry.key;
-      final serverUrls = entry.value;
-      final existing = _imagesMap[angle] ?? [];
-      // Thêm url server chưa có trong existing (tránh duplicate)
-      final toAdd = serverUrls.where((u) => !existing.contains(u)).toList();
-      if (toAdd.isNotEmpty) {
-        _imagesMap[angle] = [...toAdd, ...existing];
-      }
-    }
-    notifyListeners();
-  }
+  AicycleCarAngle _angle;
 
   static const List<AicycleCarAngle> supportedAngle = [
     AicycleCarAngle.front,
@@ -155,7 +93,7 @@ class CarCaptureController extends ChangeNotifier {
         degrees = 0;
         break;
     }
-    return degrees * 3.1415926535897932 / 180;
+    return degrees * pi / 180;
   }
 
   void setAngle(AicycleCarAngle angle) {
@@ -164,8 +102,7 @@ class CarCaptureController extends ChangeNotifier {
   }
 
   String get title {
-    if (_angle == null) return '';
-    switch (_angle!) {
+    switch (_angle) {
       case AicycleCarAngle.front:
         return AppStrings.frontCaptureTitle;
       case AicycleCarAngle.frontLeft:
@@ -188,8 +125,7 @@ class CarCaptureController extends ChangeNotifier {
   }
 
   String get description {
-    if (_angle == null) return '';
-    switch (_angle!) {
+    switch (_angle) {
       case AicycleCarAngle.front:
         return AppStrings.frontCaptureDescription;
       case AicycleCarAngle.frontLeft:
@@ -212,8 +148,7 @@ class CarCaptureController extends ChangeNotifier {
   }
 
   List<String> get sampleImages {
-    if (_angle == null) return [];
-    switch (_angle!) {
+    switch (_angle) {
       case AicycleCarAngle.front:
         return [Assets.images.front.imgFront.path];
       case AicycleCarAngle.frontLeft:
@@ -251,51 +186,5 @@ class CarCaptureController extends ChangeNotifier {
       default:
         return [];
     }
-  }
-
-  void addImage(XFile? file) {
-    if (file == null || _angle == null) return;
-    final path = file.path;
-    final list = _imagesMap[_angle!] ?? [];
-    if (!list.contains(path)) {
-      list.add(path);
-      _imagesMap[_angle!] = list;
-      onImageAdded?.call(_angle!, path);
-      notifyListeners();
-    }
-  }
-
-  void toggleImageSelection(String url) {
-    if (_selectedImages.contains(url)) {
-      _selectedImages.remove(url);
-    } else {
-      _selectedImages.add(url);
-    }
-    notifyListeners();
-  }
-
-  bool isSelected(String url) => _selectedImages.contains(url);
-
-  void deleteSelectedImages() {
-    if (_angle == null) return;
-    final list = _imagesMap[_angle!] ?? [];
-    for (final url in _selectedImages) {
-      list.remove(url);
-      onImageDeleted?.call(_angle!, url);
-    }
-    _imagesMap[_angle!] = list;
-    _selectedImages.clear();
-    notifyListeners();
-  }
-
-  void _onServerImagesUpdated() {
-    final data = serverImagesNotifier?.value;
-    if (data != null && data.isNotEmpty) syncImages(data);
-  }
-
-  @override
-  void dispose() {
-    serverImagesNotifier?.removeListener(_onServerImagesUpdated);
-    super.dispose();
   }
 }

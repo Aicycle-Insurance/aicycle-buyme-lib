@@ -1,25 +1,29 @@
-class BuyFolderModel {
-  final String? id;
-  final String? buyFolderId;
-  final String? claimId;
+class BuyMeFolderModel {
+  final int? claimId;
 
-  BuyFolderModel({this.id, this.buyFolderId, this.claimId});
+  BuyMeFolderModel({this.claimId});
 
-  factory BuyFolderModel.fromJson(Map<String, dynamic> json) {
-    return BuyFolderModel(
-      id: json['id']?.toString(),
-      buyFolderId: json['buyFolderId']?.toString(),
-      claimId: json['claimId']?.toString(),
+  factory BuyMeFolderModel.fromJson(Map<String, dynamic> json) {
+    return BuyMeFolderModel(
+      claimId: int.tryParse(json['claimId']?.toString() ?? ''),
     );
   }
 
-  /// Parses a response that might be a List or a Map
-  factory BuyFolderModel.fromDynamic(dynamic data) {
-    if (data is List && data.isNotEmpty) {
-      return BuyFolderModel.fromJson(data[0]);
-    } else if (data is Map<String, dynamic>) {
-      return BuyFolderModel.fromJson(data);
+  /// Parses a response that might be a List or a Map, or wrapped in a 'data' field.
+  factory BuyMeFolderModel.fromDynamic(dynamic data) {
+    if (data is Map<String, dynamic> && data.containsKey('data')) {
+      final innerData = data['data'];
+      if (innerData is List && innerData.isNotEmpty) {
+        return BuyMeFolderModel.fromJson(innerData[0] as Map<String, dynamic>);
+      }
+      return BuyMeFolderModel.fromJson(innerData as Map<String, dynamic>);
     }
-    return BuyFolderModel();
+
+    if (data is List && data.isNotEmpty) {
+      return BuyMeFolderModel.fromJson(data[0] as Map<String, dynamic>);
+    } else if (data is Map<String, dynamic>) {
+      return BuyMeFolderModel.fromJson(data);
+    }
+    return BuyMeFolderModel();
   }
 }

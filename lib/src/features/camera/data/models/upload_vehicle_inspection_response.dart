@@ -5,6 +5,8 @@ class UploadVehicleInspectionResponse {
   final int? vehicleInspectionOcrId;
   final String? carCompany;
   final String? carModel;
+  final int? imageId;
+  final String? imgUrl;
 
   UploadVehicleInspectionResponse({
     this.errorCodeFromEngine,
@@ -13,6 +15,8 @@ class UploadVehicleInspectionResponse {
     this.vehicleInspectionOcrId,
     this.carCompany,
     this.carModel,
+    this.imageId,
+    this.imgUrl,
   });
 
   factory UploadVehicleInspectionResponse.fromJson(Map<String, dynamic> json) {
@@ -23,6 +27,15 @@ class UploadVehicleInspectionResponse {
       vehicleInspectionOcrId: json['vehicleInspectionOcrId'] as int?,
       carCompany: json['carCompany'] as String?,
       carModel: json['carModel'] as String?,
+      imageId:
+          json['imageId'] ??
+          json['stampImageId'] ??
+          json['vehicleInspectionOcrId'] ??
+          json['taploImageId'] ??
+          json['vinImageId'] as int?,
+      imgUrl: json.containsKey('result')
+          ? (json['result'] as Map<String, dynamic>)['imgUrl'] as String?
+          : null,
     );
   }
 
@@ -36,6 +49,8 @@ class UploadVehicleInspectionResponse {
         'vehicleInspectionOcrId': vehicleInspectionOcrId,
       if (carCompany != null) 'carCompany': carCompany,
       if (carModel != null) 'carModel': carModel,
+      if (imageId != null) 'imageId': imageId,
+      if (imgUrl != null) 'imgUrl': imgUrl,
     };
   }
 }

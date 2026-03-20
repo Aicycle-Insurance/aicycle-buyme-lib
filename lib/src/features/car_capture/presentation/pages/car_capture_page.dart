@@ -1,5 +1,5 @@
-import 'package:aicycle_buyme_plus/aicycle_buyme_plus.dart';
 import 'package:aicycle_buyme_plus/gen/assets.gen.dart';
+import 'package:aicycle_buyme_plus/src/core/di/injection.dart';
 import 'package:aicycle_buyme_plus/src/core/theme/app_colors.dart';
 import 'package:aicycle_buyme_plus/src/core/theme/app_strings.dart';
 import 'package:aicycle_buyme_plus/src/core/theme/app_text_styles.dart';
@@ -12,53 +12,17 @@ import '../widgets/corner_button.dart';
 /// Page displaying a 3D vehicle model with interactive hotspots (dots) for each capture angle.
 /// Acts as the entry point for the exterior photo capture flow.
 class CarCapturePage extends StatefulWidget {
-  const CarCapturePage({
-    super.key,
-    this.onImageAdded,
-    this.onImageDeleted,
-    this.imagesMap = const {},
-    this.carCaptureController,
-  });
-
-  final Function(AicycleCarAngle, String)? onImageAdded;
-  final Function(AicycleCarAngle, String)? onImageDeleted;
-  final Map<AicycleCarAngle, List<String>> imagesMap;
-
-  /// Controller được inject từ ngoài (BuyMeController).
-  /// Nếu null, page tự khởi tạo với [imagesMap].
-  final CarCaptureController? carCaptureController;
+  const CarCapturePage({super.key});
 
   @override
   State<CarCapturePage> createState() => _CarCapturePageState();
 }
 
 class _CarCapturePageState extends State<CarCapturePage> {
-  late final CarCaptureController _controller;
-
-  @override
-  void initState() {
-    super.initState();
-    // Dùng controller được inject nếu có, ngược lại tự tạo mới.
-    _controller =
-        widget.carCaptureController ??
-        CarCaptureController(
-          initialImages: widget.imagesMap,
-          onImageAdded: widget.onImageAdded,
-          onImageDeleted: widget.onImageDeleted,
-        );
-  }
-
-  @override
-  void dispose() {
-    // Chỉ dispose nếu controller do page tự tạo, không dispose controller được inject.
-    if (widget.carCaptureController == null) _controller.dispose();
-    super.dispose();
-  }
-
   @override
   Widget build(BuildContext context) {
     return ListenableBuilder(
-      listenable: _controller,
+      listenable: sl.vehicleImageVault,
       builder: (context, _) {
         return Scaffold(
           backgroundColor: AppColors.background,
@@ -82,16 +46,11 @@ class _CarCapturePageState extends State<CarCapturePage> {
                         width: 200.w,
                       ),
                     ),
-                    ...CarCaptureController.supportedAngle.map((corner) {
+                    ...CarCaptureController.supportedAngle.map((angle) {
                       return Positioned(
-                        left: CarCaptureController.getLeftPosition(corner).w,
-                        top: CarCaptureController.getTopPosition(corner).h,
-                        child: CornerButton(
-                          controller: _controller,
-                          corner: corner,
-                          onImageAdded: widget.onImageAdded,
-                          onImageDeleted: widget.onImageDeleted,
-                        ),
+                        left: CarCaptureController.getLeftPosition(angle).w,
+                        top: CarCaptureController.getTopPosition(angle).h,
+                        child: CornerButton(angle: angle),
                       );
                     }),
                   ],

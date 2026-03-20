@@ -32,14 +32,17 @@ enum AicycleCarAngle {
   // /// Góc tem đăng kiểm
   regStamp,
 
-  // /// Góc số khung
+  /// Góc số khung
   vinNumber,
 
-  // /// Góc taplo
+  /// Góc taplo
   taplo,
 
-  // /// Tổng thể
+  /// Tổng thể
   regCert,
+
+  /// Góc ngoại thất - dùng cho capture nhiều góc ngoại thất liên tiếp.
+  exterior,
 }
 
 const Map<AicycleCarAngle, String> _kdefaultCarCornersWithDisplayName = {

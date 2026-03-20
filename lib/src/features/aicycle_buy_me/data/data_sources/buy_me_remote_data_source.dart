@@ -4,8 +4,8 @@ import '../models/buy_folder_model.dart';
 import '../models/directional_image_model.dart';
 
 abstract class BuyMeRemoteDataSource {
-  Future<BuyFolderModel> createBuyFolder(Map<String, dynamic> data);
-  Future<BuyFolderModel> getDuplicateFolder(String externalId);
+  Future<BuyMeFolderModel> createBuyFolder(Map<String, dynamic> data);
+  Future<BuyMeFolderModel> getDuplicateFolder(String externalId);
   Future<List<DirectionalImageModel>> getDirectionalImages({
     required String claimId,
     required String angleId,
@@ -18,21 +18,21 @@ class BuyMeRemoteDataSourceImpl implements BuyMeRemoteDataSource {
   BuyMeRemoteDataSourceImpl(this._dioClient);
 
   @override
-  Future<BuyFolderModel> createBuyFolder(Map<String, dynamic> data) async {
+  Future<BuyMeFolderModel> createBuyFolder(Map<String, dynamic> data) async {
     final response = await _dioClient.post<dynamic>(
       ApiEndpoints.createClaimDocument,
       data: data,
     );
-    return BuyFolderModel.fromDynamic(response);
+    return BuyMeFolderModel.fromDynamic(response);
   }
 
   @override
-  Future<BuyFolderModel> getDuplicateFolder(String externalId) async {
+  Future<BuyMeFolderModel> getDuplicateFolder(String externalId) async {
     final response = await _dioClient.get<dynamic>(
       ApiEndpoints.createClaimDocument,
       queryParameters: {'externalClaimId': externalId},
     );
-    return BuyFolderModel.fromDynamic(response);
+    return BuyMeFolderModel.fromDynamic(response);
   }
 
   @override

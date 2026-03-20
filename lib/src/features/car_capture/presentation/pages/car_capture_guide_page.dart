@@ -1,6 +1,5 @@
-import 'dart:io';
-
 import 'package:aicycle_buyme_plus/aicycle_buyme_plus.dart';
+import 'package:aicycle_buyme_plus/src/core/di/injection.dart';
 import 'package:aicycle_buyme_plus/src/core/theme/app_strings.dart';
 import 'package:aicycle_buyme_plus/src/core/utils/screen_utils.dart';
 import 'package:aicycle_buyme_plus/src/core/widgets/app_checkbox.dart';
@@ -15,20 +14,8 @@ import '../controllers/car_capture_controller.dart';
 import '../widgets/guide_page_bottom_bar.dart';
 
 class CarCaptureGuidePage extends StatefulWidget {
-  const CarCaptureGuidePage({
-    super.key,
-    required this.controller,
-    required this.corner,
-    this.images = const [],
-    this.onImageAdded,
-    this.onImageDeleted,
-  });
-
-  final CarCaptureController controller;
-  final AicycleCarAngle corner;
-  final List<String> images;
-  final Function(AicycleCarAngle, String)? onImageAdded;
-  final Function(AicycleCarAngle, String)? onImageDeleted;
+  const CarCaptureGuidePage({super.key, required this.angle});
+  final AicycleCarAngle angle;
 
   @override
   State<CarCaptureGuidePage> createState() => _CarCaptureGuidePageState();
@@ -40,7 +27,13 @@ class _CarCaptureGuidePageState extends State<CarCaptureGuidePage> {
   @override
   void initState() {
     super.initState();
-    controller = widget.controller;
+    controller = CarCaptureController(widget.angle);
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
   }
 
   Widget _buildSampleImage(String imagePath) {
@@ -55,12 +48,13 @@ class _CarCaptureGuidePageState extends State<CarCaptureGuidePage> {
     );
   }
 
-  Widget _buildCapturedImages(String url) {
+  Widget _buildCapturedImages(String? url) {
+    if (url == null) return const SizedBox.shrink();
     return ListenableBuilder(
-      listenable: controller,
+      listenable: sl.vehicleImageVault,
       builder: (context, child) {
         return GestureDetector(
-          onTap: () => controller.toggleImageSelection(url),
+          onTap: () => sl.vehicleImageVault.toggleImageSelection(url),
           child: Container(
             width: double.infinity,
             decoration: BoxDecoration(
@@ -70,26 +64,19 @@ class _CarCaptureGuidePageState extends State<CarCaptureGuidePage> {
               borderRadius: BorderRadius.circular(16.r),
               child: Stack(
                 children: [
-                  if (url.startsWith('http'))
-                    CachedNetworkImage(
-                      imageUrl: url,
-                      fit: BoxFit.cover,
-                      width: double.infinity,
-                    )
-                  else
-                    Image.file(
-                      File(url),
-                      fit: BoxFit.cover,
-                      width: double.infinity,
-                    ),
+                  CachedNetworkImage(
+                    imageUrl: url,
+                    fit: BoxFit.cover,
+                    width: double.infinity,
+                  ),
                   Positioned(
                     right: 8,
                     top: 8,
                     child: AppCheckbox(
                       size: 16.h,
-                      value: controller.isSelected(url),
+                      value: sl.vehicleImageVault.isSelected(url),
                       onChanged: (value) =>
-                          controller.toggleImageSelection(url),
+                          sl.vehicleImageVault.toggleImageSelection(url),
                     ),
                   ),
                 ],
@@ -104,17 +91,21 @@ class _CarCaptureGuidePageState extends State<CarCaptureGuidePage> {
   void _showDeleteConfirmationDialog() {
     DeleteConfirmDialog.show(
       context: context,
-      title: AppStrings.deleteImageTitle(controller.selectedImages.length),
+      title: AppStrings.deleteImageTitle(
+        sl.vehicleImageVault.selectedImages.length,
+      ),
       message: AppStrings.deleteImageMessage,
-      onDeleteTapped: controller.deleteSelectedImages,
+      onDeleteTapped: sl.vehicleImageVault.deleteSelectedImages,
     );
   }
 
   @override
   Widget build(BuildContext context) {
     return ListenableBuilder(
-      listenable: controller,
+      listenable: sl.vehicleImageVault,
       builder: (context, child) {
+        final images = sl.vehicleImageVault.getImagesForAngle(widget.angle);
+        final showDeleteButton = sl.vehicleImageVault.selectedImages.isNotEmpty;
         return Scaffold(
           backgroundColor: AppColors.background,
           appBar: AppBar(
@@ -122,7 +113,7 @@ class _CarCaptureGuidePageState extends State<CarCaptureGuidePage> {
             surfaceTintColor: Colors.transparent,
             actions: [
               Visibility(
-                visible: controller.showDeleteButton,
+                visible: showDeleteButton,
                 child: IconButton(
                   icon: Image.asset(
                     Assets.images.icTrash01.path,
@@ -160,7 +151,7 @@ class _CarCaptureGuidePageState extends State<CarCaptureGuidePage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      if (controller.images.isEmpty) ...[
+                      if (images.isEmpty) ...[
                         Text(
                           AppStrings.samplePhoto,
                           style: AppTextStyles.body12Medium,
@@ -171,28 +162,26 @@ class _CarCaptureGuidePageState extends State<CarCaptureGuidePage> {
                         shrinkWrap: true,
                         physics: NeverScrollableScrollPhysics(),
                         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: controller.images.isEmpty
+                          crossAxisCount: images.isEmpty
                               ? (controller.sampleImages.length > 1 ? 2 : 1)
-                              : (controller.images.length > 1 ? 2 : 1),
+                              : (images.length > 1 ? 2 : 1),
                           crossAxisSpacing: 8,
                           mainAxisSpacing: 8,
-                          childAspectRatio: controller.images.isEmpty
+                          childAspectRatio: images.isEmpty
                               ? (controller.sampleImages.length > 1
                                     ? 176 / 160
                                     : 361 / 244)
-                              : (controller.images.length > 1
-                                    ? 176 / 160
-                                    : 361 / 244),
+                              : (images.length > 1 ? 176 / 160 : 361 / 244),
                         ),
-                        itemCount: controller.images.isEmpty
+                        itemCount: images.isEmpty
                             ? controller.sampleImages.length
-                            : controller.images.length,
+                            : images.length,
                         itemBuilder: (context, index) {
-                          return controller.images.isEmpty
+                          return images.isEmpty
                               ? _buildSampleImage(
                                   controller.sampleImages[index],
                                 )
-                              : _buildCapturedImages(controller.images[index]);
+                              : _buildCapturedImages(images[index].imageUrl);
                         },
                       ),
                     ],
@@ -201,7 +190,7 @@ class _CarCaptureGuidePageState extends State<CarCaptureGuidePage> {
               ),
             ],
           ),
-          bottomNavigationBar: GuidePageBottomBar(controller: controller),
+          bottomNavigationBar: GuidePageBottomBar(angle: widget.angle),
         );
       },
     );
