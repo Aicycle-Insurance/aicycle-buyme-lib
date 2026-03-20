@@ -108,6 +108,18 @@ class BuyMePage extends StatelessWidget {
                                   type: CarCaptureSectionType.exterior,
                                   images: controller.exteriorImageUrls,
                                   imagesMap: controller.exteriorImageUrlsMap,
+                                  onImageAdded: (angle, path) =>
+                                      controller.addImage(
+                                        CarCaptureSectionType.exterior,
+                                        path,
+                                        vehicleAngle: angle,
+                                      ),
+                                  onImageDeleted: (angle, path) =>
+                                      controller.removeImage(
+                                        CarCaptureSectionType.exterior,
+                                        vehicleAngle: angle,
+                                        path: path,
+                                      ),
                                 ),
                               ),
                               Expanded(child: SizedBox()),

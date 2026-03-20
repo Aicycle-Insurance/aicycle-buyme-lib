@@ -18,4 +18,20 @@ class ImageRepositoryImpl implements ImageRepository {
     );
     return response.toEntity();
   }
+
+  @override
+  Future<UploadVehicleInspection> uploadImage({
+    required String imagePath,
+    required String claimId,
+    String? angleId,
+    bool isFramedPhoto = false,
+  }) async {
+    final response = await _remoteDataSource.uploadImage(
+      imagePath: imagePath,
+      claimId: claimId,
+      angleId: angleId,
+      isFramedPhoto: isFramedPhoto,
+    );
+    return response.toEntity();
+  }
 }

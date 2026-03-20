@@ -180,12 +180,16 @@ class _CameraPageState extends State<CameraPage> {
                                     if (_controller.capturedImage != null)
                                       PhotoPreview(
                                         image: _controller.capturedImage!,
+                                        isUploading: _controller.isUploading,
                                         onRetake: _controller.retake,
                                         onSave: () async {
                                           await _controller.upload(
                                             onSuccess: () {
                                               if (mounted) {
-                                                Navigator.pop(context);
+                                                Navigator.pop(
+                                                  context,
+                                                  _controller.capturedImage,
+                                                );
                                               }
                                             },
                                             onWarning: _onWarning,

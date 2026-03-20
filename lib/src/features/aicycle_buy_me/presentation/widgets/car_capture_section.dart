@@ -117,7 +117,17 @@ class CarCaptureSection extends StatelessWidget {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => GuideLinePage(guideType: guideType),
+        builder: (context) => GuideLinePage(
+          guideType: guideType,
+          onImageCaptured: (file) {
+            final idx = images.isEmpty
+                ? 0
+                : (images.length < numberImageContainer
+                      ? images.length
+                      : numberImageContainer - 1);
+            onImageCaptured?.call(file, idx);
+          },
+        ),
       ),
     );
   }

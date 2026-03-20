@@ -17,6 +17,7 @@ class CommonValidationDialog {
   }) {
     showDialog(
       context: context,
+      barrierDismissible: false,
       builder: (context) {
         final isLandscape = quarterTurns == 1 || quarterTurns == 3;
         return RotatedBox(
@@ -89,11 +90,21 @@ class ValidationDialog extends StatelessWidget {
             const SizedBox(height: 16),
 
             /// Title
-            Text(title, style: AppTextStyles.headingSemiBold),
+            Text(
+              title,
+              style: AppTextStyles.headingSemiBold,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
             const SizedBox(height: 8),
 
             /// Message
-            Text(message, style: AppTextStyles.bodyRegular),
+            Text(
+              message,
+              style: AppTextStyles.bodyRegular,
+              maxLines: 3,
+              overflow: TextOverflow.ellipsis,
+            ),
             const SizedBox(height: 24),
 
             /// Buttons

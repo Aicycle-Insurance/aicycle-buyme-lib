@@ -1,9 +1,12 @@
 import 'package:aicycle_buyme_plus/src/core/utils/screen_utils.dart';
+import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 
 import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_strings.dart';
 import '../../../core/theme/app_text_styles.dart';
+import 'package:aicycle_buyme_plus/aicycle_buyme_plus.dart';
+import '../../camera/presentation/pages/camera_page.dart';
 import '../domain/entities/guide.dart';
 import 'guide_constants.dart';
 
@@ -11,8 +14,13 @@ enum GuideType { vinNumber, regStamp, regCert, taplo }
 
 class GuideLinePage extends StatelessWidget {
   final GuideType guideType;
+  final Function(XFile file)? onImageCaptured;
 
-  const GuideLinePage({super.key, required this.guideType});
+  const GuideLinePage({
+    super.key,
+    required this.guideType,
+    this.onImageCaptured,
+  });
 
   Guide get _guide => {
     GuideType.vinNumber: GuideConstants.vinNumberGuide,
@@ -109,8 +117,33 @@ class GuideLinePage extends StatelessWidget {
     return Text(title, style: AppTextStyles.heading2);
   }
 
-  void _gotoCameraPage(BuildContext context) {
-    // TODO:
+  AicycleCarAngle get _vehicleAngle {
+    switch (guideType) {
+      case GuideType.vinNumber:
+        return AicycleCarAngle.vinNumber;
+      case GuideType.regStamp:
+        return AicycleCarAngle.regStamp;
+      case GuideType.regCert:
+        return AicycleCarAngle.regCert;
+      case GuideType.taplo:
+        return AicycleCarAngle.taplo;
+    }
+  }
+
+  void _gotoCameraPage(BuildContext context) async {
+    final result = await Navigator.push<XFile?>(
+      context,
+      MaterialPageRoute(
+        builder: (context) =>
+            CameraPage(args: CameraArgs(vehicleAngle: _vehicleAngle)),
+      ),
+    );
+    if (result != null) {
+      onImageCaptured?.call(result);
+      if (context.mounted) {
+        Navigator.pop(context);
+      }
+    }
   }
 
   @override

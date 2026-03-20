@@ -5,4 +5,11 @@ abstract class ImageRepository {
     required String imagePath,
     required String claimId,
   });
+
+  Future<UploadVehicleInspection> uploadImage({
+    required String imagePath,
+    required String claimId,
+    String? angleId,
+    bool isFramedPhoto = false,
+  });
 }

@@ -17,7 +17,10 @@ class GuidePageBottomBar extends StatelessWidget {
   void _goToCameraPage(BuildContext context) async {
     final result = await Navigator.push<XXFile>(
       context,
-      MaterialPageRoute(builder: (context) => CameraPage(args: CameraArgs())),
+      MaterialPageRoute(
+        builder: (context) =>
+            CameraPage(args: CameraArgs(vehicleAngle: controller.angle)),
+      ),
     );
     if (result != null) {
       controller.addImage(result);

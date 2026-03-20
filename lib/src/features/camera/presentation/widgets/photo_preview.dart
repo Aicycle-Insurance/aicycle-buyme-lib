@@ -15,11 +15,13 @@ class PhotoPreview extends StatelessWidget {
     required this.image,
     required this.onRetake,
     required this.onSave,
+    this.isUploading = false,
   });
 
   final XXFile image;
   final VoidCallback onRetake;
   final VoidCallback onSave;
+  final bool isUploading;
 
   int get turns {
     switch (image.orientation) {
@@ -63,19 +65,21 @@ class PhotoPreview extends StatelessWidget {
                   children: [
                     /// Button Chụp lại
                     InkWell(
-                      onTap: onRetake,
+                      onTap: isUploading ? null : onRetake,
                       child: Container(
                         height: 40.h,
                         width: 115.h,
                         decoration: BoxDecoration(
-                          color: Colors.white,
+                          color: isUploading ? Colors.grey : Colors.white,
                           borderRadius: BorderRadius.circular(8.r),
                         ),
                         child: Center(
                           child: Text(
                             AppStrings.btnRetake,
                             style: AppTextStyles.button.copyWith(
-                              color: AppColors.textPrimary,
+                              color: isUploading
+                                  ? Colors.white
+                                  : AppColors.textPrimary,
                             ),
                           ),
                         ),
@@ -85,19 +89,30 @@ class PhotoPreview extends StatelessWidget {
 
                     /// Button Lưu
                     InkWell(
-                      onTap: onSave,
+                      onTap: isUploading ? null : onSave,
                       child: Container(
                         height: 40.h,
                         width: 115.h,
                         decoration: BoxDecoration(
-                          color: AppColors.primary,
+                          color: isUploading
+                              ? AppColors.primary.withValues(alpha: 0.5)
+                              : AppColors.primary,
                           borderRadius: BorderRadius.circular(8.r),
                         ),
                         child: Center(
-                          child: Text(
-                            AppStrings.btnSave,
-                            style: AppTextStyles.button,
-                          ),
+                          child: isUploading
+                              ? SizedBox(
+                                  width: 20.r,
+                                  height: 20.r,
+                                  child: const CircularProgressIndicator(
+                                    color: Colors.white,
+                                    strokeWidth: 2,
+                                  ),
+                                )
+                              : Text(
+                                  AppStrings.btnSave,
+                                  style: AppTextStyles.button,
+                                ),
                         ),
                       ),
                     ),

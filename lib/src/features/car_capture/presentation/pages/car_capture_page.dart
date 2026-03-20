@@ -23,6 +23,7 @@ class CarCapturePage extends StatefulWidget {
   final Function(AicycleCarAngle, String)? onImageAdded;
   final Function(AicycleCarAngle, String)? onImageDeleted;
   final Map<AicycleCarAngle, List<String>> imagesMap;
+
   /// Controller được inject từ ngoài (BuyMeController).
   /// Nếu null, page tự khởi tạo với [imagesMap].
   final CarCaptureController? carCaptureController;
@@ -38,7 +39,8 @@ class _CarCapturePageState extends State<CarCapturePage> {
   void initState() {
     super.initState();
     // Dùng controller được inject nếu có, ngược lại tự tạo mới.
-    _controller = widget.carCaptureController ??
+    _controller =
+        widget.carCaptureController ??
         CarCaptureController(
           initialImages: widget.imagesMap,
           onImageAdded: widget.onImageAdded,

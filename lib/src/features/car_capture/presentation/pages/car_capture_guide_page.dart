@@ -43,7 +43,6 @@ class _CarCaptureGuidePageState extends State<CarCaptureGuidePage> {
     controller = widget.controller;
   }
 
-
   Widget _buildSampleImage(String imagePath) {
     return Container(
       width: double.infinity,

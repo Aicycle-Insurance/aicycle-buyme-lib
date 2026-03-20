@@ -7,6 +7,7 @@ import '../../features/aicycle_buy_me/domain/use_cases/get_directional_image_use
 import '../../features/camera/data/data_source/image_remote_data_source.dart';
 import '../../features/camera/data/repositories/image_repository_impl.dart';
 import '../../features/camera/domain/repositories/image_respository.dart';
+import '../../features/camera/domain/usecases/upload_image_use_case.dart';
 import '../../features/camera/domain/usecases/upload_vehicle_inspection_use_case.dart';
 
 import '../utils/logger.dart';
@@ -48,6 +49,10 @@ class AiCycleInjection {
 
   late final UploadVehicleInspectionUseCase uploadVehicleInspectionUseCase =
       UploadVehicleInspectionUseCase(_imageRepository);
+
+  late final UploadImageUseCase uploadImageUseCase = UploadImageUseCase(
+    _imageRepository,
+  );
 }
 
 /// Global instance for accessing dependencies.

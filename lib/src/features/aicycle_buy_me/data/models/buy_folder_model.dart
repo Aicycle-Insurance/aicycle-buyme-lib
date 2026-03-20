@@ -3,11 +3,7 @@ class BuyFolderModel {
   final String? buyFolderId;
   final String? claimId;
 
-  BuyFolderModel({
-    this.id,
-    this.buyFolderId,
-    this.claimId,
-  });
+  BuyFolderModel({this.id, this.buyFolderId, this.claimId});
 
   factory BuyFolderModel.fromJson(Map<String, dynamic> json) {
     return BuyFolderModel(

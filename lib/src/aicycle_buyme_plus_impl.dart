@@ -55,9 +55,7 @@ class _AiCycleBuyMeState extends State<AiCycleBuyMe> {
   void initState() {
     super.initState();
     // Lock orientation to portrait when using the package
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.portraitUp,
-    ]);
+    SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
     _controller = BuyMeController();
     _controller.addListener(_onStatusChanged);
     _controller.init(widget.aiCycleConfig);

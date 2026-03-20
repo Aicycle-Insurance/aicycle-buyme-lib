@@ -3,6 +3,7 @@ import 'package:aicycle_buyme_plus/src/core/di/injection.dart';
 import 'package:aicycle_buyme_plus/src/core/utils/image_utils.dart';
 import 'package:aicycle_buyme_plus/src/core/extension/xx_file.dart';
 import 'package:aicycle_buyme_plus/src/core/utils/internal_cache.dart';
+import 'package:aicycle_buyme_plus/src/features/camera/domain/usecases/upload_image_use_case.dart';
 import 'package:aicycle_buyme_plus/src/features/camera/domain/usecases/upload_vehicle_inspection_use_case.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
@@ -10,6 +11,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:native_device_orientation/native_device_orientation.dart';
 
 import '../../../../core/error/exceptions.dart';
+import '../../../../core/extension/car_angle_ext.dart';
 
 enum CameraStatus { initial, initializing, ready, error }
 
@@ -144,7 +146,7 @@ class XCameraController extends ChangeNotifier {
       if (angle == AicycleCarAngle.regCert) {
         await _uploadRegCert();
       } else {
-        // TODO: upload for other angles
+        await _uploadRegularImage();
       }
 
       _setUploading(false);
@@ -174,6 +176,25 @@ class XCameraController extends ChangeNotifier {
       UploadVehicleInspectionParams(
         imagePath: _capturedImage!.path,
         claimId: claimId,
+      ),
+    );
+  }
+
+  Future<void> _uploadRegularImage() async {
+    final claimId = InternalCache.folderId ?? '';
+    final bool isFramedPhoto =
+        angle != null &&
+        angle != AicycleCarAngle.regCert &&
+        angle != AicycleCarAngle.regStamp &&
+        angle != AicycleCarAngle.vinNumber &&
+        angle != AicycleCarAngle.taplo;
+
+    await sl.uploadImageUseCase(
+      UploadImageParams(
+        imagePath: _capturedImage!.path,
+        claimId: claimId,
+        angleId: angle?.id,
+        isFramedPhoto: isFramedPhoto,
       ),
     );
   }
