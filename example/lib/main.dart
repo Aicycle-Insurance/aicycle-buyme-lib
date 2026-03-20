@@ -39,10 +39,13 @@ class ExampleHomePage extends StatelessWidget {
                 MaterialPageRoute(
                   builder: (context) => AiCycleBuyMe(
                     aiCycleConfig: AiCycleConfig(
-                      apiToken:
-                          '61a688:b97cd78259f945de8672bba778cdf67ff8ce214b59104fe588ab78dffe438ec2',
-                      documentId: '1234',
-                      environment: AiCycleEnvironment.stage,
+                      generalConfig: GeneralConfig(
+                        apiToken:
+                            '61a688:b97cd78259f945de8672bba778cdf67ff8ce214b59104fe588ab78dffe438ec2',
+                        documentId: '1234',
+                        environment: AiCycleEnvironment.stage,
+                        organization: AiCycleOrg.partner,
+                      ),
                       carInformation: CarInformation(
                         brand: 'TOYOTA',
                         model: 'VIOS',

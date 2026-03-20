@@ -4,7 +4,7 @@ import 'aicycle_config.dart';
 /// This prevents end-users from seeing these URLs in their IDE autocomplete.
 extension AiCycleConfigInternal on AiCycleConfig {
   String get baseUrl {
-    switch (environment) {
+    switch (generalConfig.environment) {
       case AiCycleEnvironment.develop:
         return 'https://dev.api.aicycle.ai/insurance';
       case AiCycleEnvironment.stage:
@@ -15,7 +15,7 @@ extension AiCycleConfigInternal on AiCycleConfig {
   }
 
   String get adminBaseUrl {
-    switch (environment) {
+    switch (generalConfig.environment) {
       case AiCycleEnvironment.develop:
         return 'https://dev.api.aicycle.ai/admin';
       case AiCycleEnvironment.stage:

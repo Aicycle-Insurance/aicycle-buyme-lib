@@ -2,6 +2,8 @@ import 'package:aicycle_buyme_plus/src/core/theme/app_strings.dart';
 
 enum AiCycleEnvironment { develop, stage, production }
 
+enum AiCycleOrg { aicycle, partner, others }
+
 enum AicycleCarAngle {
   /// Góc trước
   front,
@@ -55,6 +57,25 @@ const Map<AicycleCarAngle, String> _kdefaultCarCornersWithDisplayName = {
 
 /// Public configuration for the AiCycle BuyMe SDK.
 class AiCycleConfig {
+  /// Thông tin xe
+  final CarInformation carInformation;
+
+  /// Cấu hình validation
+  final ValidationConfig? validationConfig;
+
+  final GeneralConfig generalConfig;
+
+  const AiCycleConfig({
+    required this.carInformation,
+    required this.generalConfig,
+    this.validationConfig = const ValidationConfig(
+      isPartOfCarValidation: true,
+      isTheSameCarValidation: true,
+    ),
+  });
+}
+
+class GeneralConfig {
   /// Token API
   final String apiToken;
 
@@ -67,32 +88,20 @@ class AiCycleConfig {
   /// Môi trường
   final AiCycleEnvironment environment;
 
-  /// Tên hiển thị của các góc xe
-  final Map<AicycleCarAngle, String>? carCornersWithDisplayName;
-
-  /// Thông tin xe
-  final CarInformation carInformation;
-
-  /// Cấu hình validation
-  final ValidationConfig? validationConfig;
-
   /// Hiển thị màn hình kết quả
   final bool? showResultScreen;
 
   /// Cho phép log hay không
   final bool loggingEnabled;
 
-  const AiCycleConfig({
+  final AiCycleOrg organization;
+
+  GeneralConfig({
     required this.apiToken,
     required this.documentId,
-    required this.carInformation,
-    this.documentName,
+    required this.organization,
     this.environment = AiCycleEnvironment.develop,
-    this.validationConfig = const ValidationConfig(
-      isPartOfCarValidation: true,
-      isTheSameCarValidation: true,
-    ),
-    this.carCornersWithDisplayName = _kdefaultCarCornersWithDisplayName,
+    this.documentName,
     this.showResultScreen = true,
     this.loggingEnabled = true,
   });
@@ -122,6 +131,9 @@ class CarInformation {
   /// Dạng hex #RRGGBB
   final String? color;
 
+  /// Tên hiển thị của các góc xe
+  final Map<AicycleCarAngle, String>? carCornersWithDisplayName;
+
   CarInformation({
     required this.brand,
     required this.model,
@@ -130,6 +142,7 @@ class CarInformation {
     required this.licensePlate,
     this.vehicleType,
     this.color,
+    this.carCornersWithDisplayName = _kdefaultCarCornersWithDisplayName,
   });
 }
 

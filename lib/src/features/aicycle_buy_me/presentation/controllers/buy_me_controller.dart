@@ -193,8 +193,10 @@ class BuyMeController extends ChangeNotifier {
 
       await _createBuyMeFolderUseCase(
         CreateBuyMeFolderParams(
-          externalClaimId: config.documentId,
-          claimName: config.documentName ?? config.documentId,
+          externalClaimId: config.generalConfig.documentId,
+          claimName:
+              config.generalConfig.documentName ??
+              config.generalConfig.documentId,
           vehicleBrandId: '5',
           priceTypeId: 10,
           isClaim: false,

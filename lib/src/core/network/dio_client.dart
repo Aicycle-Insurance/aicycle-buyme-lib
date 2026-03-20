@@ -28,7 +28,24 @@ class DioClient {
           try {
             final config = AiCycleBuyMe.config;
             options.baseUrl = config.baseUrl;
-            options.headers['Authorization'] = 'Bearer ${config.apiToken}';
+            options.headers['Authorization'] =
+                'Bearer ${config.generalConfig.apiToken}';
+            String? xApp;
+
+            switch (config.generalConfig.organization) {
+              case AiCycleOrg.aicycle:
+                xApp = 'appDemo';
+                break;
+              case AiCycleOrg.partner:
+                xApp = 'api';
+                break;
+              default:
+                break;
+            }
+
+            if (xApp != null) {
+              options.headers['x-aicycle-application'] = xApp;
+            }
           } catch (_) {
             // Config not yet initialized
           }

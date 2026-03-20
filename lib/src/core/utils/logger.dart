@@ -25,7 +25,7 @@ class LoggerService {
     StackTrace? stackTrace,
   ]) {
     try {
-      if (AiCycleBuyMe.config.loggingEnabled) {
+      if (AiCycleBuyMe.config.generalConfig.loggingEnabled) {
         developer.log(
           message,
           name: 'AiCycle',
