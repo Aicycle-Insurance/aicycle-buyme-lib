@@ -76,14 +76,10 @@ class AiCycleConfig {
   /// Cấu hình hiển thị
   final DisplayConfig displayConfig;
 
-  /// Callback khi hoàn thành hố sơ
-  final Function(dynamic data)? onResultCallBack;
-
   const AiCycleConfig({
     required this.generalConfig,
     this.displayConfig = const DisplayConfig(),
     this.carInformation,
-    this.onResultCallBack,
     this.validationConfig = const ValidationConfig(
       missingPartValidation: true,
       sameCarValidation: true,

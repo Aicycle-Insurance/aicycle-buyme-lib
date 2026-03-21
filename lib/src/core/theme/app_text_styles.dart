@@ -72,6 +72,14 @@ class AppTextStyles {
     height: 20 / 14,
   );
 
+  static TextStyle get bodyMedium => TextStyle(
+    fontFamily: _fontFamily,
+    fontSize: 14.sp,
+    fontWeight: FontWeight.w500,
+    color: const Color(0xFF1F2738),
+    height: 20 / 14,
+  );
+
   static TextStyle get bodySemibold => TextStyle(
     fontFamily: _fontFamily,
     fontSize: 14.sp,
@@ -95,5 +103,13 @@ class AppTextStyles {
     fontWeight: FontWeight.w500,
     color: const Color(0xFF1F2738),
     height: 16 / 12,
+  );
+
+  static TextStyle get body10Regular => TextStyle(
+    fontFamily: _fontFamily,
+    fontSize: 10.sp,
+    fontWeight: FontWeight.w400,
+    color: const Color(0xFF7B8090),
+    height: 2,
   );
 }

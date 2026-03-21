@@ -29,4 +29,7 @@ class ApiEndpoints {
   /// Endpoint for get validation result.
   static const String getValidationResult =
       '/v2/claimfolders/directional-images/validate';
+
+  /// Endpoint for get vehicle info.
+  static const String getVehicleInfo = '/v2/claimfolders/car-info';
 }

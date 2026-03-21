@@ -19,13 +19,13 @@ class AiCycleBuyMe extends StatefulWidget {
 
   /// Callback when initialization succeeds.
   /// If provided, the widget will not automatically navigate to the default flow.
-  final VoidCallback? onSuccess;
+  final Function(dynamic data)? onComplete;
 
   const AiCycleBuyMe({
     super.key,
     required this.aiCycleConfig,
     this.onError,
-    this.onSuccess,
+    this.onComplete,
   });
 
   static AiCycleConfig? configInternal;
@@ -92,13 +92,15 @@ class _AiCycleBuyMeState extends State<AiCycleBuyMe> {
         builder: (context, child) {
           if (_controller.status == BuyMeStatus.loading ||
               _controller.status == BuyMeStatus.initial) {
-            return const Center(child: CircularProgressIndicator());
+            return widget.aiCycleConfig.displayConfig.loadingWidget ??
+                const Center(child: CircularProgressIndicator());
           }
 
           if (_controller.status == BuyMeStatus.success) {
             return BuyMePage(
               controller: _controller,
               config: widget.aiCycleConfig,
+              onComplete: widget.onComplete,
             );
           }
 

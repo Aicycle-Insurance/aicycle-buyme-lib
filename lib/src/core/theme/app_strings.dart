@@ -115,4 +115,12 @@ class AppStrings {
 
   static const String noSupportCarAngles =
       'Bạn đang cài đặt không hỗ trợ chụp góc xe nào. Vui lòng kiểm tra lại cấu hình.';
+
+  static const String documentResultTitle = 'Tổng quan';
+  static const String carInfo = 'Thông tin xe';
+  static const String licensePlate = 'Biển số xe';
+  static const String carBrand = 'Hãng xe';
+  static const String carModel = 'Hiệu xe';
+  static const String carColor = 'Màu xe';
+  static const String traveled = "Số KM đã đi";
 }

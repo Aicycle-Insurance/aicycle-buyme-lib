@@ -13,6 +13,10 @@ import '../../features/camera/domain/usecases/delete_image_use_case.dart';
 import '../../features/camera/domain/usecases/upload_image_use_case.dart';
 import '../../features/camera/domain/usecases/upload_vehicle_inspection_use_case.dart';
 
+import '../../features/document_result/data/data_source/document_result_remote_data_source.dart';
+import '../../features/document_result/data/repositories/document_result_repository_impl.dart';
+import '../../features/document_result/domain/repositories/document_result_repository.dart';
+import '../../features/document_result/domain/usecases/get_vehicle_info_use_case.dart';
 import '../utils/logger.dart';
 import '../../features/aicycle_buy_me/presentation/controllers/vehicle_image_vault.dart';
 
@@ -40,15 +44,18 @@ class AiCycleInjection {
       BuyMeRemoteDataSourceImpl(_dioClient);
   late final ImageRemoteDataSource _imageRemoteDataSource =
       ImageRemoteDataSourceImpl(_dioClient);
+  late final DocumentResultRemoteDataSource _documentResultRemoteDataSource =
+      DocumentResultRemoteDataSourceImpl(_dioClient);
 
   // --- Repositories ---
   late final BuyMeRepository _buyMeRepository = BuyMeRepositoryImpl(
     _buyMeRemoteDataSource,
   );
-
   late final ImageRepository _imageRepository = ImageRepositoryImpl(
     _imageRemoteDataSource,
   );
+  late final DocumentResultRepository _documentResultRepository =
+      DocumentResultRepositoryImpl(_documentResultRemoteDataSource);
 
   // --- Use Cases ---
   late final CreateBuyMeFolderUseCase createBuyMeFolderUseCase =
@@ -70,6 +77,9 @@ class AiCycleInjection {
 
   late final ValidateVehicleAngleUseCase validateVehicleAngleUseCase =
       ValidateVehicleAngleUseCase(_buyMeRepository);
+
+  late final GetVehicleInfoUseCase getVehicleInfoUseCase =
+      GetVehicleInfoUseCase(_documentResultRepository);
 }
 
 /// Global instance for accessing dependencies.

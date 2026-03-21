@@ -6,6 +6,7 @@ import '../../../../aicycle_buyme_plus.dart';
 import '../../../core/di/injection.dart';
 import '../../../core/theme/app_strings.dart';
 import '../../../core/theme/app_text_styles.dart';
+import '../../document_result/presentation/document_result_page.dart';
 import 'controllers/buy_me_controller.dart';
 import 'widgets/car_capture_guide.dart';
 import 'widgets/car_capture_section.dart';
@@ -13,7 +14,25 @@ import 'widgets/car_capture_section.dart';
 class BuyMePage extends StatelessWidget {
   final BuyMeController controller;
   final AiCycleConfig config;
-  const BuyMePage({super.key, required this.controller, required this.config});
+  final Function(dynamic data)? onComplete;
+
+  const BuyMePage({
+    super.key,
+    required this.controller,
+    required this.config,
+    this.onComplete,
+  });
+
+  void onSubmit(BuildContext context) {
+    if (config.generalConfig.showResultScreen == true) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const DocumentResultPage()),
+      );
+    } else {
+      controller.submit(onComplete);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -120,7 +139,7 @@ class BuyMePage extends StatelessWidget {
                         sl.validationVault.isHasImage &&
                         sl.validationVault.errorMessage?.isNotEmpty != true;
                     return ElevatedButton(
-                      onPressed: canSubmit ? controller.submit : null,
+                      onPressed: canSubmit ? () => onSubmit(context) : null,
                       style: ElevatedButton.styleFrom(
                         backgroundColor: AppColors.primary,
                         foregroundColor: Colors.white,

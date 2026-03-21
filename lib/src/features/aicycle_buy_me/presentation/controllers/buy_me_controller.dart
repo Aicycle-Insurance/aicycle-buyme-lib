@@ -78,8 +78,8 @@ class BuyMeController extends ChangeNotifier {
     notifyListeners();
   }
 
-  void submit() {
-    // TODO: implement submission logic
+  void submit(Function(dynamic data)? onComplete) {
+    // TODO: call api then call onComplete
   }
 
   // ─── Private helpers ──────────────────────────────────────────────────────
