@@ -50,9 +50,9 @@ class BuyMeController extends ChangeNotifier {
           vehicleBrandId: '5',
           priceTypeId: 10,
           isClaim: false,
-          brand: carInfo.brand,
+          brand: carInfo.carCompanyId,
           model: carInfo.model,
-          vehicleYear: carInfo.vehicleYear,
+          vehicleYear: carInfo.manufacturingYear,
           vehicleSpec: carInfo.vehicleSpec,
           licensePlate: carInfo.licensePlate,
           vehicleType: carInfo.vehicleType ?? 'truck',
@@ -86,7 +86,7 @@ class BuyMeController extends ChangeNotifier {
 
   /// Fetch ảnh của tất cả các góc cùng lúc (parallel), rồi phân loại.
   Future<void> _loadAllDirectionalImages() async {
-    final claimId = InternalCache.folderId ?? '';
+    final claimId = InternalCache.claimId ?? '';
     if (claimId.isEmpty) return;
 
     final results = await Future.wait(

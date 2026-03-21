@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:dio/dio.dart';
+import '../../../../../aicycle_buyme_plus.dart';
 import '../../../../core/error/exceptions.dart';
 import '../../../../core/network/api_endpoints.dart';
 import '../../../../core/network/dio_client.dart';
@@ -128,6 +129,7 @@ class ImageRemoteDataSourceImpl implements ImageRemoteDataSource {
     String? angleId,
     bool isFramedPhoto,
   ) async {
+    final config = AiCycleBuyMe.config;
     return _dioClient.post<dynamic>(
       ApiEndpoints.processImage,
       data: {
@@ -138,6 +140,9 @@ class ImageRemoteDataSourceImpl implements ImageRemoteDataSource {
         "direction": angleId ?? '45-phai-truoc-UoYzs6',
         "isValidate": true,
         "isFramedPhoto": isFramedPhoto,
+        "carCompany": config.carInformation.carCompanyId,
+        "carModel": config.carInformation.model,
+        "licensePlate": config.carInformation.licensePlate,
       },
     );
   }

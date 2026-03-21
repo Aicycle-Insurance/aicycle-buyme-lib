@@ -45,13 +45,15 @@ enum AicycleCarAngle {
   exterior,
 }
 
-const Map<AicycleCarAngle, String> _kdefaultCarCornersWithDisplayName = {
+const Map<AicycleCarAngle, String> _kDefaultCarAnglesWithDisplayName = {
   AicycleCarAngle.front: AppStrings.front,
   AicycleCarAngle.frontLeft: AppStrings.frontLeft,
   AicycleCarAngle.frontRight: AppStrings.frontRight,
   AicycleCarAngle.rear: AppStrings.rear,
   AicycleCarAngle.rearLeft: AppStrings.rearLeft,
   AicycleCarAngle.rearRight: AppStrings.rearRight,
+  AicycleCarAngle.left: AppStrings.left,
+  AicycleCarAngle.right: AppStrings.right,
   AicycleCarAngle.regStamp: AppStrings.regStamp,
   AicycleCarAngle.vinNumber: AppStrings.vinNumber,
   AicycleCarAngle.taplo: AppStrings.taplo,
@@ -111,14 +113,14 @@ class GeneralConfig {
 }
 
 class CarInformation {
-  /// Hãng xe (ví dụ: "mazda")
-  final String brand;
+  /// Hãng xe (ví dụ: "mazda-05")
+  final String carCompanyId;
 
   /// Dòng xe/Hiệu xe (ví dụ: "mazda.bt_50")
   final String model;
 
   /// Năm sản xuất (ví dụ: 2022)
-  final int? vehicleYear;
+  final int? manufacturingYear;
 
   /// Spec xe (ví dụ: "luxury_1_9l_4x2_at")
   final String? vehicleSpec;
@@ -135,17 +137,18 @@ class CarInformation {
   final String? color;
 
   /// Tên hiển thị của các góc xe
-  final Map<AicycleCarAngle, String>? carCornersWithDisplayName;
+  /// e.g: {AicycleCarAngle.front: 'Góc trước'}
+  final Map<AicycleCarAngle, String> carAnglesWithDisplayName;
 
   CarInformation({
-    required this.brand,
+    required this.carCompanyId,
     required this.model,
-    this.vehicleYear,
+    this.manufacturingYear,
     this.vehicleSpec,
     required this.licensePlate,
     this.vehicleType,
     this.color,
-    this.carCornersWithDisplayName = _kdefaultCarCornersWithDisplayName,
+    this.carAnglesWithDisplayName = _kDefaultCarAnglesWithDisplayName,
   });
 }
 

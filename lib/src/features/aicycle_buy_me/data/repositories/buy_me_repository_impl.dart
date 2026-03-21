@@ -59,7 +59,7 @@ class BuyMeRepositoryImpl implements BuyMeRepository {
 
   String _processResponse(BuyMeFolderModel model) {
     final id = model.claimId?.toString() ?? '';
-    InternalCache.folderId = id;
+    InternalCache.claimId = id;
     return id;
   }
 

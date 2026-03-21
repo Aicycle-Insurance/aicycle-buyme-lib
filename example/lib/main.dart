@@ -47,7 +47,7 @@ class ExampleHomePage extends StatelessWidget {
                         organization: AiCycleOrg.partner,
                       ),
                       carInformation: CarInformation(
-                        brand: 'TOYOTA',
+                        carCompanyId: 'TOYOTA',
                         model: 'VIOS',
                         licensePlate: '12A-345.67',
                         color: '#FFFFFF',

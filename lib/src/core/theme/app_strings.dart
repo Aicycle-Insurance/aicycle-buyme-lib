@@ -52,6 +52,8 @@ class AppStrings {
   static const String rear = "Góc sau";
   static const String rearLeft = "Góc sau bên trái";
   static const String rearRight = "Góc sau bên phải";
+  static const String left = "Góc sườn trái";
+  static const String right = "Góc sườn phải";
   static const String regStamp = "Góc tem đăng kiểm";
   static const String vinNumber = "Góc số khung";
   static const String taplo = "Góc taplo";
