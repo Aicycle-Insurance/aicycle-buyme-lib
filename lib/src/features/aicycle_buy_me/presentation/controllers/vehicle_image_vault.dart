@@ -1,23 +1,18 @@
 import 'package:flutter/foundation.dart';
 import '../../../../../aicycle_buyme_plus.dart';
+import '../../../../core/extension/car_angle_ext.dart';
+import '../../../camera/domain/usecases/delete_image_use_case.dart';
 import '../../domain/entities/directional_image.dart';
-
-/// Góc xe thuộc nhóm exterior (ngoại thất) — không thuộc các section đặc biệt.
-// const _exteriorAngles = {
-//   AicycleCarAngle.front,
-//   AicycleCarAngle.frontLeft,
-//   AicycleCarAngle.frontRight,
-//   AicycleCarAngle.rear,
-//   AicycleCarAngle.rearLeft,
-//   AicycleCarAngle.rearRight,
-//   AicycleCarAngle.left,
-//   AicycleCarAngle.right,
-// };
 
 /// Central store for managing all car capture images.
 /// Shared across different pages (BuyMePage, CameraPage, CarCapturePage...)
 /// via `sl.vehicleImageVault`.
 class VehicleImageVault extends ChangeNotifier {
+  final DeleteImageUseCase _deleteImageUseCase;
+
+  VehicleImageVault({required DeleteImageUseCase deleteImageUseCase})
+    : _deleteImageUseCase = deleteImageUseCase;
+
   /// Ảnh các góc cụ thể
   final List<DirectionalImage> _regCertImages = [];
   final List<DirectionalImage> _regStampImages = [];
@@ -36,8 +31,10 @@ class VehicleImageVault extends ChangeNotifier {
   /// Giám định viên đã có kinh nghiệm và muốn chụp liên tiếp
   final List<DirectionalImage> _exteriorImages = [];
 
-  /// The list of image URLs currently selected for actions (e.g., deletion).
-  final List<String> _selectedImages = [];
+  /// The list of image IDs currently selected for actions (e.g., deletion).
+  final List<int> _selectedImageIds = [];
+
+  bool _isDeleting = false;
 
   /// getters
   List<DirectionalImage> get regCertImages => List.unmodifiable(_regCertImages);
@@ -61,7 +58,8 @@ class VehicleImageVault extends ChangeNotifier {
   List<DirectionalImage> get exteriorImages =>
       List.unmodifiable(_exteriorImages);
 
-  List<String> get selectedImages => List.unmodifiable(_selectedImages);
+  List<int> get selectedImageIds => List.unmodifiable(_selectedImageIds);
+  bool get isDeleting => _isDeleting;
 
   /// Thêm ảnh từ server
   void addImagesFromServer(
@@ -210,65 +208,77 @@ class VehicleImageVault extends ChangeNotifier {
     }
   }
 
-  /// Checks if an image URL is currently selected.
-  bool isSelected(String? imageUrl) {
-    if (imageUrl == null) return false;
-    return _selectedImages.contains(imageUrl);
+  /// Checks if an image ID is currently selected.
+  bool isSelected(int? imageId) {
+    if (imageId == null) return false;
+    return _selectedImageIds.contains(imageId);
   }
 
   /// Toggles the selection state of a given image URL.
-  void toggleImageSelection(String? imageUrl) {
-    if (imageUrl == null) return;
-    if (_selectedImages.contains(imageUrl)) {
-      _selectedImages.remove(imageUrl);
+  void toggleImageSelection(int? imageId) {
+    if (imageId == null) return;
+    if (_selectedImageIds.contains(imageId)) {
+      _selectedImageIds.remove(imageId);
     } else {
-      _selectedImages.add(imageUrl);
+      _selectedImageIds.add(imageId);
     }
     notifyListeners();
   }
 
   /// Clears the current image selection.
   void clearSelection() {
-    _selectedImages.clear();
+    _selectedImageIds.clear();
     notifyListeners();
   }
 
   /// Deletes all locally selected images from their respective angle lists.
-  void deleteSelectedImages() {
-    if (_selectedImages.isEmpty) return;
+  Future<void> deleteSelectedImages(AicycleCarAngle angle) async {
+    if (_selectedImageIds.isEmpty) return;
 
+    _isDeleting = true;
+    notifyListeners();
+    // Delete from server
+    _deleteImageUseCase(
+      DeleteImageUseCaseParams(
+        imageIds: _selectedImageIds,
+        vehicleAngleId: angle == AicycleCarAngle.exterior ? null : angle.id,
+      ),
+    );
+    _isDeleting = false;
     // Remove from all specific lists
-    _regCertImages.removeWhere((img) => _selectedImages.contains(img.imageUrl));
+    _regCertImages.removeWhere(
+      (img) => _selectedImageIds.contains(img.imageId),
+    );
     _regStampImages.removeWhere(
-      (img) => _selectedImages.contains(img.imageUrl),
+      (img) => _selectedImageIds.contains(img.imageId),
     );
     _vinNumberImages.removeWhere(
-      (img) => _selectedImages.contains(img.imageUrl),
+      (img) => _selectedImageIds.contains(img.imageId),
     );
-    _taploImages.removeWhere((img) => _selectedImages.contains(img.imageUrl));
-    _frontImages.removeWhere((img) => _selectedImages.contains(img.imageUrl));
+    _taploImages.removeWhere((img) => _selectedImageIds.contains(img.imageId));
+    _frontImages.removeWhere((img) => _selectedImageIds.contains(img.imageId));
     _frontLeftImages.removeWhere(
-      (img) => _selectedImages.contains(img.imageUrl),
+      (img) => _selectedImageIds.contains(img.imageId),
     );
     _frontRightImages.removeWhere(
-      (img) => _selectedImages.contains(img.imageUrl),
+      (img) => _selectedImageIds.contains(img.imageId),
     );
-    _rearImages.removeWhere((img) => _selectedImages.contains(img.imageUrl));
+    _rearImages.removeWhere((img) => _selectedImageIds.contains(img.imageId));
     _rearLeftImages.removeWhere(
-      (img) => _selectedImages.contains(img.imageUrl),
+      (img) => _selectedImageIds.contains(img.imageId),
     );
     _rearRightImages.removeWhere(
-      (img) => _selectedImages.contains(img.imageUrl),
+      (img) => _selectedImageIds.contains(img.imageId),
     );
-    _leftImages.removeWhere((img) => _selectedImages.contains(img.imageUrl));
-    _rightImages.removeWhere((img) => _selectedImages.contains(img.imageUrl));
+    _leftImages.removeWhere((img) => _selectedImageIds.contains(img.imageId));
+    _rightImages.removeWhere((img) => _selectedImageIds.contains(img.imageId));
 
     // Also remove from general exterior images list
     _exteriorImages.removeWhere(
-      (img) => _selectedImages.contains(img.imageUrl),
+      (img) => _selectedImageIds.contains(img.imageId),
     );
 
-    _selectedImages.clear();
+    _selectedImageIds.clear();
     notifyListeners();
   }
 
@@ -287,7 +297,7 @@ class VehicleImageVault extends ChangeNotifier {
     _rearRightImages.clear();
     _leftImages.clear();
     _rightImages.clear();
-    _selectedImages.clear();
+    _selectedImageIds.clear();
     notifyListeners();
   }
 }

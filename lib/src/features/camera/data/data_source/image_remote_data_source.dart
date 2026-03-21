@@ -18,6 +18,8 @@ abstract class ImageRemoteDataSource {
     String? angleId,
     bool isFramedPhoto = false,
   });
+
+  Future<void> deleteImageById(List<int> imageIds, String? vehicleAngleId);
 }
 
 class ImageRemoteDataSourceImpl implements ImageRemoteDataSource {
@@ -138,5 +140,18 @@ class ImageRemoteDataSourceImpl implements ImageRemoteDataSource {
         "isFramedPhoto": isFramedPhoto,
       },
     );
+  }
+
+  @override
+  Future<void> deleteImageById(
+    List<int> imageIds,
+    String? vehicleAngleId,
+  ) async {
+    for (final int imageId in imageIds) {
+      await _dioClient.delete<dynamic>(
+        ApiEndpoints.deleteImageById(imageId.toString()),
+        queryParameters: {'vehicleAngleId': ?vehicleAngleId},
+      );
+    }
   }
 }

@@ -10,6 +10,7 @@ import '../../../../../gen/assets.gen.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_text_styles.dart';
 import '../../../../core/widgets/delete_confirm_dialog.dart';
+import '../../../aicycle_buy_me/domain/entities/directional_image.dart';
 import '../controllers/car_capture_controller.dart';
 import '../widgets/guide_page_bottom_bar.dart';
 
@@ -48,13 +49,12 @@ class _CarCaptureGuidePageState extends State<CarCaptureGuidePage> {
     );
   }
 
-  Widget _buildCapturedImages(String? url) {
-    if (url == null) return const SizedBox.shrink();
+  Widget _buildCapturedImages(DirectionalImage image) {
     return ListenableBuilder(
       listenable: sl.vehicleImageVault,
       builder: (context, child) {
         return GestureDetector(
-          onTap: () => sl.vehicleImageVault.toggleImageSelection(url),
+          onTap: () => sl.vehicleImageVault.toggleImageSelection(image.imageId),
           child: Container(
             width: double.infinity,
             decoration: BoxDecoration(
@@ -65,8 +65,9 @@ class _CarCaptureGuidePageState extends State<CarCaptureGuidePage> {
               child: Stack(
                 children: [
                   CachedNetworkImage(
-                    imageUrl: url,
+                    imageUrl: image.imageUrl ?? '',
                     fit: BoxFit.cover,
+                    height: double.infinity,
                     width: double.infinity,
                   ),
                   Positioned(
@@ -74,9 +75,9 @@ class _CarCaptureGuidePageState extends State<CarCaptureGuidePage> {
                     top: 8,
                     child: AppCheckbox(
                       size: 16.h,
-                      value: sl.vehicleImageVault.isSelected(url),
-                      onChanged: (value) =>
-                          sl.vehicleImageVault.toggleImageSelection(url),
+                      value: sl.vehicleImageVault.isSelected(image.imageId),
+                      onChanged: (value) => sl.vehicleImageVault
+                          .toggleImageSelection(image.imageId),
                     ),
                   ),
                 ],
@@ -92,10 +93,11 @@ class _CarCaptureGuidePageState extends State<CarCaptureGuidePage> {
     DeleteConfirmDialog.show(
       context: context,
       title: AppStrings.deleteImageTitle(
-        sl.vehicleImageVault.selectedImages.length,
+        sl.vehicleImageVault.selectedImageIds.length,
       ),
       message: AppStrings.deleteImageMessage,
-      onDeleteTapped: sl.vehicleImageVault.deleteSelectedImages,
+      onDeleteTapped: () =>
+          sl.vehicleImageVault.deleteSelectedImages(widget.angle),
     );
   }
 
@@ -105,7 +107,8 @@ class _CarCaptureGuidePageState extends State<CarCaptureGuidePage> {
       listenable: sl.vehicleImageVault,
       builder: (context, child) {
         final images = sl.vehicleImageVault.getImagesForAngle(widget.angle);
-        final showDeleteButton = sl.vehicleImageVault.selectedImages.isNotEmpty;
+        final showDeleteButton =
+            sl.vehicleImageVault.selectedImageIds.isNotEmpty;
         return Scaffold(
           backgroundColor: AppColors.background,
           appBar: AppBar(
@@ -181,7 +184,7 @@ class _CarCaptureGuidePageState extends State<CarCaptureGuidePage> {
                               ? _buildSampleImage(
                                   controller.sampleImages[index],
                                 )
-                              : _buildCapturedImages(images[index].imageUrl);
+                              : _buildCapturedImages(images[index]);
                         },
                       ),
                     ],

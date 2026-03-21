@@ -100,4 +100,6 @@ class AppStrings {
   static String deleteImageTitle(int count) => "Xóa $count ảnh";
   static const String deleteImageMessage =
       "Bạn có chắc chắn muốn xóa những ảnh này không? Hành động này không thể hoàn tác.";
+
+  static const String noImagesFound = "Không có ảnh";
 }

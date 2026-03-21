@@ -34,4 +34,12 @@ class ImageRepositoryImpl implements ImageRepository {
     );
     return response.toEntity();
   }
+
+  @override
+  Future<void> deleteImageById({
+    required List<int> imageIds,
+    String? vehicleAngleId,
+  }) async {
+    await _remoteDataSource.deleteImageById(imageIds, vehicleAngleId);
+  }
 }

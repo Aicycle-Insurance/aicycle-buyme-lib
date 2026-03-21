@@ -22,4 +22,7 @@ class ApiEndpoints {
   /// Endpoint for process uploaded image.
   static const String processImage = '/v2/buy-me/process';
   // === End Combo api for upload image ===
+
+  /// Endpoint for delete image by id.
+  static String deleteImageById(String imageId) => '/claimimages/$imageId';
 }

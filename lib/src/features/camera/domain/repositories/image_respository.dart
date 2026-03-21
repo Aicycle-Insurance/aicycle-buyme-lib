@@ -12,4 +12,9 @@ abstract class ImageRepository {
     String? angleId,
     bool isFramedPhoto = false,
   });
+
+  Future<void> deleteImageById({
+    required List<int> imageIds,
+    String? vehicleAngleId,
+  });
 }

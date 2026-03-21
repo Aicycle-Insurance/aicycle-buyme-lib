@@ -16,6 +16,7 @@ import '../../../camera/presentation/pages/camera_page.dart';
 import '../../../car_capture/presentation/controllers/car_capture_controller.dart';
 import '../../../car_capture/presentation/pages/car_capture_page.dart';
 
+import '../../../images_list/presentation/image_list_page.dart';
 import '../../domain/entities/directional_image.dart';
 
 /// A section in the [BuyMePage] representing a specific document or exterior photo requirement.
@@ -83,16 +84,25 @@ class CarCaptureSection extends StatelessWidget {
   }) {
     final hasImage = images.length > index && images[index].imageUrl != null;
     return InkWell(
-      onTap: () async {
+      onTap: () {
         if (disableTap) return;
-        await Navigator.push<XFile?>(
-          context,
-          MaterialPageRoute(
-            builder: (context) => CameraPage(
-              args: CameraArgs(vehicleAngle: angle, isFramedPhoto: false),
+        if (images.isEmpty) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => CameraPage(
+                args: CameraArgs(vehicleAngle: angle, isFramedPhoto: false),
+              ),
             ),
-          ),
-        );
+          );
+        } else {
+          Navigator.push<XFile?>(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ImageListPage(vehicleAngle: angle),
+            ),
+          );
+        }
       },
       child: Builder(
         builder: (context) {

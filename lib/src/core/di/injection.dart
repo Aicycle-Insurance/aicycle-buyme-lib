@@ -7,6 +7,7 @@ import '../../features/aicycle_buy_me/domain/use_cases/get_directional_image_use
 import '../../features/camera/data/data_source/image_remote_data_source.dart';
 import '../../features/camera/data/repositories/image_repository_impl.dart';
 import '../../features/camera/domain/repositories/image_respository.dart';
+import '../../features/camera/domain/usecases/delete_image_use_case.dart';
 import '../../features/camera/domain/usecases/upload_image_use_case.dart';
 import '../../features/camera/domain/usecases/upload_vehicle_inspection_use_case.dart';
 
@@ -25,7 +26,9 @@ class AiCycleInjection {
   // --- Core ---
   late final LoggerService logger = LoggerService();
   late final DioClient _dioClient = DioClient(logger);
-  late final VehicleImageVault vehicleImageVault = VehicleImageVault();
+  late final VehicleImageVault vehicleImageVault = VehicleImageVault(
+    deleteImageUseCase: deleteImageUseCase,
+  );
 
   // --- Data Sources ---
   late final BuyMeRemoteDataSource _buyMeRemoteDataSource =
@@ -53,6 +56,10 @@ class AiCycleInjection {
       UploadVehicleInspectionUseCase(_imageRepository);
 
   late final UploadImageUseCase uploadImageUseCase = UploadImageUseCase(
+    _imageRepository,
+  );
+
+  late final DeleteImageUseCase deleteImageUseCase = DeleteImageUseCase(
     _imageRepository,
   );
 }
