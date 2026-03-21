@@ -27,7 +27,9 @@ class BuyMePage extends StatelessWidget {
     if (config.generalConfig.showResultScreen == true) {
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => const DocumentResultPage()),
+        MaterialPageRoute(
+          builder: (context) => DocumentResultPage(onComplete: onComplete),
+        ),
       );
     } else {
       controller.submit(onComplete);

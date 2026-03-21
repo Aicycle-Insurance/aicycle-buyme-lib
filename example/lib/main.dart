@@ -42,9 +42,10 @@ class ExampleHomePage extends StatelessWidget {
                       generalConfig: GeneralConfig(
                         apiToken:
                             '61a688:b97cd78259f945de8672bba778cdf67ff8ce214b59104fe588ab78dffe438ec2',
-                        documentId: '999',
+                        documentId: '9121',
                         environment: AiCycleEnvironment.stage,
                         organization: AiCycleOrg.partner,
+                        loggingEnabled: true,
                       ),
                       validationConfig: ValidationConfig(
                         sameCarValidation: false,
@@ -68,6 +69,7 @@ class ExampleHomePage extends StatelessWidget {
                         },
                       ),
                     ),
+                    onComplete: (data) {},
                     onError: (error) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(content: Text('Init Error: $error')),

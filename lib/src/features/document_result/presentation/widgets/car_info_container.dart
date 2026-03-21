@@ -13,7 +13,7 @@ class CarInfoContainer extends StatelessWidget {
 
   Widget _tableCell(String title, {String? value, Widget? valueWidget}) {
     return SizedBox(
-      height: 40.h,
+      height: 42.h,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,

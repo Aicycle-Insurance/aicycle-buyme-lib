@@ -2,7 +2,9 @@ import 'package:aicycle_buyme_plus/aicycle_buyme_plus.dart';
 import 'package:flutter/material.dart';
 import '../../../../core/di/injection.dart';
 import '../../../../core/extension/car_angle_ext.dart';
+import '../../../../core/parse_output.dart';
 import '../../../../core/utils/internal_cache.dart';
+import '../../../document_result/domain/usecases/get_damage_statistics_use_case.dart';
 import '../../domain/entities/directional_image.dart';
 import '../../domain/use_cases/create_buyme_folder_use_case.dart';
 import '../../domain/use_cases/get_directional_image_use_case.dart';
@@ -16,14 +18,18 @@ enum BuyMeStatus { initial, loading, success, error }
 class BuyMeController extends ChangeNotifier {
   final CreateBuyMeFolderUseCase _createBuyMeFolderUseCase;
   final GetDirectionalImagesUseCase _getDirectionalImagesUseCase;
+  final GetDamageStatisticsUseCase _getDamageStatisticsUseCase;
 
   BuyMeController({
     CreateBuyMeFolderUseCase? createBuyMeFolderUseCase,
     GetDirectionalImagesUseCase? getDirectionalImagesUseCase,
+    GetDamageStatisticsUseCase? getDamageStatisticsUseCase,
   }) : _createBuyMeFolderUseCase =
            createBuyMeFolderUseCase ?? sl.createBuyMeFolderUseCase,
        _getDirectionalImagesUseCase =
-           getDirectionalImagesUseCase ?? sl.getDirectionalImagesUseCase;
+           getDirectionalImagesUseCase ?? sl.getDirectionalImagesUseCase,
+       _getDamageStatisticsUseCase =
+           getDamageStatisticsUseCase ?? sl.getDamageStatisticsUseCase;
 
   BuyMeStatus _status = BuyMeStatus.initial;
   BuyMeStatus get status => _status;
@@ -78,8 +84,15 @@ class BuyMeController extends ChangeNotifier {
     notifyListeners();
   }
 
-  void submit(Function(dynamic data)? onComplete) {
-    // TODO: call api then call onComplete
+  Future<void> submit(Function(dynamic data)? onComplete) async {
+    final claimId = InternalCache.claimId;
+    try {
+      final damageStatistics = await _getDamageStatisticsUseCase(claimId);
+      final data = ParseOutput.parseDamageStatistics(damageStatistics);
+      onComplete?.call(data);
+    } catch (e) {
+      debugPrint('Error getting damage statistics: $e');
+    }
   }
 
   // ─── Private helpers ──────────────────────────────────────────────────────

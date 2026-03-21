@@ -54,7 +54,12 @@ class DioClient {
           _logger.d(
             '[${options.method}] => PATH: ${options.baseUrl}${options.path}',
           );
-          _logger.d('JSON DATA: ${options.data ?? options.queryParameters}');
+          if (options.queryParameters.isNotEmpty) {
+            _logger.d('PARAM: ${options.queryParameters}');
+          }
+          if (options.data != null) {
+            _logger.d('BODY: ${options.data}');
+          }
           _logger.d('cURL:\n${_renderCurl(options)}');
           _logger.d('\n');
 
@@ -65,7 +70,7 @@ class DioClient {
           _logger.d(
             '[${response.statusCode}] => PATH: ${response.requestOptions.baseUrl}${response.requestOptions.path}',
           );
-          _logger.d('RESPONSE DATA: ${response.data}');
+          // _logger.d('RESPONSE DATA: ${response.data}');
           _logger.d('\n');
           return handler.next(response);
         },

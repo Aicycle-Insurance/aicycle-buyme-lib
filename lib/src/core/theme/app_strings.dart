@@ -122,5 +122,13 @@ class AppStrings {
   static const String carBrand = 'Hãng xe';
   static const String carModel = 'Hiệu xe';
   static const String carColor = 'Màu xe';
-  static const String traveled = "Số KM đã đi";
+  static const String traveled = 'Số KM đã đi';
+  static const String damageStatistics = 'Thống kê vết hỏng';
+  static const String notice = 'Lưu ý: ';
+  static const String noticeDescription =
+      'Các vết hỏng trên xe (nếu có), Bảo hiểm sẽ loại trừ đi khi bồi thường';
+  static const String part = 'Bộ phận:';
+  static const String damageLevel = 'Mức độ tổn thất:';
+  static const String sendAndComplete = 'Gửi và hoàn thành';
+  static const String noDamage = 'Xe không có vết hỏng';
 }

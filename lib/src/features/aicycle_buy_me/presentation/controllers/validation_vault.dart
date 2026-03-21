@@ -11,16 +11,18 @@ class ValidationVault extends ChangeNotifier {
   final config = AiCycleBuyMe.config;
 
   ValidationVault(this._validateVehicleAngleUseCase) {
+    sl.vehicleImageVault.addListener(_onVaultChanged);
+    _isHasImage = sl.vehicleImageVault.exteriorImages.isNotEmpty;
     if (config.validationConfig.missingPartValidation) {
-      sl.vehicleImageVault.addListener(_onVaultChanged);
       validateVehicleAngle();
     }
   }
 
   String? _errorMessage;
+  bool _isHasImage = false;
 
   String? get errorMessage => _errorMessage;
-  bool get isHasImage => sl.vehicleImageVault.exteriorImages.isNotEmpty;
+  bool get isHasImage => _isHasImage;
 
   Future<void> validateVehicleAngle() async {
     if (!isHasImage) {
@@ -43,7 +45,11 @@ class ValidationVault extends ChangeNotifier {
   }
 
   void _onVaultChanged() {
-    validateVehicleAngle();
+    _isHasImage = sl.vehicleImageVault.exteriorImages.isNotEmpty;
+    if (config.validationConfig.missingPartValidation) {
+      validateVehicleAngle();
+    }
+    notifyListeners();
   }
 
   @override

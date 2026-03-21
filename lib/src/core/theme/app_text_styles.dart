@@ -97,6 +97,22 @@ class AppTextStyles {
     height: 20 / 12,
   );
 
+  static TextStyle get body12Light => TextStyle(
+    fontFamily: _fontFamily,
+    fontSize: 12.sp,
+    fontWeight: FontWeight.w300,
+    color: const Color(0xFF1F2738),
+    height: 16 / 12,
+  );
+
+  static TextStyle get body12Regular => TextStyle(
+    fontFamily: _fontFamily,
+    fontSize: 12.sp,
+    fontWeight: FontWeight.w400,
+    color: const Color(0xFF1F2738),
+    height: 16 / 12,
+  );
+
   static TextStyle get body12Medium => TextStyle(
     fontFamily: _fontFamily,
     fontSize: 12.sp,

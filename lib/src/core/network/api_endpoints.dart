@@ -32,4 +32,12 @@ class ApiEndpoints {
 
   /// Endpoint for get vehicle info.
   static const String getVehicleInfo = '/v2/claimfolders/car-info';
+
+  /// Endpoint for get segment result.
+  static String getSegmentResult(String claimId) =>
+      '/v2/claimfolders/$claimId/segment-classify-result';
+
+  /// Endpoint for get image result.
+  static String getImageResult(String claimId) =>
+      '/v2/claimfolders/$claimId/image-result';
 }

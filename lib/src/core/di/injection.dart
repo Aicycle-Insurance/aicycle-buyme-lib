@@ -16,6 +16,7 @@ import '../../features/camera/domain/usecases/upload_vehicle_inspection_use_case
 import '../../features/document_result/data/data_source/document_result_remote_data_source.dart';
 import '../../features/document_result/data/repositories/document_result_repository_impl.dart';
 import '../../features/document_result/domain/repositories/document_result_repository.dart';
+import '../../features/document_result/domain/usecases/get_damage_statistics_use_case.dart';
 import '../../features/document_result/domain/usecases/get_vehicle_info_use_case.dart';
 import '../utils/logger.dart';
 import '../../features/aicycle_buy_me/presentation/controllers/vehicle_image_vault.dart';
@@ -80,6 +81,9 @@ class AiCycleInjection {
 
   late final GetVehicleInfoUseCase getVehicleInfoUseCase =
       GetVehicleInfoUseCase(_documentResultRepository);
+
+  late final GetDamageStatisticsUseCase getDamageStatisticsUseCase =
+      GetDamageStatisticsUseCase(_documentResultRepository);
 }
 
 /// Global instance for accessing dependencies.

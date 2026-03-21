@@ -14,21 +14,20 @@ class VehicleImageVault extends ChangeNotifier {
     : _deleteImageUseCase = deleteImageUseCase;
 
   /// Ảnh các góc cụ thể
-  final List<DirectionalImage> _regCertImages = [];
-  final List<DirectionalImage> _regStampImages = [];
-  final List<DirectionalImage> _vinNumberImages = [];
-  final List<DirectionalImage> _taploImages = [];
-  final List<DirectionalImage> _frontImages = [];
-  final List<DirectionalImage> _frontLeftImages = [];
-  final List<DirectionalImage> _frontRightImages = [];
-  final List<DirectionalImage> _rearImages = [];
-  final List<DirectionalImage> _rearLeftImages = [];
-  final List<DirectionalImage> _rearRightImages = [];
-  final List<DirectionalImage> _leftImages = [];
-  final List<DirectionalImage> _rightImages = [];
+  final Set<DirectionalImage> _regCertImages = {};
+  final Set<DirectionalImage> _regStampImages = {};
+  final Set<DirectionalImage> _vinNumberImages = {};
+  final Set<DirectionalImage> _taploImages = {};
+  final Set<DirectionalImage> _frontImages = {};
+  final Set<DirectionalImage> _frontLeftImages = {};
+  final Set<DirectionalImage> _frontRightImages = {};
+  final Set<DirectionalImage> _rearImages = {};
+  final Set<DirectionalImage> _rearLeftImages = {};
+  final Set<DirectionalImage> _rearRightImages = {};
+  final Set<DirectionalImage> _leftImages = {};
+  final Set<DirectionalImage> _rightImages = {};
 
   /// Góc ngoại thất nói chung dùng cho trường hợp không có các góc cụ thể
-  /// Giám định viên đã có kinh nghiệm và muốn chụp liên tiếp
   final Set<DirectionalImage> _exteriorImages = {};
 
   /// The list of image IDs currently selected for actions (e.g., deletion).
@@ -37,26 +36,19 @@ class VehicleImageVault extends ChangeNotifier {
   bool _isDeleting = false;
 
   /// getters
-  List<DirectionalImage> get regCertImages => List.unmodifiable(_regCertImages);
-  List<DirectionalImage> get regStampImages =>
-      List.unmodifiable(_regStampImages);
-  List<DirectionalImage> get vinNumberImages =>
-      List.unmodifiable(_vinNumberImages);
-  List<DirectionalImage> get taploImages => List.unmodifiable(_taploImages);
-  List<DirectionalImage> get frontImages => List.unmodifiable(_frontImages);
-  List<DirectionalImage> get frontLeftImages =>
-      List.unmodifiable(_frontLeftImages);
-  List<DirectionalImage> get frontRightImages =>
-      List.unmodifiable(_frontRightImages);
-  List<DirectionalImage> get rearImages => List.unmodifiable(_rearImages);
-  List<DirectionalImage> get rearLeftImages =>
-      List.unmodifiable(_rearLeftImages);
-  List<DirectionalImage> get rearRightImages =>
-      List.unmodifiable(_rearRightImages);
-  List<DirectionalImage> get leftImages => List.unmodifiable(_leftImages);
-  List<DirectionalImage> get rightImages => List.unmodifiable(_rightImages);
-  List<DirectionalImage> get exteriorImages =>
-      List.unmodifiable(_exteriorImages);
+  List<DirectionalImage> get regCertImages => _regCertImages.toList();
+  List<DirectionalImage> get regStampImages => _regStampImages.toList();
+  List<DirectionalImage> get vinNumberImages => _vinNumberImages.toList();
+  List<DirectionalImage> get taploImages => _taploImages.toList();
+  List<DirectionalImage> get frontImages => _frontImages.toList();
+  List<DirectionalImage> get frontLeftImages => _frontLeftImages.toList();
+  List<DirectionalImage> get frontRightImages => _frontRightImages.toList();
+  List<DirectionalImage> get rearImages => _rearImages.toList();
+  List<DirectionalImage> get rearLeftImages => _rearLeftImages.toList();
+  List<DirectionalImage> get rearRightImages => _rearRightImages.toList();
+  List<DirectionalImage> get leftImages => _leftImages.toList();
+  List<DirectionalImage> get rightImages => _rightImages.toList();
+  List<DirectionalImage> get exteriorImages => _exteriorImages.toList();
 
   List<int> get selectedImageIds => List.unmodifiable(_selectedImageIds);
   bool get isDeleting => _isDeleting;
@@ -180,29 +172,29 @@ class VehicleImageVault extends ChangeNotifier {
   List<DirectionalImage> getImagesForAngle(AicycleCarAngle angle) {
     switch (angle) {
       case AicycleCarAngle.regCert:
-        return _regCertImages;
+        return _regCertImages.toList();
       case AicycleCarAngle.regStamp:
-        return _regStampImages;
+        return _regStampImages.toList();
       case AicycleCarAngle.vinNumber:
-        return _vinNumberImages;
+        return _vinNumberImages.toList();
       case AicycleCarAngle.taplo:
-        return _taploImages;
+        return _taploImages.toList();
       case AicycleCarAngle.front:
-        return _frontImages;
+        return _frontImages.toList();
       case AicycleCarAngle.frontLeft:
-        return _frontLeftImages;
+        return _frontLeftImages.toList();
       case AicycleCarAngle.frontRight:
-        return _frontRightImages;
+        return _frontRightImages.toList();
       case AicycleCarAngle.rear:
-        return _rearImages;
+        return _rearImages.toList();
       case AicycleCarAngle.rearLeft:
-        return _rearLeftImages;
+        return _rearLeftImages.toList();
       case AicycleCarAngle.rearRight:
-        return _rearRightImages;
+        return _rearRightImages.toList();
       case AicycleCarAngle.left:
-        return _leftImages;
+        return _leftImages.toList();
       case AicycleCarAngle.right:
-        return _rightImages;
+        return _rightImages.toList();
       default:
         return _exteriorImages.toList();
     }
