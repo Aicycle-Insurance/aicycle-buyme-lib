@@ -51,7 +51,7 @@ class BuyMeController extends ChangeNotifier {
           priceTypeId: 10,
           isClaim: false,
           brand: carInfo.carCompanyId,
-          model: carInfo.model,
+          model: carInfo.carModelId,
           vehicleYear: carInfo.manufacturingYear,
           vehicleSpec: carInfo.vehicleSpec,
           licensePlate: carInfo.licensePlate,
@@ -86,7 +86,7 @@ class BuyMeController extends ChangeNotifier {
 
   /// Fetch ảnh của tất cả các góc cùng lúc (parallel), rồi phân loại.
   Future<void> _loadAllDirectionalImages() async {
-    final claimId = InternalCache.claimId ?? '';
+    final claimId = InternalCache.claimId;
     if (claimId.isEmpty) return;
 
     final results = await Future.wait(

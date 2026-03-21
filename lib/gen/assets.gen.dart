@@ -44,6 +44,10 @@ class $AssetsImagesGen {
   AssetGenImage get icColors =>
       const AssetGenImage('assets/images/ic_colors.png');
 
+  /// File path: assets/images/ic_error_outline.png
+  AssetGenImage get icErrorOutline =>
+      const AssetGenImage('assets/images/ic_error_outline.png');
+
   /// File path: assets/images/ic_frame_off.png
   AssetGenImage get icFrameOff =>
       const AssetGenImage('assets/images/ic_frame_off.png');
@@ -111,6 +115,7 @@ class $AssetsImagesGen {
     icCarGuideClear,
     icCleanWater,
     icColors,
+    icErrorOutline,
     icFrameOff,
     icFrameOn,
     icInfoCircle,

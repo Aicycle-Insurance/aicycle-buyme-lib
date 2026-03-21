@@ -1,3 +1,5 @@
+import '../../../../../aicycle_buyme_plus.dart';
+import '../../../../core/extension/car_angle_ext.dart';
 import '../../../../core/network/api_endpoints.dart';
 import '../../../../core/network/dio_client.dart';
 import '../models/buy_folder_model.dart';
@@ -10,6 +12,7 @@ abstract class BuyMeRemoteDataSource {
     required String claimId,
     required String angleId,
   });
+  Future<String> getValidationResult({required String claimId});
 }
 
 class BuyMeRemoteDataSourceImpl implements BuyMeRemoteDataSource {
@@ -47,5 +50,17 @@ class BuyMeRemoteDataSourceImpl implements BuyMeRemoteDataSource {
     return DirectionalImagesResponse.fromJson(
       response as Map<String, dynamic>,
     ).images;
+  }
+
+  @override
+  Future<String> getValidationResult({required String claimId}) async {
+    final response = await _dioClient.post<dynamic>(
+      ApiEndpoints.getValidationResult,
+      data: {'claimId': claimId, 'direction': AicycleCarAngle.exterior.id},
+    );
+    if (response['message'] != null) {
+      return response['message'] as String;
+    }
+    return '';
   }
 }

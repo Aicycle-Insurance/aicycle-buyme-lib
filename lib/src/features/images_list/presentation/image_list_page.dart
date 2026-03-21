@@ -124,19 +124,64 @@ class ImageListPage extends StatelessWidget {
                   ),
                 )
               : SafeArea(
-                  child: GridView.builder(
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: images.length > 1 ? 2 : 1,
-                      crossAxisSpacing: 8,
-                      mainAxisSpacing: 8,
-                      childAspectRatio: images.length > 1
-                          ? 176 / 160
-                          : 361 / 244,
-                    ),
-                    padding: EdgeInsets.all(16.r),
-                    itemCount: images.length,
-                    itemBuilder: (context, index) =>
-                        _buildCapturedImages(images[index]),
+                  child: Column(
+                    children: [
+                      ListenableBuilder(
+                        listenable: sl.validationVault,
+                        builder: (context, child) {
+                          return Visibility(
+                            visible:
+                                sl.validationVault.errorMessage?.isNotEmpty ==
+                                true,
+                            child: Container(
+                              margin: EdgeInsets.all(16.r).copyWith(bottom: 0),
+                              padding: EdgeInsets.all(8.r),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(12.r),
+                                border: Border.all(color: AppColors.error),
+                              ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Assets.images.icErrorOutline.image(
+                                    package: AppStrings.package,
+                                    height: 38.h,
+                                    width: 38.h,
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.all(8.r),
+                                    child: Text(
+                                      sl.validationVault.errorMessage ?? '',
+                                      style: AppTextStyles.bodySemibold
+                                          .copyWith(
+                                            color: AppColors.textPrimary,
+                                          ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                      Expanded(
+                        child: GridView.builder(
+                          gridDelegate:
+                              SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: images.length > 1 ? 2 : 1,
+                                crossAxisSpacing: 8,
+                                mainAxisSpacing: 8,
+                                childAspectRatio: images.length > 1
+                                    ? 176 / 160
+                                    : 361 / 244,
+                              ),
+                          padding: EdgeInsets.all(16.r),
+                          itemCount: images.length,
+                          itemBuilder: (context, index) =>
+                              _buildCapturedImages(images[index]),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
           bottomNavigationBar: Container(

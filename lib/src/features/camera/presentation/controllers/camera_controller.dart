@@ -171,7 +171,7 @@ class XCameraController extends ChangeNotifier {
   }
 
   Future<void> _uploadRegCert() async {
-    final claimId = InternalCache.claimId ?? '';
+    final claimId = InternalCache.claimId;
 
     final result = await sl.uploadVehicleInspectionUseCase(
       UploadVehicleInspectionParams(
@@ -188,20 +188,13 @@ class XCameraController extends ChangeNotifier {
   }
 
   Future<void> _uploadRegularImage() async {
-    final claimId = InternalCache.claimId ?? '';
-    final bool isFramedPhoto =
-        angle != AicycleCarAngle.regCert &&
-        angle != AicycleCarAngle.regStamp &&
-        angle != AicycleCarAngle.vinNumber &&
-        angle != AicycleCarAngle.taplo &&
-        angle != AicycleCarAngle.exterior;
+    final claimId = InternalCache.claimId;
 
     final result = await sl.uploadImageUseCase(
       UploadImageParams(
         imagePath: _capturedImage!.path,
         claimId: claimId,
         angleId: angle.id,
-        isFramedPhoto: isFramedPhoto,
       ),
     );
 

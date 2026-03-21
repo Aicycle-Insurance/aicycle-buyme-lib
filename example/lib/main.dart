@@ -42,14 +42,14 @@ class ExampleHomePage extends StatelessWidget {
                       generalConfig: GeneralConfig(
                         apiToken:
                             '61a688:b97cd78259f945de8672bba778cdf67ff8ce214b59104fe588ab78dffe438ec2',
-                        documentId: '111222333',
+                        documentId: '999',
                         environment: AiCycleEnvironment.stage,
                         organization: AiCycleOrg.partner,
                       ),
                       carInformation: CarInformation(
                         carCompanyId: 'TOYOTA',
-                        model: 'VIOS',
-                        licensePlate: '12A-345.67',
+                        carModelId: 'VIOS',
+                        licensePlate: '51H80828',
                         color: '#FFFFFF',
                       ),
                     ),

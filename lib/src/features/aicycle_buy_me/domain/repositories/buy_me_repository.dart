@@ -20,4 +20,6 @@ abstract class BuyMeRepository {
     required String claimId,
     required String angleId,
   });
+
+  Future<String> getValidationResult({required String claimId});
 }

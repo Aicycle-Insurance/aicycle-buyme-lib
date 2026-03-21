@@ -74,4 +74,9 @@ class BuyMeRepositoryImpl implements BuyMeRepository {
     );
     return models.map((m) => m.toEntity()).toList();
   }
+
+  @override
+  Future<String> getValidationResult({required String claimId}) {
+    return _remoteDataSource.getValidationResult(claimId: claimId);
+  }
 }

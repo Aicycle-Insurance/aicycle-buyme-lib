@@ -141,7 +141,7 @@ class ImageRemoteDataSourceImpl implements ImageRemoteDataSource {
         "isValidate": true,
         "isFramedPhoto": isFramedPhoto,
         "carCompany": config.carInformation.carCompanyId,
-        "carModel": config.carInformation.model,
+        "carModel": config.carInformation.carModelId,
         "licensePlate": config.carInformation.licensePlate,
       },
     );

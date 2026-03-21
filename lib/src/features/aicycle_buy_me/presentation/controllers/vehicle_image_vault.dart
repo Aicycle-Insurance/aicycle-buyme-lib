@@ -10,7 +10,7 @@ import '../../domain/entities/directional_image.dart';
 class VehicleImageVault extends ChangeNotifier {
   final DeleteImageUseCase _deleteImageUseCase;
 
-  VehicleImageVault({required DeleteImageUseCase deleteImageUseCase})
+  VehicleImageVault(DeleteImageUseCase deleteImageUseCase)
     : _deleteImageUseCase = deleteImageUseCase;
 
   /// Ảnh các góc cụ thể
@@ -29,7 +29,7 @@ class VehicleImageVault extends ChangeNotifier {
 
   /// Góc ngoại thất nói chung dùng cho trường hợp không có các góc cụ thể
   /// Giám định viên đã có kinh nghiệm và muốn chụp liên tiếp
-  final List<DirectionalImage> _exteriorImages = [];
+  final Set<DirectionalImage> _exteriorImages = {};
 
   /// The list of image IDs currently selected for actions (e.g., deletion).
   final List<int> _selectedImageIds = [];
@@ -204,7 +204,7 @@ class VehicleImageVault extends ChangeNotifier {
       case AicycleCarAngle.right:
         return _rightImages;
       default:
-        return _exteriorImages;
+        return _exteriorImages.toList();
     }
   }
 

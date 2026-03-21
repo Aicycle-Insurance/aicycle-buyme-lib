@@ -25,4 +25,8 @@ class ApiEndpoints {
 
   /// Endpoint for delete image by id.
   static String deleteImageById(String imageId) => '/claimimages/$imageId';
+
+  /// Endpoint for get validation result.
+  static const String getValidationResult =
+      '/v2/claimfolders/directional-images/validate';
 }

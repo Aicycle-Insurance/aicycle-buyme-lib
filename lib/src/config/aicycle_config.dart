@@ -108,7 +108,7 @@ class GeneralConfig {
     this.environment = AiCycleEnvironment.develop,
     this.documentName,
     this.showResultScreen = true,
-    this.loggingEnabled = true,
+    this.loggingEnabled = false,
   });
 }
 
@@ -117,7 +117,7 @@ class CarInformation {
   final String carCompanyId;
 
   /// Dòng xe/Hiệu xe (ví dụ: "mazda.bt_50")
-  final String model;
+  final String carModelId;
 
   /// Năm sản xuất (ví dụ: 2022)
   final int? manufacturingYear;
@@ -142,7 +142,7 @@ class CarInformation {
 
   CarInformation({
     required this.carCompanyId,
-    required this.model,
+    required this.carModelId,
     this.manufacturingYear,
     this.vehicleSpec,
     required this.licensePlate,
