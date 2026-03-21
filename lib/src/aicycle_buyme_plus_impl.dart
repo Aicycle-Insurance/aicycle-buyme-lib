@@ -21,15 +21,11 @@ class AiCycleBuyMe extends StatefulWidget {
   /// If provided, the widget will not automatically navigate to the default flow.
   final VoidCallback? onSuccess;
 
-  /// Custom loading widget to show during initialization
-  final Widget? loadingWidget;
-
   const AiCycleBuyMe({
     super.key,
     required this.aiCycleConfig,
     this.onError,
     this.onSuccess,
-    this.loadingWidget,
   });
 
   static AiCycleConfig? configInternal;
@@ -100,7 +96,10 @@ class _AiCycleBuyMeState extends State<AiCycleBuyMe> {
           }
 
           if (_controller.status == BuyMeStatus.success) {
-            return BuyMePage(controller: _controller);
+            return BuyMePage(
+              controller: _controller,
+              config: widget.aiCycleConfig,
+            );
           }
 
           return const SizedBox.shrink();

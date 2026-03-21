@@ -12,10 +12,16 @@ import 'widgets/car_capture_section.dart';
 
 class BuyMePage extends StatelessWidget {
   final BuyMeController controller;
-  const BuyMePage({super.key, required this.controller});
+  final AiCycleConfig config;
+  const BuyMePage({super.key, required this.controller, required this.config});
 
   @override
   Widget build(BuildContext context) {
+    final listSupportCarAngles = config
+        .displayConfig
+        .carAnglesWithDisplayName
+        .keys
+        .toList();
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
@@ -37,98 +43,102 @@ class BuyMePage extends StatelessWidget {
                   const CarCaptureGuide(),
                   const SizedBox(height: 4),
 
+                  if (listSupportCarAngles.isEmpty)
+                    Expanded(
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 16.r),
+                        child: Center(
+                          child: Text(
+                            AppStrings.noSupportCarAngles,
+                            textAlign: TextAlign.center,
+                            style: AppTextStyles.heading2.copyWith(
+                              color: AppColors.iconGray,
+                            ),
+                          ),
+                        ),
+                      ),
+                    )
                   /// Hình ảnh xe
-                  Expanded(
-                    child: SingleChildScrollView(
-                      padding: EdgeInsets.all(16.h),
-                      child: Column(
-                        spacing: 16.h,
-                        children: [
-                          Row(
-                            spacing: 16.h,
-                            children: [
-                              Expanded(
-                                child: CarCaptureSection(
-                                  angle: AicycleCarAngle.regCert,
-                                ),
+                  else
+                    Expanded(
+                      child: SingleChildScrollView(
+                        padding: EdgeInsets.all(16.h),
+                        child: Wrap(
+                          spacing: 16.h,
+                          runSpacing: 16.h,
+                          children: [
+                            /// Giấy đăng kiểm
+                            if (listSupportCarAngles.contains(
+                              AicycleCarAngle.regCert,
+                            ))
+                              CarCaptureSection(angle: AicycleCarAngle.regCert),
+
+                            /// Tem đăng kiểm
+                            if (listSupportCarAngles.contains(
+                              AicycleCarAngle.regStamp,
+                            ))
+                              CarCaptureSection(
+                                angle: AicycleCarAngle.regStamp,
                               ),
-                              Expanded(
-                                child: CarCaptureSection(
-                                  angle: AicycleCarAngle.regStamp,
-                                ),
+
+                            /// Số khung
+                            if (listSupportCarAngles.contains(
+                              AicycleCarAngle.vinNumber,
+                            ))
+                              CarCaptureSection(
+                                angle: AicycleCarAngle.vinNumber,
                               ),
-                            ],
-                          ),
-                          Row(
-                            spacing: 16.h,
-                            children: [
-                              Expanded(
-                                child: CarCaptureSection(
-                                  angle: AicycleCarAngle.vinNumber,
-                                ),
-                              ),
-                              Expanded(
-                                child: CarCaptureSection(
-                                  angle: AicycleCarAngle.taplo,
-                                ),
-                              ),
-                            ],
-                          ),
-                          Row(
-                            spacing: 16.h,
-                            children: [
-                              Expanded(
-                                child: ListenableBuilder(
-                                  listenable: sl.validationVault,
-                                  builder: (context, _) {
-                                    return CarCaptureSection(
-                                      angle: AicycleCarAngle.exterior,
-                                      errorMessage:
-                                          sl.validationVault.errorMessage,
-                                    );
-                                  },
-                                ),
-                              ),
-                              Expanded(child: SizedBox()),
-                            ],
-                          ),
-                        ],
+
+                            /// Taplo
+                            if (listSupportCarAngles.contains(
+                              AicycleCarAngle.taplo,
+                            ))
+                              CarCaptureSection(angle: AicycleCarAngle.taplo),
+
+                            /// Ngoại thất
+                            CarCaptureSection(angle: AicycleCarAngle.exterior),
+                          ],
+                        ),
                       ),
                     ),
-                  ),
                 ],
               );
             },
           ),
         ),
       ),
-      bottomNavigationBar: Container(
-        padding: const EdgeInsets.all(16),
-        decoration: BoxDecoration(color: AppColors.surface),
-        child: SafeArea(
-          child: ListenableBuilder(
-            listenable: sl.validationVault,
-            builder: (context, _) {
-              final canSubmit =
-                  sl.validationVault.isHasImage &&
-                  sl.validationVault.errorMessage?.isNotEmpty != true;
-              return ElevatedButton(
-                onPressed: canSubmit ? controller.submit : null,
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: AppColors.primary,
-                  foregroundColor: Colors.white,
-                  minimumSize: Size(double.infinity, 40.h),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(6.r),
-                  ),
-                  elevation: 0,
+      bottomNavigationBar: listSupportCarAngles.isEmpty
+          ? null
+          : Container(
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(color: AppColors.surface),
+              child: SafeArea(
+                child: ListenableBuilder(
+                  listenable: sl.validationVault,
+                  builder: (context, _) {
+                    final canSubmit =
+                        sl.validationVault.isHasImage &&
+                        sl.validationVault.errorMessage?.isNotEmpty != true;
+                    return ElevatedButton(
+                      onPressed: canSubmit ? controller.submit : null,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: AppColors.primary,
+                        foregroundColor: Colors.white,
+                        minimumSize: Size(double.infinity, 40.h),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(6.r),
+                        ),
+                        elevation: 0,
+                      ),
+                      child: Text(
+                        AppStrings.btnDone,
+                        style: AppTextStyles.button,
+                      ),
+                    );
+                  },
                 ),
-                child: Text(AppStrings.btnDone, style: AppTextStyles.button),
-              );
-            },
-          ),
-        ),
-      ),
+              ),
+            ),
     );
   }
 }

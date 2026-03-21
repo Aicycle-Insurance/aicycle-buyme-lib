@@ -19,18 +19,13 @@ class ImageListPage extends StatelessWidget {
   final AicycleCarAngle vehicleAngle;
 
   String get title {
-    switch (vehicleAngle) {
-      case AicycleCarAngle.vinNumber:
-        return AppStrings.photoVinNumber;
-      case AicycleCarAngle.regStamp:
-        return AppStrings.photoRegStamp;
-      case AicycleCarAngle.regCert:
-        return AppStrings.photoRegCert;
-      case AicycleCarAngle.taplo:
-        return AppStrings.photoTaplo;
-      default:
-        return AppStrings.photoExterior;
-    }
+    final displayName =
+        AiCycleBuyMe
+            .config
+            .displayConfig
+            .carAnglesWithDisplayName[vehicleAngle] ??
+        AppStrings.noDisplayName;
+    return '${AppStrings.photo} ${displayName.toLowerCase()}';
   }
 
   void _showDeleteConfirmationDialog(BuildContext context) {

@@ -138,11 +138,11 @@ class ImageRemoteDataSourceImpl implements ImageRemoteDataSource {
         "imageName": serverPath,
         "position": 'toan-canh-afh4l5',
         "direction": angleId ?? '45-phai-truoc-UoYzs6',
-        "isValidate": true,
+        "isValidate": config.validationConfig.sameCarValidation,
         "isFramedPhoto": isFramedPhoto,
-        "carCompany": config.carInformation.carCompanyId,
-        "carModel": config.carInformation.carModelId,
-        "licensePlate": config.carInformation.licensePlate,
+        "carCompany": ?config.carInformation?.carCompanyId,
+        "carModel": ?config.carInformation?.carModelId,
+        "licensePlate": ?config.carInformation?.licensePlate,
       },
     );
   }

@@ -1,5 +1,6 @@
 import 'package:aicycle_buyme_plus/aicycle_buyme_plus.dart';
 import 'package:aicycle_buyme_plus/src/core/di/injection.dart';
+import 'package:aicycle_buyme_plus/src/core/extension/car_angle_ext.dart';
 import 'package:aicycle_buyme_plus/src/core/theme/app_strings.dart';
 import 'package:aicycle_buyme_plus/src/core/utils/screen_utils.dart';
 import 'package:aicycle_buyme_plus/src/core/widgets/app_checkbox.dart';
@@ -11,7 +12,6 @@ import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_text_styles.dart';
 import '../../../../core/widgets/delete_confirm_dialog.dart';
 import '../../../aicycle_buy_me/domain/entities/directional_image.dart';
-import '../controllers/car_capture_controller.dart';
 import '../widgets/guide_page_bottom_bar.dart';
 
 class CarCaptureGuidePage extends StatefulWidget {
@@ -23,20 +23,6 @@ class CarCaptureGuidePage extends StatefulWidget {
 }
 
 class _CarCaptureGuidePageState extends State<CarCaptureGuidePage> {
-  late final CarCaptureController controller;
-
-  @override
-  void initState() {
-    super.initState();
-    controller = CarCaptureController(widget.angle);
-  }
-
-  @override
-  void dispose() {
-    controller.dispose();
-    super.dispose();
-  }
-
   Widget _buildSampleImage(String imagePath) {
     return Container(
       width: double.infinity,
@@ -137,9 +123,9 @@ class _CarCaptureGuidePageState extends State<CarCaptureGuidePage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(controller.title, style: AppTextStyles.heading2),
+                    Text(widget.angle.title, style: AppTextStyles.heading2),
                     Text(
-                      controller.description,
+                      widget.angle.description,
                       style: AppTextStyles.bodyRegular.copyWith(
                         color: AppColors.ink2,
                       ),
@@ -166,23 +152,23 @@ class _CarCaptureGuidePageState extends State<CarCaptureGuidePage> {
                         physics: NeverScrollableScrollPhysics(),
                         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: images.isEmpty
-                              ? (controller.sampleImages.length > 1 ? 2 : 1)
+                              ? (widget.angle.sampleImages.length > 1 ? 2 : 1)
                               : (images.length > 1 ? 2 : 1),
                           crossAxisSpacing: 8,
                           mainAxisSpacing: 8,
                           childAspectRatio: images.isEmpty
-                              ? (controller.sampleImages.length > 1
+                              ? (widget.angle.sampleImages.length > 1
                                     ? 176 / 160
                                     : 361 / 244)
                               : (images.length > 1 ? 176 / 160 : 361 / 244),
                         ),
                         itemCount: images.isEmpty
-                            ? controller.sampleImages.length
+                            ? widget.angle.sampleImages.length
                             : images.length,
                         itemBuilder: (context, index) {
                           return images.isEmpty
                               ? _buildSampleImage(
-                                  controller.sampleImages[index],
+                                  widget.angle.sampleImages[index],
                                 )
                               : _buildCapturedImages(images[index]);
                         },

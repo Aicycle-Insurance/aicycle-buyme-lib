@@ -13,7 +13,6 @@ import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_strings.dart';
 import '../../../../core/widgets/dashed_container.dart';
 import '../../../camera/presentation/pages/camera_page.dart';
-import '../../../car_capture/presentation/controllers/car_capture_controller.dart';
 import '../../../car_capture/presentation/pages/car_capture_page.dart';
 
 import '../../../images_list/presentation/image_list_page.dart';
@@ -22,33 +21,16 @@ import '../../domain/entities/directional_image.dart';
 /// A section in the [BuyMePage] representing a specific document or exterior photo requirement.
 /// Handles navigating to the appropriate capture flow (Camera or Guide).
 class CarCaptureSection extends StatelessWidget {
-  const CarCaptureSection({
-    super.key,
-    required this.angle,
-    this.errorMessage,
-    this.carCaptureController,
-  });
+  const CarCaptureSection({super.key, required this.angle, this.errorMessage});
   final AicycleCarAngle angle;
   final String? errorMessage;
 
-  /// Controller được inject từ BuyMeController — đã có ảnh server pre-loaded.
-  final CarCaptureController? carCaptureController;
-
   String get title {
-    switch (angle) {
-      case AicycleCarAngle.regCert:
-        return AppStrings.photoRegCert;
-      case AicycleCarAngle.regStamp:
-        return AppStrings.photoRegStamp;
-      case AicycleCarAngle.vinNumber:
-        return AppStrings.photoVinNumber;
-      case AicycleCarAngle.taplo:
-        return AppStrings.photoTaplo;
-      case AicycleCarAngle.exterior:
-        return AppStrings.photoExterior;
-      default:
-        return '';
-    }
+    final config = AiCycleBuyMe.config;
+    final displayName =
+        config.displayConfig.carAnglesWithDisplayName[angle] ??
+        AppStrings.noDisplayName;
+    return '${AppStrings.photo} ${displayName.toLowerCase()}';
   }
 
   int get numberImageContainer {
@@ -172,6 +154,8 @@ class CarCaptureSection extends StatelessWidget {
           children: [
             Container(
               height: 170.h,
+              // padding = 16.h * 3 = 48.h
+              width: (MediaQuery.of(context).size.width - 48.h) / 2,
               decoration: BoxDecoration(
                 color: AppColors.surface,
                 borderRadius: BorderRadius.circular(8),

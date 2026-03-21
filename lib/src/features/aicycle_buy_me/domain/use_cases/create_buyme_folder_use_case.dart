@@ -6,8 +6,8 @@ class CreateBuyMeFolderParams {
   final String? vehicleBrandId;
   final int? priceTypeId;
   final bool? isClaim;
-  final String brand;
-  final String model;
+  final String? brand;
+  final String? model;
   final int? vehicleYear;
   final String? vehicleSpec;
   final String? licensePlate;
@@ -20,8 +20,8 @@ class CreateBuyMeFolderParams {
     this.vehicleBrandId,
     this.priceTypeId,
     this.isClaim,
-    required this.brand,
-    required this.model,
+    this.brand,
+    this.model,
     this.vehicleYear,
     this.vehicleSpec,
     this.licensePlate,

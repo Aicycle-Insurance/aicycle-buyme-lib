@@ -1,6 +1,7 @@
-import 'package:aicycle_buyme_plus/src/config/aicycle_config.dart';
 import 'package:aicycle_buyme_plus/src/core/theme/app_strings.dart';
 import 'package:aicycle_buyme_plus/gen/assets.gen.dart';
+
+import '../../../aicycle_buyme_plus.dart';
 
 extension CarAngleExt on AicycleCarAngle {
   String get id {
@@ -33,24 +34,30 @@ extension CarAngleExt on AicycleCarAngle {
         return '45-trai-truoc-C1xM02';
     }
   }
+
   String get title {
+    final config = AiCycleBuyMe.config;
+    final displayName =
+        config.displayConfig.carAnglesWithDisplayName[this]?.toLowerCase() ??
+        AppStrings.noDisplayName.toLowerCase();
+
     switch (this) {
       case AicycleCarAngle.front:
-        return AppStrings.frontCaptureTitle;
+        return AppStrings.frontCaptureTitle(displayName);
       case AicycleCarAngle.frontLeft:
-        return AppStrings.frontLeftCaptureTitle;
+        return AppStrings.frontLeftCaptureTitle(displayName);
       case AicycleCarAngle.frontRight:
-        return AppStrings.frontRightCaptureTitle;
+        return AppStrings.frontRightCaptureTitle(displayName);
       case AicycleCarAngle.rear:
-        return AppStrings.rearCaptureTitle;
+        return AppStrings.rearCaptureTitle(displayName);
       case AicycleCarAngle.rearLeft:
-        return AppStrings.rearLeftCaptureTitle;
+        return AppStrings.rearLeftCaptureTitle(displayName);
       case AicycleCarAngle.rearRight:
-        return AppStrings.rearRightCaptureTitle;
+        return AppStrings.rearRightCaptureTitle(displayName);
       case AicycleCarAngle.left:
-        return AppStrings.leftCaptureTitle;
+        return AppStrings.leftCaptureTitle(displayName);
       case AicycleCarAngle.right:
-        return AppStrings.rightCaptureTitle;
+        return AppStrings.rightCaptureTitle(displayName);
       default:
         return '';
     }

@@ -1,16 +1,20 @@
 import 'package:aicycle_buyme_plus/src/core/error/exceptions.dart';
 import 'package:flutter/foundation.dart';
 
+import '../../../../../aicycle_buyme_plus.dart';
 import '../../../../core/di/injection.dart';
 import '../../../../core/utils/internal_cache.dart';
 import '../../domain/use_cases/validate_vehicle_angle_use_case.dart';
 
 class ValidationVault extends ChangeNotifier {
   final ValidateVehicleAngleUseCase _validateVehicleAngleUseCase;
+  final config = AiCycleBuyMe.config;
 
   ValidationVault(this._validateVehicleAngleUseCase) {
-    sl.vehicleImageVault.addListener(_onVaultChanged);
-    validateVehicleAngle();
+    if (config.validationConfig.missingPartValidation) {
+      sl.vehicleImageVault.addListener(_onVaultChanged);
+      validateVehicleAngle();
+    }
   }
 
   String? _errorMessage;
@@ -44,7 +48,9 @@ class ValidationVault extends ChangeNotifier {
 
   @override
   void dispose() {
-    sl.vehicleImageVault.removeListener(_onVaultChanged);
+    if (config.validationConfig.missingPartValidation) {
+      sl.vehicleImageVault.removeListener(_onVaultChanged);
+    }
     super.dispose();
   }
 }

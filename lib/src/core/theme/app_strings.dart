@@ -38,70 +38,81 @@ class AppStrings {
   static const String guide = 'Hướng dẫn';
   static const String errorGeneric = 'Đã có lỗi xảy ra. Vui lòng thử lại sau.';
   static const String errorNetwork = 'Không có kết nối mạng.';
-  static const String captureGuide = "Hướng dẫn chụp";
-  static const String position = "Vị trí";
-  static const String requirement = "Yêu cầu";
-  static const String samplePhoto = "Ảnh mẫu";
-  static const String capturePhoto = "Chụp ảnh";
-  static const String captureCarPhoto = "Chụp ảnh xe";
+  static const String captureGuide = 'Hướng dẫn chụp ảnh';
+  static const String position = 'Vị trí';
+  static const String requirement = 'Yêu cầu';
+  static const String samplePhoto = 'Ảnh mẫu';
+  static const String capturePhoto = 'Chụp ảnh';
+  static const String captureCarPhoto = 'Chụp ảnh xe';
+  static const String photo = 'Ảnh';
 
   // Car Corners
-  static const String front = "Góc trước";
-  static const String frontLeft = "Góc trước bên trái";
-  static const String frontRight = "Góc trước bên phải";
-  static const String rear = "Góc sau";
-  static const String rearLeft = "Góc sau bên trái";
-  static const String rearRight = "Góc sau bên phải";
-  static const String left = "Góc sườn trái";
-  static const String right = "Góc sườn phải";
-  static const String regStamp = "Góc tem đăng kiểm";
-  static const String vinNumber = "Góc số khung";
-  static const String taplo = "Góc taplo";
-  static const String regCert = "Góc đăng kiểm";
+  static const String front = 'Trước';
+  static const String frontLeft = 'Trước trái';
+  static const String frontRight = 'Trước phải';
+  static const String rear = 'Sau';
+  static const String rearLeft = 'Sau trái';
+  static const String rearRight = 'Sau phải';
+  static const String left = 'Sườn trái';
+  static const String right = 'Sườn phải';
+  static const String regStamp = 'Tem đăng kiểm';
+  static const String vinNumber = 'Số khung';
+  static const String taplo = 'Taplo';
+  static const String regCert = 'Đăng kiểm';
+  static const String exterior = 'Ngoại thất';
+  static const String noDisplayName = 'Góc chưa đặt tên';
 
-  static const String captureCarGuideTitle = "Hướng dẫn chụp ảnh xe";
+  static const String captureCarGuideTitle = 'Hướng dẫn chụp ảnh xe';
   static const String captureCarGuideClear =
-      "Hình ảnh rõ ràng, không bị mờ, rung lắc";
-  static const String captureCarGuideLight = "Không gian đủ ánh sáng";
-  static const String captureCarGuideClean = "Xe sạch sẽ, tránh các vết bẩn";
+      'Hình ảnh rõ ràng, không bị mờ, rung lắc';
+  static const String captureCarGuideLight = 'Không gian đủ ánh sáng';
+  static const String captureCarGuideClean = 'Xe sạch sẽ, tránh các vết bẩn';
 
-  static const String frontCaptureTitle = "Chụp ảnh góc trước xe";
+  static String frontCaptureTitle(String displayName) =>
+      'Chụp ảnh góc $displayName';
   static const String frontCaptureDescription =
-      "Là ảnh chụp chính diện đầu xe. Yêu cầu chụp đầy đủ các bộ phận như ảnh mẫu";
+      'Là ảnh chụp chính diện đầu xe. Yêu cầu chụp đầy đủ các bộ phận như ảnh mẫu';
 
-  static const String frontLeftCaptureTitle =
-      "Chụp góc trước trái (Bên ghế lái)";
+  static String frontLeftCaptureTitle(String displayName) =>
+      'Chụp góc $displayName (Bên ghế lái)';
   static const String frontLeftCaptureDescription =
-      "Là các ảnh chụp ở phần góc trước ghế lái. Yêu cầu phải thấy đầy đủ các bộ phận như trong ảnh mẫu";
+      'Là các ảnh chụp ở phần góc trước ghế lái. Yêu cầu phải thấy đầy đủ các bộ phận như trong ảnh mẫu';
 
-  static const String frontRightCaptureTitle =
-      "Chụp góc trước phải (Bên ghế phụ)";
+  static String frontRightCaptureTitle(String displayName) =>
+      'Chụp góc $displayName (Bên ghế phụ)';
   static const String frontRightCaptureDescription =
-      "Là các ảnh chụp ở phần góc trước ghế phụ. Yêu cầu phải thấy đầy đủ các bộ phận như trong ảnh mẫu";
+      'Là các ảnh chụp ở phần góc trước ghế phụ. Yêu cầu phải thấy đầy đủ các bộ phận như trong ảnh mẫu';
 
-  static const String rearCaptureTitle = "Chụp ảnh góc sau xe";
+  static String rearCaptureTitle(String displayName) => 'Chụp góc $displayName';
   static const String rearCaptureDescription =
-      "Là ảnh chụp ở phần chính diện đuôi xe. Yêu cầu chụp chính diện và đầy đủ đuôi xe như ảnh mẫu";
+      'Là ảnh chụp ở phần chính diện đuôi xe. Yêu cầu chụp chính diện và đầy đủ đuôi xe như ảnh mẫu';
 
-  static const String rearLeftCaptureTitle = "Chụp góc sau trái (Bên ghế lái)";
+  static String rearLeftCaptureTitle(String displayName) =>
+      'Chụp góc $displayName (Bên ghế lái)';
   static const String rearLeftCaptureDescription =
-      "Là các ảnh chụp ở phần góc sau ghế lái. Yêu cầu phải thấy đầy đủ các bộ phận như trong ảnh mẫu";
+      'Là các ảnh chụp ở phần góc sau ghế lái. Yêu cầu phải thấy đầy đủ các bộ phận như trong ảnh mẫu';
 
-  static const String rearRightCaptureTitle = "Chụp góc sau phải (Bên ghế phụ)";
+  static String rearRightCaptureTitle(String displayName) =>
+      'Chụp góc $displayName (Bên ghế phụ)';
   static const String rearRightCaptureDescription =
-      "Là các ảnh chụp ở phần góc sau ghế phụ. Yêu cầu phải thấy đầy đủ các bộ phận như trong ảnh mẫu";
+      'Là các ảnh chụp ở phần góc sau ghế phụ. Yêu cầu phải thấy đầy đủ các bộ phận như trong ảnh mẫu';
 
-  static const String leftCaptureTitle = "Chụp ảnh sườn trái xe (bên ghế lái)";
+  static String leftCaptureTitle(String displayName) =>
+      'Chụp góc $displayName (Bên ghế lái)';
   static const String leftCaptureDescription =
-      "Là các ảnh chụp ở sườn trái xe, yêu cầu chụp đầy đủ Cánh cửa trước và sau, Kính cánh cửa trước và sau";
+      'Là các ảnh chụp ở sườn trái xe, yêu cầu chụp đầy đủ Cánh cửa trước và sau, Kính cánh cửa trước và sau';
 
-  static const String rightCaptureTitle = "Chụp ảnh sườn phải xe (bên ghế phụ)";
+  static String rightCaptureTitle(String displayName) =>
+      'Chụp góc $displayName (Bên ghế phụ)';
   static const String rightCaptureDescription =
-      "Là các ảnh chụp ở sườn phải xe, yêu cầu chụp đầy đủ Cánh cửa trước và sau, Kính cánh cửa trước và sau";
+      'Là các ảnh chụp ở sườn phải xe, yêu cầu chụp đầy đủ Cánh cửa trước và sau, Kính cánh cửa trước và sau';
 
-  static String deleteImageTitle(int count) => "Xóa $count ảnh";
+  static String deleteImageTitle(int count) => 'Xóa $count ảnh';
   static const String deleteImageMessage =
-      "Bạn có chắc chắn muốn xóa những ảnh này không? Hành động này không thể hoàn tác.";
+      'Bạn có chắc chắn muốn xóa những ảnh này không? Hành động này không thể hoàn tác.';
 
-  static const String noImagesFound = "Không có ảnh";
+  static const String noImagesFound = 'Không có ảnh';
+
+  static const String noSupportCarAngles =
+      'Bạn đang cài đặt không hỗ trợ chụp góc xe nào. Vui lòng kiểm tra lại cấu hình.';
 }

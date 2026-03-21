@@ -46,11 +46,26 @@ class ExampleHomePage extends StatelessWidget {
                         environment: AiCycleEnvironment.stage,
                         organization: AiCycleOrg.partner,
                       ),
-                      carInformation: CarInformation(
-                        carCompanyId: 'TOYOTA',
-                        carModelId: 'VIOS',
-                        licensePlate: '51H80828',
-                        color: '#FFFFFF',
+                      validationConfig: ValidationConfig(
+                        sameCarValidation: false,
+                        missingPartValidation: false,
+                      ),
+                      displayConfig: DisplayConfig(
+                        carAnglesWithDisplayName: {
+                          AicycleCarAngle.front: 'Trước',
+                          AicycleCarAngle.frontLeft: 'Trước trái',
+                          AicycleCarAngle.frontRight: 'Trước phải',
+                          AicycleCarAngle.rear: 'Sau',
+                          AicycleCarAngle.rearLeft: 'Sau trái',
+                          AicycleCarAngle.rearRight: 'Sau phải',
+                          AicycleCarAngle.left: 'Sườn trái',
+                          AicycleCarAngle.right: 'Sườn phải',
+                          AicycleCarAngle.regStamp: 'Tem đăng kiểm',
+                          AicycleCarAngle.vinNumber: 'Số khung',
+                          AicycleCarAngle.taplo: 'Taplo',
+                          AicycleCarAngle.regCert: 'Tổng thể',
+                          AicycleCarAngle.exterior: 'Ngoại thất',
+                        },
                       ),
                     ),
                     onError: (error) {

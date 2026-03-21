@@ -1,4 +1,4 @@
-import 'package:aicycle_buyme_plus/src/core/theme/app_strings.dart';
+import 'package:flutter/material.dart';
 
 enum AiCycleEnvironment { develop, stage, production }
 
@@ -45,37 +45,48 @@ enum AicycleCarAngle {
   exterior,
 }
 
+/// Map góc xe với tên hiển thị mặc định
 const Map<AicycleCarAngle, String> _kDefaultCarAnglesWithDisplayName = {
-  AicycleCarAngle.front: AppStrings.front,
-  AicycleCarAngle.frontLeft: AppStrings.frontLeft,
-  AicycleCarAngle.frontRight: AppStrings.frontRight,
-  AicycleCarAngle.rear: AppStrings.rear,
-  AicycleCarAngle.rearLeft: AppStrings.rearLeft,
-  AicycleCarAngle.rearRight: AppStrings.rearRight,
-  AicycleCarAngle.left: AppStrings.left,
-  AicycleCarAngle.right: AppStrings.right,
-  AicycleCarAngle.regStamp: AppStrings.regStamp,
-  AicycleCarAngle.vinNumber: AppStrings.vinNumber,
-  AicycleCarAngle.taplo: AppStrings.taplo,
-  AicycleCarAngle.regCert: AppStrings.regCert,
+  AicycleCarAngle.front: 'Trước',
+  AicycleCarAngle.frontLeft: 'Trước trái',
+  AicycleCarAngle.frontRight: 'Trước phải',
+  AicycleCarAngle.rear: 'Sau',
+  AicycleCarAngle.rearLeft: 'Sau trái',
+  AicycleCarAngle.rearRight: 'Sau phải',
+  AicycleCarAngle.left: 'Sườn trái',
+  AicycleCarAngle.right: 'Sườn phải',
+  AicycleCarAngle.regStamp: 'Tem đăng kiểm',
+  AicycleCarAngle.vinNumber: 'Số khung',
+  AicycleCarAngle.taplo: 'Taplo',
+  AicycleCarAngle.regCert: 'Tổng thể',
+  AicycleCarAngle.exterior: 'Ngoại thất',
 };
 
 /// Public configuration for the AiCycle BuyMe SDK.
 class AiCycleConfig {
   /// Thông tin xe
-  final CarInformation carInformation;
+  final CarInformation? carInformation;
 
   /// Cấu hình validation
-  final ValidationConfig? validationConfig;
+  final ValidationConfig validationConfig;
 
+  /// Cấu hình chung
   final GeneralConfig generalConfig;
 
+  /// Cấu hình hiển thị
+  final DisplayConfig displayConfig;
+
+  /// Callback khi hoàn thành hố sơ
+  final Function(dynamic data)? onResultCallBack;
+
   const AiCycleConfig({
-    required this.carInformation,
     required this.generalConfig,
+    this.displayConfig = const DisplayConfig(),
+    this.carInformation,
+    this.onResultCallBack,
     this.validationConfig = const ValidationConfig(
-      isPartOfCarValidation: true,
-      isTheSameCarValidation: true,
+      missingPartValidation: true,
+      sameCarValidation: true,
     ),
   });
 }
@@ -99,6 +110,7 @@ class GeneralConfig {
   /// Cho phép log hay không
   final bool loggingEnabled;
 
+  /// Tổ chức sử dụng SDK
   final AiCycleOrg organization;
 
   GeneralConfig({
@@ -114,10 +126,10 @@ class GeneralConfig {
 
 class CarInformation {
   /// Hãng xe (ví dụ: "mazda-05")
-  final String carCompanyId;
+  final String? carCompanyId;
 
   /// Dòng xe/Hiệu xe (ví dụ: "mazda.bt_50")
-  final String carModelId;
+  final String? carModelId;
 
   /// Năm sản xuất (ví dụ: 2022)
   final int? manufacturingYear;
@@ -136,28 +148,40 @@ class CarInformation {
   /// Dạng hex #RRGGBB
   final String? color;
 
-  /// Tên hiển thị của các góc xe
-  /// e.g: {AicycleCarAngle.front: 'Góc trước'}
-  final Map<AicycleCarAngle, String> carAnglesWithDisplayName;
-
   CarInformation({
-    required this.carCompanyId,
-    required this.carModelId,
+    this.carCompanyId,
+    this.carModelId,
     this.manufacturingYear,
     this.vehicleSpec,
-    required this.licensePlate,
+    this.licensePlate,
     this.vehicleType,
     this.color,
-    this.carAnglesWithDisplayName = _kDefaultCarAnglesWithDisplayName,
   });
 }
 
 class ValidationConfig {
-  final bool isTheSameCarValidation;
-  final bool isPartOfCarValidation;
+  /// Nếu false thì sẽ không kiểm tra các ảnh có phải cùng 1 xe hay không
+  final bool sameCarValidation;
+
+  /// Nếu false thì sẽ không kiểm tra hồ sơ có thiếu bộ phận nào không
+  final bool missingPartValidation;
 
   const ValidationConfig({
-    this.isTheSameCarValidation = true,
-    this.isPartOfCarValidation = true,
+    this.sameCarValidation = true,
+    this.missingPartValidation = true,
+  });
+}
+
+class DisplayConfig {
+  /// Custom loading widget
+  final Widget? loadingWidget;
+
+  /// Danh sách và tên hiển thị của các góc xe.
+  /// Mặc định sẽ hiển thị đầy đủ các góc với tên được cấu hình bởi AICycle
+  final Map<AicycleCarAngle, String> carAnglesWithDisplayName;
+
+  const DisplayConfig({
+    this.loadingWidget,
+    this.carAnglesWithDisplayName = _kDefaultCarAnglesWithDisplayName,
   });
 }

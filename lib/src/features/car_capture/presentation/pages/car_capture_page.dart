@@ -6,6 +6,7 @@ import 'package:aicycle_buyme_plus/src/core/theme/app_text_styles.dart';
 import 'package:aicycle_buyme_plus/src/core/utils/screen_utils.dart';
 import 'package:flutter/material.dart';
 
+import '../../../../../aicycle_buyme_plus.dart';
 import '../controllers/car_capture_controller.dart';
 import '../widgets/corner_button.dart';
 
@@ -21,6 +22,21 @@ class CarCapturePage extends StatefulWidget {
 class _CarCapturePageState extends State<CarCapturePage> {
   @override
   Widget build(BuildContext context) {
+    final config = AiCycleBuyMe.config;
+    final carAnglesWithDisplayName = config
+        .displayConfig
+        .carAnglesWithDisplayName
+        .keys
+        .toList();
+    final supportedAngles = CarCaptureController.supportedAngle;
+    final angles = carAnglesWithDisplayName
+        .where((angle) => supportedAngles.contains(angle))
+        .toList();
+    final displayName =
+        config.displayConfig.carAnglesWithDisplayName[AicycleCarAngle
+            .exterior] ??
+        AppStrings.exterior;
+
     return ListenableBuilder(
       listenable: sl.vehicleImageVault,
       builder: (context, _) {
@@ -29,7 +45,7 @@ class _CarCapturePageState extends State<CarCapturePage> {
           appBar: AppBar(
             backgroundColor: AppColors.surface,
             title: Text(
-              AppStrings.photoExterior,
+              '${AppStrings.photo} ${displayName.toLowerCase()}',
               style: AppTextStyles.heading2,
             ),
           ),
@@ -46,7 +62,7 @@ class _CarCapturePageState extends State<CarCapturePage> {
                         width: 200.w,
                       ),
                     ),
-                    ...CarCaptureController.supportedAngle.map((angle) {
+                    ...angles.map((angle) {
                       return Positioned(
                         left: CarCaptureController.getLeftPosition(angle).w,
                         top: CarCaptureController.getTopPosition(angle).h,

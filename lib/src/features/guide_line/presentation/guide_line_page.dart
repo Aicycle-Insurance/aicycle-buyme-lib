@@ -23,24 +23,11 @@ class GuideLinePage extends StatelessWidget {
   }[vehicleAngle]!;
 
   String get buttonLabel {
-    String label = "${AppStrings.capturePhoto} ";
-    switch (vehicleAngle) {
-      case AicycleCarAngle.vinNumber:
-        label += AppStrings.photoVinNumber.toLowerCase();
-        break;
-      case AicycleCarAngle.regStamp:
-        label += AppStrings.photoRegStamp.toLowerCase();
-        break;
-      case AicycleCarAngle.regCert:
-        label += AppStrings.photoRegCert.toLowerCase();
-        break;
-      case AicycleCarAngle.taplo:
-        label += AppStrings.photoTaplo.toLowerCase();
-        break;
-      default:
-        return '';
-    }
-    return label;
+    final config = AiCycleBuyMe.config;
+    final displayName =
+        config.displayConfig.carAnglesWithDisplayName[vehicleAngle] ??
+        AppStrings.noDisplayName;
+    return '${AppStrings.capturePhoto} ${displayName.toLowerCase()}';
   }
 
   Widget _buildSegment(RichTextSegment segment) {
@@ -94,23 +81,12 @@ class GuideLinePage extends StatelessWidget {
   }
 
   Text _buildGuideTitle() {
+    final config = AiCycleBuyMe.config;
+    final displayName =
+        config.displayConfig.carAnglesWithDisplayName[vehicleAngle] ??
+        AppStrings.noDisplayName;
     String title = AppStrings.captureGuide;
-    switch (vehicleAngle) {
-      case AicycleCarAngle.vinNumber:
-        title += ' ${AppStrings.photoVinNumber.toLowerCase()}';
-        break;
-      case AicycleCarAngle.regStamp:
-        title += ' ${AppStrings.photoRegStamp.toLowerCase()}';
-        break;
-      case AicycleCarAngle.regCert:
-        title += ' ${AppStrings.photoRegCert.toLowerCase()}';
-        break;
-      case AicycleCarAngle.taplo:
-        title += ' ${AppStrings.photoTaplo.toLowerCase()}';
-        break;
-      default:
-        break;
-    }
+    title += ' ${displayName.toLowerCase()}';
     return Text(title, style: AppTextStyles.heading2);
   }
 
