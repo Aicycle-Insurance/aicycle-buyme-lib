@@ -1,6 +1,11 @@
 # Getting started
 
-### 1. Add dependency
+### 1. Requirements
+
+- Flutter: ">=1.17.0"
+- Dart: "^3.11.1"
+
+### 2. Add dependency
 
 Add the following to your `pubspec.yaml`:
 

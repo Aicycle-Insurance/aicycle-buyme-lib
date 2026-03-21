@@ -194,7 +194,7 @@ class _ExampleHomePageState extends State<ExampleHomePage> {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8),
       child: DropdownButtonFormField<T>(
-        value: value,
+        initialValue: value,
         decoration: InputDecoration(
           label: isRequired ? _richLabel(label) : Text(label),
           border: const OutlineInputBorder(),
