@@ -259,7 +259,7 @@ class _ExampleHomePageState extends State<ExampleHomePage> {
       case AicycleCarAngle.taplo:
         return 'Taplo';
       case AicycleCarAngle.regCert:
-        return 'Tổng thể';
+        return 'Đăng kiểm';
       case AicycleCarAngle.exterior:
         return 'Ngoại thất';
     }
@@ -315,7 +315,10 @@ class _ExampleHomePageState extends State<ExampleHomePage> {
         builder: (context) => AiCycleBuyMe(
           aiCycleConfig: config,
           onComplete: (data) {
-            debugPrint('Inspection completed with data: $data');
+            Navigator.popUntil(context, (route) => route.isFirst);
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text('Inspection completed')),
+            );
           },
           onError: (error) {
             ScaffoldMessenger.of(

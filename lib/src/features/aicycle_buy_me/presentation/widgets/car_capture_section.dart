@@ -4,7 +4,6 @@ import 'package:aicycle_buyme_plus/src/core/utils/screen_utils.dart';
 import 'package:aicycle_buyme_plus/src/features/guide_line/presentation/guide_line_page.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:camera/camera.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../../aicycle_buyme_plus.dart';
@@ -200,21 +199,28 @@ class CarCaptureSection extends StatelessWidget {
                           images: images,
                         ),
                   const SizedBox(height: 12),
-                  RichText(
-                    text: TextSpan(
-                      text: '${AppStrings.guide} ',
-                      style: AppTextStyles.link,
-                      children: [
-                        WidgetSpan(
-                          child: Icon(
-                            Icons.arrow_forward_ios_rounded,
-                            size: 14.r,
-                            color: AppColors.primary,
-                          ),
+                  GestureDetector(
+                    onTap: () => onGuideTapped(context),
+                    behavior: HitTestBehavior.opaque,
+                    child: SizedBox(
+                      width: double.infinity,
+                      child: RichText(
+                        text: TextSpan(
+                          children: [
+                            TextSpan(
+                              text: '${AppStrings.guide} ',
+                              style: AppTextStyles.link,
+                            ),
+                            WidgetSpan(
+                              child: Icon(
+                                Icons.arrow_forward_ios_rounded,
+                                size: 14.r,
+                                color: AppColors.primary,
+                              ),
+                            ),
+                          ],
                         ),
-                      ],
-                      recognizer: TapGestureRecognizer()
-                        ..onTap = () => onGuideTapped(context),
+                      ),
                     ),
                   ),
                 ],
@@ -235,7 +241,7 @@ class CarCaptureSection extends StatelessWidget {
                   Expanded(
                     child: Text(
                       errorMessage!,
-                      maxLines: 1,
+                      maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                       style: AppTextStyles.body12Medium.copyWith(
                         color: AppColors.error,

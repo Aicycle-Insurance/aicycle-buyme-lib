@@ -140,9 +140,9 @@ class ImageRemoteDataSourceImpl implements ImageRemoteDataSource {
         "direction": angleId ?? '45-phai-truoc-UoYzs6',
         "isValidate": config.validationConfig.sameCarValidation,
         "isFramedPhoto": isFramedPhoto,
-        "carCompany": ?config.carInformation?.carCompanyId,
-        "carModel": ?config.carInformation?.carModelId,
-        "licensePlate": ?config.carInformation?.licensePlate,
+        "carCompany": config.carInformation?.carCompanyId,
+        "carModel": config.carInformation?.carModelId,
+        "licensePlate": config.carInformation?.licensePlate,
       },
     );
   }
@@ -152,10 +152,13 @@ class ImageRemoteDataSourceImpl implements ImageRemoteDataSource {
     List<int> imageIds,
     String? vehicleAngleId,
   ) async {
-    for (final int imageId in imageIds) {
+    final ids = List<int>.from(imageIds);
+    for (final int imageId in ids) {
       await _dioClient.delete<dynamic>(
         ApiEndpoints.deleteImageById(imageId.toString()),
-        queryParameters: {'vehicleAngleId': ?vehicleAngleId},
+        queryParameters: vehicleAngleId != null
+            ? {'vehicleAngleId': vehicleAngleId}
+            : null,
       );
     }
   }

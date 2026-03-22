@@ -35,6 +35,7 @@ class AiCycleInjection {
   late final DioClient _dioClient = DioClient(logger);
   late final VehicleImageVault vehicleImageVault = VehicleImageVault(
     deleteImageUseCase,
+    getDirectionalImagesUseCase,
   );
   late final ValidationVault validationVault = ValidationVault(
     validateVehicleAngleUseCase,

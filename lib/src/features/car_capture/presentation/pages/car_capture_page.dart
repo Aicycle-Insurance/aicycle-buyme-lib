@@ -21,6 +21,12 @@ class CarCapturePage extends StatefulWidget {
 
 class _CarCapturePageState extends State<CarCapturePage> {
   @override
+  void initState() {
+    super.initState();
+    sl.vehicleImageVault.loadAllDirectionalImages();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final config = AiCycleBuyMe.config;
     final carAnglesWithDisplayName = config

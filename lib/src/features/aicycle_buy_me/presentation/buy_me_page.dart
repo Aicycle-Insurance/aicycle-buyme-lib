@@ -117,7 +117,15 @@ class BuyMePage extends StatelessWidget {
                               CarCaptureSection(angle: AicycleCarAngle.taplo),
 
                             /// Ngoại thất
-                            CarCaptureSection(angle: AicycleCarAngle.exterior),
+                            ListenableBuilder(
+                              listenable: sl.validationVault,
+                              builder: (context, _) {
+                                return CarCaptureSection(
+                                  angle: AicycleCarAngle.exterior,
+                                  errorMessage: sl.validationVault.errorMessage,
+                                );
+                              },
+                            ),
                           ],
                         ),
                       ),

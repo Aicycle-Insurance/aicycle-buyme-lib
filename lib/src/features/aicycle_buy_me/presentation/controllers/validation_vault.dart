@@ -8,12 +8,12 @@ import '../../domain/use_cases/validate_vehicle_angle_use_case.dart';
 
 class ValidationVault extends ChangeNotifier {
   final ValidateVehicleAngleUseCase _validateVehicleAngleUseCase;
-  final config = AiCycleBuyMe.config;
+  AiCycleConfig get _config => AiCycleBuyMe.config;
 
   ValidationVault(this._validateVehicleAngleUseCase) {
     sl.vehicleImageVault.addListener(_onVaultChanged);
-    _isHasImage = sl.vehicleImageVault.exteriorImages.isNotEmpty;
-    if (config.validationConfig.missingPartValidation) {
+    _isHasImage = sl.vehicleImageVault.hasAnyImage;
+    if (_config.validationConfig.missingPartValidation) {
       validateVehicleAngle();
     }
   }
@@ -45,8 +45,8 @@ class ValidationVault extends ChangeNotifier {
   }
 
   void _onVaultChanged() {
-    _isHasImage = sl.vehicleImageVault.exteriorImages.isNotEmpty;
-    if (config.validationConfig.missingPartValidation) {
+    _isHasImage = sl.vehicleImageVault.hasAnyImage;
+    if (_config.validationConfig.missingPartValidation) {
       validateVehicleAngle();
     }
     notifyListeners();
@@ -54,9 +54,15 @@ class ValidationVault extends ChangeNotifier {
 
   @override
   void dispose() {
-    if (config.validationConfig.missingPartValidation) {
+    if (_config.validationConfig.missingPartValidation) {
       sl.vehicleImageVault.removeListener(_onVaultChanged);
     }
     super.dispose();
+  }
+
+  void reset() {
+    _errorMessage = null;
+    _isHasImage = false;
+    notifyListeners();
   }
 }

@@ -1,3 +1,5 @@
+import '../di/injection.dart';
+
 class InternalCache {
   InternalCache._();
 
@@ -7,5 +9,12 @@ class InternalCache {
   /// Xóa cache khi reset SDK hoặc logout
   static void clear() {
     claimId = '';
+  }
+
+  /// Làm mới toàn bộ tài nguyên khi thoát SDK
+  static void resetAll() {
+    clear();
+    sl.vehicleImageVault.reset();
+    sl.validationVault.reset();
   }
 }
