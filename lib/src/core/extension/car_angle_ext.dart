@@ -59,7 +59,7 @@ extension CarAngleExt on AicycleCarAngle {
       case AicycleCarAngle.right:
         return AppStrings.rightCaptureTitle(displayName);
       default:
-        return '';
+        return displayName;
     }
   }
 

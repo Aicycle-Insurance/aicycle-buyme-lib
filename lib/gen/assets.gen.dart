@@ -93,6 +93,10 @@ class $AssetsImagesGen {
   AssetGenImage get imgVinGuide =>
       const AssetGenImage('assets/images/img_vin_guide.png');
 
+  /// File path: assets/images/img_xguide.png
+  AssetGenImage get imgXguide =>
+      const AssetGenImage('assets/images/img_xguide.png');
+
   /// Directory path: assets/images/left
   $AssetsImagesLeftGen get left => const $AssetsImagesLeftGen();
 
@@ -128,6 +132,7 @@ class $AssetsImagesGen {
     imgRegCert2,
     imgRegStamp,
     imgVinGuide,
+    imgXguide,
   ];
 }
 

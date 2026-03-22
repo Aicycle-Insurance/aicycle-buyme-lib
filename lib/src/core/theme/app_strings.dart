@@ -131,4 +131,10 @@ class AppStrings {
   static const String damageLevel = 'Mức độ tổn thất:';
   static const String sendAndComplete = 'Gửi và hoàn thành';
   static const String noDamage = 'Xe không có vết hỏng';
+  static const String startCapture = 'Bắt đầu chụp ảnh';
+  static const String firstGuide1 =
+      'Hãy bắt đầu bằng việc chụp một bức ảnh tổng thể thấy';
+  static const String firstGuide2 = ' rõ nét biển số xe';
+  static const String firstGuide3 = ' (từ phía trước hoặc phía sau).';
+  static const String openCamera = 'Mở camera';
 }

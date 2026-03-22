@@ -13,9 +13,7 @@ class ValidationVault extends ChangeNotifier {
   ValidationVault(this._validateVehicleAngleUseCase) {
     sl.vehicleImageVault.addListener(_onVaultChanged);
     _isHasImage = sl.vehicleImageVault.hasAnyImage;
-    if (_config.validationConfig.missingPartValidation) {
-      validateVehicleAngle();
-    }
+    validateVehicleAngle();
   }
 
   String? _errorMessage;
@@ -25,7 +23,8 @@ class ValidationVault extends ChangeNotifier {
   bool get isHasImage => _isHasImage;
 
   Future<void> validateVehicleAngle() async {
-    if (!isHasImage) {
+    _isHasImage = sl.vehicleImageVault.hasAnyImage;
+    if (!_config.validationConfig.missingPartValidation || !isHasImage) {
       _errorMessage = null;
       notifyListeners();
       return;
@@ -45,18 +44,12 @@ class ValidationVault extends ChangeNotifier {
   }
 
   void _onVaultChanged() {
-    _isHasImage = sl.vehicleImageVault.hasAnyImage;
-    if (_config.validationConfig.missingPartValidation) {
-      validateVehicleAngle();
-    }
-    notifyListeners();
+    validateVehicleAngle();
   }
 
   @override
   void dispose() {
-    if (_config.validationConfig.missingPartValidation) {
-      sl.vehicleImageVault.removeListener(_onVaultChanged);
-    }
+    sl.vehicleImageVault.removeListener(_onVaultChanged);
     super.dispose();
   }
 

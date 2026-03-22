@@ -1,4 +1,6 @@
+import 'package:aicycle_buyme_plus/src/core/di/injection.dart';
 import 'package:aicycle_buyme_plus/src/core/theme/app_strings.dart';
+import 'package:aicycle_buyme_plus/src/features/camera/presentation/widgets/first_guide_popup.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -32,6 +34,7 @@ class CameraPage extends StatefulWidget {
 
 class _CameraPageState extends State<CameraPage> {
   late final XCameraController _controller;
+  bool _showGuide = true;
 
   bool get supportGuide => widget.args.isFramedPhoto;
 
@@ -200,6 +203,22 @@ class _CameraPageState extends State<CameraPage> {
                             ),
                           ),
                         ),
+                      ),
+                      ListenableBuilder(
+                        listenable: sl.vehicleImageVault,
+                        builder: (context, _) {
+                          if (widget.args.vehicleAngle ==
+                                  AicycleCarAngle.exterior &&
+                              sl.vehicleImageVault.exteriorImages.isEmpty &&
+                              _showGuide) {
+                            return Center(
+                              child: FirstGuidePopup(
+                                onTap: () => setState(() => _showGuide = false),
+                              ),
+                            );
+                          }
+                          return const SizedBox.shrink();
+                        },
                       ),
                     ],
                   ),
