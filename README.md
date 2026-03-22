@@ -68,40 +68,51 @@ ElevatedButton(
 )
 ```
 
-### Advanced Configuration
+## Configuration Reference
 
-You can customize which angles to show and how they should be named:
+The `AiCycleConfig` class consists of four main configuration sections:
 
-```dart
-AiCycleBuyMe(
-  aiCycleConfig: AiCycleConfig(
-    generalConfig: GeneralConfig(
-      apiToken: '61a688:b97cd78259f9...',
-      documentId: '9121',
-      environment: AiCycleEnvironment.stage,
-      organization: AiCycleOrg.partner,
-      loggingEnabled: true,
-    ),
-    validationConfig: ValidationConfig(
-      sameCarValidation: true,
-      missingPartValidation: true,
-    ),
-    displayConfig: DisplayConfig(
-      carAnglesWithDisplayName: {
-        AicycleCarAngle.front: 'Trước',
-        AicycleCarAngle.rear: 'Sau',
-        AicycleCarAngle.left: 'Trái',
-        AicycleCarAngle.right: 'Phải',
-        AicycleCarAngle.vinNumber: 'Số khung',
-      },
-      showResultScreen: true, // Navigate to a detailed damage result page
-    ),
-  ),
-  onComplete: (data) {
-    // Handle the result data
-  },
-)
-```
+### 1. GeneralConfig
+Core settings for API access and SDK behavior.
+
+| Property | Type | Default | Description |
+| :--- | :--- | :--- | :--- |
+| `apiToken` | `String` | Required | Your AiCycle API token. |
+| `documentId` | `String` | Required | Unique ID for the inspection (External ID). |
+| `organization` | `AiCycleOrg` | Required | `AiCycleOrg.aicycle`, `partner`, or `others`. |
+| `environment` | `AiCycleEnvironment`| `develop` | `develop`, `stage`, or `production`. |
+| `documentName`| `String?` | `null` | Optional name for the inspection document. |
+| `showResultScreen`| `bool` | `true` | Show AiCycle's built-in result screen after capture. |
+| `loggingEnabled` | `bool` | `false` | Enable/disable Internal SDK logging. |
+
+### 2. DisplayConfig
+Customize the UI and visible capture angles.
+
+| Property | Type | Default | Description |
+| :--- | :--- | :--- | :--- |
+| `loadingWidget` | `Widget?` | `null` | Custom widget to show during initialization. |
+| `carAnglesWithDisplayName` | `Map` | All angles | Map of `AicycleCarAngle` to their display names. Controls which buttons appear. |
+
+### 3. CarInformation
+Pre-fill vehicle details to improve AI accuracy.
+
+| Property | Type | Description |
+| :--- | :--- | :--- |
+| `carCompanyId` | `String?` | Vehicle brand ID (e.g., '5' for Mazda). |
+| `carModelId` | `String?` | Vehicle model ID. |
+| `manufacturingYear`| `int?` | Year of manufacture. |
+| `vehicleSpec` | `String?` | Vehicle version/specification. |
+| `licensePlate` | `String?` | Vehicle license plate number. |
+| `vehicleType` | `String?` | `sedan`, `suv`, `truck`, `pickup`, etc. |
+| `color` | `String?` | Hex color code (e.g., `#FFFFFF`). |
+
+### 4. ValidationConfig
+Toggle various AI validation features.
+
+| Property | Type | Default | Description |
+| :--- | :--- | :--- | :--- |
+| `sameCarValidation` | `bool` | `true` | Verify if all photos belong to the same vehicle. |
+| `missingPartValidation` | `bool` | `true` | Check if any required car parts are missing in photos. |
 
 ## Data Output Structure
 
@@ -130,3 +141,4 @@ The `onComplete` callback returns a `Map<String, dynamic>` containing:
 ## Support
 
 For issues and feature requests, please contact [AiCycle Support](mailto:support@aicycle.ai).
+
