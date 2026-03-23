@@ -212,6 +212,7 @@ class DamageImageInfoModel {
   final String? damageTypeName;
   final double? damagePercentage;
   final String? damageTypeColor;
+  final List<double>? boxes;
 
   DamageImageInfoModel({
     this.maskUrl,
@@ -219,6 +220,7 @@ class DamageImageInfoModel {
     this.damageTypeName,
     this.damagePercentage,
     this.damageTypeColor,
+    this.boxes,
   });
 
   factory DamageImageInfoModel.fromJson(Map<String, dynamic> json) {
@@ -228,6 +230,7 @@ class DamageImageInfoModel {
       damageTypeName: json['damageTypeName'],
       damagePercentage: (json['damagePercentage'] as num?)?.toDouble(),
       damageTypeColor: json['damageTypeColor'],
+      boxes: (json['boxes'] as List?)?.map((e) => e as double).toList(),
     );
   }
 
@@ -238,6 +241,7 @@ class DamageImageInfoModel {
       'damageTypeName': damageTypeName,
       'damagePercentage': damagePercentage,
       'damageTypeColor': damageTypeColor,
+      'boxes': boxes,
     };
   }
 }

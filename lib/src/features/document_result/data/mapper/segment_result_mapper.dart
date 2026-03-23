@@ -30,6 +30,17 @@ extension ImageMapper on SegmentImageModel {
       imageId: imageId,
       resolution: resolution,
       filePath: filePath,
+      damagesInImage: damageImageInfo
+          ?.map(
+            (e) => DamageEntity(
+              damageTypeName: e.damageTypeName,
+              damagePercentage: e.damagePercentage,
+              damageTypeColor: e.damageTypeColor,
+              maskUrl: e.maskUrl,
+              boxes: e.boxes,
+            ),
+          )
+          .toList(),
     );
   }
 }

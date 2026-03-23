@@ -7,6 +7,7 @@ import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_text_styles.dart';
 import '../../../../core/utils/screen_utils.dart';
 import '../../domain/entities/segment_result.dart';
+import 'segmented_photo.dart';
 
 class SegmentContainer extends StatefulWidget {
   const SegmentContainer({super.key, required this.segmentResult});
@@ -121,24 +122,12 @@ class _SegmentContainerState extends State<SegmentContainer> {
           ),
         ),
         if (widget.segmentResult.images?.isNotEmpty ?? false) ...[
-          Container(
-            margin: EdgeInsets.only(top: 8.h),
-            color: Colors.black,
-            height: 220.h,
-            width: double.infinity,
+          Padding(
+            padding: EdgeInsets.only(top: 8.h),
             child: Stack(
               children: [
-                Center(
-                  child: CachedNetworkImage(
-                    imageUrl:
-                        widget.segmentResult.images![selectedIndex].filePath ??
-                        '',
-                    fit: BoxFit.fitHeight,
-                    placeholder: (context, url) =>
-                        const Center(child: CircularProgressIndicator()),
-                    errorWidget: (context, url, error) =>
-                        const Center(child: Icon(Icons.error)),
-                  ),
+                SegmentedPhoto(
+                  imageEntity: widget.segmentResult.images![selectedIndex],
                 ),
                 Positioned(
                   bottom: 8.h,
@@ -163,6 +152,48 @@ class _SegmentContainerState extends State<SegmentContainer> {
               ],
             ),
           ),
+          // Container(
+          //   margin: EdgeInsets.only(top: 8.h),
+          //   color: Colors.black,
+          //   height: 220.h,
+          //   width: double.infinity,
+          //   child: Stack(
+          //     children: [
+          //       Center(
+          //         child: CachedNetworkImage(
+          //           imageUrl:
+          //               widget.segmentResult.images![selectedIndex].filePath ??
+          //               '',
+          //           fit: BoxFit.fitHeight,
+          //           placeholder: (context, url) =>
+          //               const Center(child: CircularProgressIndicator()),
+          //           errorWidget: (context, url, error) =>
+          //               const Center(child: Icon(Icons.error)),
+          //         ),
+          //       ),
+          //       Positioned(
+          //         bottom: 8.h,
+          //         right: 8.h,
+          //         child: Container(
+          //           padding: EdgeInsets.symmetric(
+          //             horizontal: 8.w,
+          //             vertical: 4.h,
+          //           ),
+          //           decoration: BoxDecoration(
+          //             color: Colors.black54,
+          //             borderRadius: BorderRadius.circular(4.r),
+          //           ),
+          //           child: Text(
+          //             '${selectedIndex + 1}/${widget.segmentResult.images?.length}',
+          //             style: AppTextStyles.bodyRegular.copyWith(
+          //               color: AppColors.surface,
+          //             ),
+          //           ),
+          //         ),
+          //       ),
+          //     ],
+          //   ),
+          // ),
           Container(
             color: Color(0xFFE8EAF3),
             height: 68.h,
@@ -171,27 +202,35 @@ class _SegmentContainerState extends State<SegmentContainer> {
               itemCount: widget.segmentResult.images?.length ?? 0,
               padding: EdgeInsets.all(16.r),
               itemBuilder: (context, index) {
-                return Container(
-                  margin: EdgeInsets.only(right: 16.h),
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                      color: selectedIndex == index
-                          ? AppColors.primary
-                          : Colors.transparent,
-                      width: 2.r,
+                return GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      selectedIndex = index;
+                    });
+                  },
+                  child: Container(
+                    width: 54.h,
+                    margin: EdgeInsets.only(right: 16.h),
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: selectedIndex == index
+                            ? AppColors.primary
+                            : Colors.transparent,
+                        width: 2.r,
+                      ),
+                      borderRadius: BorderRadius.circular(4.r),
                     ),
-                    borderRadius: BorderRadius.circular(4.r),
-                  ),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(2.r),
-                    child: CachedNetworkImage(
-                      imageUrl:
-                          widget.segmentResult.images![index].filePath ?? '',
-                      fit: BoxFit.cover,
-                      placeholder: (context, url) =>
-                          const Center(child: CircularProgressIndicator()),
-                      errorWidget: (context, url, error) =>
-                          const Center(child: Icon(Icons.error)),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(2.r),
+                      child: CachedNetworkImage(
+                        imageUrl:
+                            widget.segmentResult.images![index].filePath ?? '',
+                        fit: BoxFit.cover,
+                        placeholder: (context, url) =>
+                            const Center(child: CircularProgressIndicator()),
+                        errorWidget: (context, url, error) =>
+                            const Center(child: Icon(Icons.error)),
+                      ),
                     ),
                   ),
                 );

@@ -1,3 +1,7 @@
+## 1.0.4
+
+- Fix bugs and update UI
+
 ## 1.0.3
 
 - Implement compress image before upload

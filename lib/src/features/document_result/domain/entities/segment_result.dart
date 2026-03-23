@@ -20,18 +20,28 @@ class ImageEntity {
   final int? imageId;
   final List<int>? resolution;
   final String? filePath;
+  final List<DamageEntity>? damagesInImage;
 
-  ImageEntity({this.imageId, this.resolution, this.filePath});
+  ImageEntity({
+    this.imageId,
+    this.resolution,
+    this.filePath,
+    this.damagesInImage,
+  });
 }
 
 class DamageEntity {
   final String? damageTypeName;
   final double? damagePercentage;
   final String? damageTypeColor;
+  final String? maskUrl;
+  final List<double>? boxes;
 
   DamageEntity({
     this.damageTypeName,
     this.damagePercentage,
     this.damageTypeColor,
+    this.maskUrl,
+    this.boxes,
   });
 }
