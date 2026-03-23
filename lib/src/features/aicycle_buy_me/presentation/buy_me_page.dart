@@ -122,7 +122,9 @@ class BuyMePage extends StatelessWidget {
                               builder: (context, _) {
                                 return CarCaptureSection(
                                   angle: AicycleCarAngle.exterior,
-                                  errorMessage: sl.validationVault.errorMessage,
+                                  errorMessage: sl.validationVault.message,
+                                  validationType:
+                                      sl.validationVault.validationType,
                                 );
                               },
                             ),
@@ -147,7 +149,7 @@ class BuyMePage extends StatelessWidget {
                   builder: (context, _) {
                     final canSubmit =
                         sl.validationVault.isHasImage &&
-                        sl.validationVault.errorMessage?.isNotEmpty != true;
+                        sl.validationVault.message?.isNotEmpty != true;
                     return ElevatedButton(
                       onPressed: canSubmit ? () => onSubmit(context) : null,
                       style: ElevatedButton.styleFrom(

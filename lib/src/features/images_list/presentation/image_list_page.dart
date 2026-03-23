@@ -12,6 +12,7 @@ import '../../../core/widgets/app_checkbox.dart';
 import '../../../core/widgets/delete_confirm_dialog.dart';
 import '../../aicycle_buy_me/domain/entities/directional_image.dart';
 import '../../camera/presentation/pages/camera_page.dart';
+import '../../aicycle_buy_me/presentation/controllers/validation_vault.dart';
 
 class ImageListPage extends StatelessWidget {
   const ImageListPage({super.key, required this.vehicleAngle});
@@ -126,31 +127,56 @@ class ImageListPage extends StatelessWidget {
                         builder: (context, child) {
                           return Visibility(
                             visible:
-                                sl.validationVault.errorMessage?.isNotEmpty ==
-                                true,
+                                sl.validationVault.message?.isNotEmpty == true,
                             child: Container(
-                              margin: EdgeInsets.all(16.r).copyWith(bottom: 0),
+                              width: double.infinity,
+                              margin: EdgeInsets.all(
+                                16.r,
+                              ).copyWith(bottom: 8.r),
                               padding: EdgeInsets.all(8.r),
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(12.r),
-                                border: Border.all(color: AppColors.error),
+                                border: Border.all(
+                                  color:
+                                      sl.validationVault.validationType ==
+                                          ValidationType.success
+                                      ? AppColors.success
+                                      : AppColors.error,
+                                ),
                               ),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Assets.images.icErrorOutline.image(
-                                    package: AppStrings.package,
-                                    height: 38.h,
-                                    width: 38.h,
-                                  ),
+                                  if (sl.validationVault.validationType ==
+                                      ValidationType.error)
+                                    Assets.images.icErrorOutline.image(
+                                      package: AppStrings.package,
+                                      height: 38.h,
+                                      width: 38.h,
+                                    ),
                                   Padding(
                                     padding: EdgeInsets.all(8.r),
-                                    child: Text(
-                                      sl.validationVault.errorMessage ?? '',
-                                      style: AppTextStyles.bodySemibold
-                                          .copyWith(
-                                            color: AppColors.textPrimary,
+                                    child: Row(
+                                      children: [
+                                        if (sl.validationVault.validationType ==
+                                            ValidationType.success) ...[
+                                          Icon(
+                                            Icons.check_circle_outline_rounded,
+                                            color: AppColors.success,
+                                            size: 20.r,
                                           ),
+                                          SizedBox(width: 8.w),
+                                        ],
+                                        Expanded(
+                                          child: Text(
+                                            sl.validationVault.message ?? '',
+                                            style: AppTextStyles.bodySemibold
+                                                .copyWith(
+                                                  color: AppColors.textPrimary,
+                                                ),
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ),
                                 ],
@@ -170,7 +196,7 @@ class ImageListPage extends StatelessWidget {
                                     ? 176 / 160
                                     : 361 / 244,
                               ),
-                          padding: EdgeInsets.all(16.r),
+                          padding: EdgeInsets.all(16.r).copyWith(top: 8.r),
                           itemCount: images.length,
                           itemBuilder: (context, index) =>
                               _buildCapturedImages(images[index]),

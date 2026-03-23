@@ -1,7 +1,9 @@
+import 'package:aicycle_buyme_plus/gen/assets.gen.dart';
 import 'package:aicycle_buyme_plus/src/core/utils/screen_utils.dart';
 import 'package:flutter/material.dart';
 
 import '../theme/app_colors.dart';
+import '../theme/app_strings.dart';
 import '../theme/app_text_styles.dart';
 
 class CommonValidationDialog {
@@ -68,89 +70,95 @@ class ValidationDialog extends StatelessWidget {
           : const EdgeInsets.symmetric(horizontal: 40.0, vertical: 24.0),
       child: Container(
         width: width,
-        padding: const EdgeInsets.all(16.0),
+        padding: EdgeInsets.all(8.r),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             /// Icon
-            Container(
+            Assets.images.icErrorOutline.image(
               width: 48.r,
               height: 48.r,
-              decoration: const BoxDecoration(
-                color: AppColors.backgroundError,
-                shape: BoxShape.circle,
-              ),
-              child: Icon(
-                Icons.info_outline_rounded,
-                color: AppColors.error,
-                size: 20.r,
-              ),
+              package: AppStrings.package,
             ),
-            const SizedBox(height: 16),
+            SizedBox(height: 8.h),
 
-            /// Title
-            Text(
-              title,
-              style: AppTextStyles.headingSemiBold,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-            ),
-            const SizedBox(height: 8),
-
-            /// Message
-            Text(
-              message,
-              style: AppTextStyles.bodyRegular,
-              maxLines: 3,
-              overflow: TextOverflow.ellipsis,
-            ),
-            const SizedBox(height: 24),
-
-            /// Buttons
-            Row(
-              children: [
-                if (secondaryButtonLabel != null) ...[
-                  Expanded(
-                    child: OutlinedButton(
-                      onPressed:
-                          onSecondaryTapped ?? () => Navigator.pop(context),
-                      style: OutlinedButton.styleFrom(
-                        padding: const EdgeInsets.symmetric(vertical: 12),
-                        side: const BorderSide(color: AppColors.borderGray),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                      ),
-                      child: Text(
-                        secondaryButtonLabel!,
-                        style: AppTextStyles.button.copyWith(
-                          color: AppColors.black,
-                        ),
-                      ),
-                    ),
+            Padding(
+              padding: EdgeInsets.all(8.r),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  /// Title
+                  Text(
+                    title,
+                    style: AppTextStyles.headingSemiBold,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                   ),
-                  const SizedBox(width: 12),
+                  const SizedBox(height: 8),
+
+                  /// Message
+                  Text(
+                    message,
+                    style: AppTextStyles.bodyRegular,
+                    maxLines: 3,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  const SizedBox(height: 24),
+
+                  /// Buttons
+                  Row(
+                    children: [
+                      if (secondaryButtonLabel != null) ...[
+                        Expanded(
+                          child: OutlinedButton(
+                            onPressed:
+                                onSecondaryTapped ??
+                                () => Navigator.pop(context),
+                            style: OutlinedButton.styleFrom(
+                              padding: const EdgeInsets.symmetric(vertical: 12),
+                              side: const BorderSide(
+                                color: AppColors.borderGray,
+                              ),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                            ),
+                            child: Text(
+                              secondaryButtonLabel!,
+                              style: AppTextStyles.button.copyWith(
+                                color: AppColors.black,
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 12),
+                      ],
+                      Expanded(
+                        child: ElevatedButton(
+                          onPressed:
+                              onPrimaryTapped ?? () => Navigator.pop(context),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: AppColors.primary,
+                            foregroundColor: Colors.white,
+                            padding: const EdgeInsets.symmetric(vertical: 12),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            elevation: 0,
+                          ),
+                          child: Text(
+                            primaryButtonLabel,
+                            style: AppTextStyles.button.copyWith(
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ],
-                Expanded(
-                  child: ElevatedButton(
-                    onPressed: onPrimaryTapped ?? () => Navigator.pop(context),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColors.primary,
-                      foregroundColor: Colors.white,
-                      padding: const EdgeInsets.symmetric(vertical: 12),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      elevation: 0,
-                    ),
-                    child: Text(
-                      primaryButtonLabel,
-                      style: AppTextStyles.button.copyWith(color: Colors.white),
-                    ),
-                  ),
-                ),
-              ],
+              ),
             ),
           ],
         ),

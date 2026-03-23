@@ -39,7 +39,7 @@ class GuideConstants {
     position: [],
     requirement: [
       TextParagraph(
-        'Hãy đặt sổ đăng kiểm trên nền phẳng, chụp rõ 2 mặt vuông góc từ trên xuống, đẩm bảo chữ không bị loá, mờ hay che khuất.',
+        'Hãy đặt sổ đăng kiểm trên nền phẳng, chụp rõ 2 mặt vuông góc từ trên xuống, đảm bảo chữ không bị loá, mờ hay che khuất.',
       ),
     ],
     samplePhotoUrls: [
@@ -67,7 +67,7 @@ class GuideConstants {
     ],
     requirement: [
       TextParagraph(
-        'Hãy đặt sổ đăng kiểm trên nền phẳng, chụp rõ 2 mặt vuông góc từ trên xuống, đẩm bảo chữ không bị loá, mờ hay che khuất.',
+        'Hãy đặt sổ đăng kiểm trên nền phẳng, chụp rõ 2 mặt vuông góc từ trên xuống, đảm bảo chữ không bị loá, mờ hay che khuất.',
       ),
     ],
     samplePhotoUrls: [

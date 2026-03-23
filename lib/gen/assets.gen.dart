@@ -11,6 +11,16 @@
 
 import 'package:flutter/widgets.dart';
 
+class $AssetsGifGen {
+  const $AssetsGifGen();
+
+  /// File path: assets/gif/loading.gif
+  AssetGenImage get loading => const AssetGenImage('assets/gif/loading.gif');
+
+  /// List of all assets
+  List<AssetGenImage> get values => [loading];
+}
+
 class $AssetsImagesGen {
   const $AssetsImagesGen();
 
@@ -314,6 +324,7 @@ class $AssetsImagesRightGen {
 class Assets {
   const Assets._();
 
+  static const $AssetsGifGen gif = $AssetsGifGen();
   static const $AssetsImagesGen images = $AssetsImagesGen();
 }
 

@@ -7,7 +7,6 @@ import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../../aicycle_buyme_plus.dart';
-import '../../../../../gen/assets.gen.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_strings.dart';
 import '../../../../core/widgets/dashed_container.dart';
@@ -16,13 +15,20 @@ import '../../../car_capture/presentation/pages/car_capture_page.dart';
 
 import '../../../images_list/presentation/image_list_page.dart';
 import '../../domain/entities/directional_image.dart';
+import '../controllers/validation_vault.dart';
 
 /// A section in the [BuyMePage] representing a specific document or exterior photo requirement.
 /// Handles navigating to the appropriate capture flow (Camera or Guide).
 class CarCaptureSection extends StatelessWidget {
-  const CarCaptureSection({super.key, required this.angle, this.errorMessage});
+  const CarCaptureSection({
+    super.key,
+    required this.angle,
+    this.errorMessage,
+    this.validationType = ValidationType.initial,
+  });
   final AicycleCarAngle angle;
   final String? errorMessage;
+  final ValidationType validationType;
 
   String get title {
     final config = AiCycleBuyMe.config;
@@ -146,6 +152,9 @@ class CarCaptureSection extends StatelessWidget {
       listenable: sl.vehicleImageVault,
       builder: (context, _) {
         final images = sl.vehicleImageVault.getImagesForAngle(angle);
+        final color = validationType == ValidationType.success
+            ? AppColors.success
+            : AppColors.error;
 
         return Column(
           mainAxisSize: MainAxisSize.min,
@@ -159,9 +168,7 @@ class CarCaptureSection extends StatelessWidget {
                 color: AppColors.surface,
                 borderRadius: BorderRadius.circular(8),
                 border: Border.all(
-                  color: errorMessage != null
-                      ? AppColors.error
-                      : AppColors.borderGray,
+                  color: errorMessage != null ? color : AppColors.borderGray,
                 ),
               ),
               padding: EdgeInsets.all(8.h).copyWith(bottom: 12.h),
@@ -230,12 +237,12 @@ class CarCaptureSection extends StatelessWidget {
               const SizedBox(height: 8),
               Row(
                 children: [
-                  SizedBox(
-                    height: 16.r,
-                    width: 16.r,
-                    child: Assets.images.icInfoCircle.image(
-                      package: AppStrings.package,
-                    ),
+                  Icon(
+                    validationType == ValidationType.success
+                        ? Icons.check_circle_outline_rounded
+                        : Icons.error_outline_rounded,
+                    size: 16.r,
+                    color: color,
                   ),
                   const SizedBox(width: 6),
                   Expanded(
@@ -243,9 +250,7 @@ class CarCaptureSection extends StatelessWidget {
                       errorMessage!,
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
-                      style: AppTextStyles.body12Medium.copyWith(
-                        color: AppColors.error,
-                      ),
+                      style: AppTextStyles.body12Medium.copyWith(color: color),
                     ),
                   ),
                 ],

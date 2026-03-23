@@ -87,7 +87,7 @@ class _CameraPageState extends State<CameraPage> {
     if (mounted) {
       CommonValidationDialog.show(
         context: context,
-        title: 'Error',
+        title: AppStrings.error,
         quarterTurns: 1,
         message: message,
         primaryButtonLabel: AppStrings.btnRetake,
