@@ -143,11 +143,13 @@ class XCameraController extends ChangeNotifier {
     try {
       _setUploading(true);
 
+      final compressedImage = await ImageUtils.compressedImage(_capturedImage!);
+
       // Chỉ upload nếu góc chụp là regCert (đăng kiểm)
       if (angle == AicycleCarAngle.regCert) {
-        await _uploadRegCert();
+        await _uploadRegCert(compressedImage);
       } else {
-        await _uploadRegularImage();
+        await _uploadRegularImage(compressedImage);
       }
 
       _setUploading(false);
@@ -170,12 +172,12 @@ class XCameraController extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> _uploadRegCert() async {
+  Future<void> _uploadRegCert(XFile compressedImage) async {
     final claimId = InternalCache.claimId;
 
     final result = await sl.uploadVehicleInspectionUseCase(
       UploadVehicleInspectionParams(
-        imagePath: _capturedImage!.path,
+        imagePath: compressedImage.path,
         claimId: claimId,
       ),
     );
@@ -187,12 +189,12 @@ class XCameraController extends ChangeNotifier {
     }
   }
 
-  Future<void> _uploadRegularImage() async {
+  Future<void> _uploadRegularImage(XFile compressedImage) async {
     final claimId = InternalCache.claimId;
 
     final result = await sl.uploadImageUseCase(
       UploadImageParams(
-        imagePath: _capturedImage!.path,
+        imagePath: compressedImage.path,
         claimId: claimId,
         angleId: angle.id,
       ),

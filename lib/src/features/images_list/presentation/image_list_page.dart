@@ -12,7 +12,6 @@ import '../../../core/widgets/app_checkbox.dart';
 import '../../../core/widgets/delete_confirm_dialog.dart';
 import '../../aicycle_buy_me/domain/entities/directional_image.dart';
 import '../../camera/presentation/pages/camera_page.dart';
-import '../../aicycle_buy_me/presentation/controllers/validation_vault.dart';
 
 class ImageListPage extends StatelessWidget {
   const ImageListPage({super.key, required this.vehicleAngle});
@@ -137,18 +136,17 @@ class ImageListPage extends StatelessWidget {
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(12.r),
                                 border: Border.all(
-                                  color:
-                                      sl.validationVault.validationType ==
-                                          ValidationType.success
+                                  color: sl.validationVault.isSuccess
                                       ? AppColors.success
-                                      : AppColors.error,
+                                      : sl.validationVault.isError
+                                      ? AppColors.error
+                                      : Colors.transparent,
                                 ),
                               ),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  if (sl.validationVault.validationType ==
-                                      ValidationType.error)
+                                  if (sl.validationVault.isError)
                                     Assets.images.icErrorOutline.image(
                                       package: AppStrings.package,
                                       height: 38.h,
@@ -158,8 +156,7 @@ class ImageListPage extends StatelessWidget {
                                     padding: EdgeInsets.all(8.r),
                                     child: Row(
                                       children: [
-                                        if (sl.validationVault.validationType ==
-                                            ValidationType.success) ...[
+                                        if (sl.validationVault.isSuccess) ...[
                                           Icon(
                                             Icons.check_circle_outline_rounded,
                                             color: AppColors.success,

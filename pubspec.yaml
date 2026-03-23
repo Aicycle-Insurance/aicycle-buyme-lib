@@ -1,6 +1,6 @@
 name: aicycle_buyme_plus
 description: "An Aicycle BuyMe Plus package."
-version: 1.0.2
+version: 1.0.3
 homepage: https://aicycle.ai/
 
 environment:

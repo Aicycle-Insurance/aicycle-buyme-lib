@@ -26,6 +26,9 @@ class ValidationVault extends ChangeNotifier {
   bool get isHasImage => _isHasImage;
   ValidationType get validationType => _validationType;
 
+  bool get isSuccess => _validationType == ValidationType.success;
+  bool get isError => _validationType == ValidationType.error;
+
   Future<void> validateVehicleAngle() async {
     _isHasImage = sl.vehicleImageVault.hasAnyImage;
     if (!_config.validationConfig.missingPartValidation || !isHasImage) {

@@ -152,9 +152,11 @@ class CarCaptureSection extends StatelessWidget {
       listenable: sl.vehicleImageVault,
       builder: (context, _) {
         final images = sl.vehicleImageVault.getImagesForAngle(angle);
-        final color = validationType == ValidationType.success
-            ? AppColors.success
-            : AppColors.error;
+        final color = switch (validationType) {
+          ValidationType.success => AppColors.success,
+          ValidationType.error => AppColors.error,
+          _ => AppColors.borderGray,
+        };
 
         return Column(
           mainAxisSize: MainAxisSize.min,
