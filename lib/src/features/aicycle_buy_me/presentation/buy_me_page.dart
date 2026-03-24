@@ -47,6 +47,7 @@ class BuyMePage extends StatelessWidget {
       backgroundColor: AppColors.background,
       appBar: AppBar(
         backgroundColor: AppColors.surface,
+        automaticallyImplyLeading: false,
         elevation: 0,
         toolbarHeight: 0,
         surfaceTintColor: Colors.transparent,

@@ -108,6 +108,7 @@ class _CarCaptureGuidePageState extends State<CarCaptureGuidePage> {
           appBar: AppBar(
             backgroundColor: AppColors.surface,
             surfaceTintColor: Colors.transparent,
+            elevation: 0,
             actions: [
               Visibility(
                 visible: showDeleteButton,

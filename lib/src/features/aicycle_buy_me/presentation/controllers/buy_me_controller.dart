@@ -39,26 +39,31 @@ class BuyMeController extends ChangeNotifier {
       if (!_isDisposed) notifyListeners();
 
       AiCycleBuyMe.configInternal = config;
-      final carInfo = config.carInformation;
 
-      await _createBuyMeFolderUseCase(
-        CreateBuyMeFolderParams(
-          externalClaimId: config.generalConfig.documentId,
-          claimName:
-              config.generalConfig.documentName ??
-              config.generalConfig.documentId,
-          vehicleBrandId: '5',
-          priceTypeId: 10,
-          isClaim: false,
-          brand: carInfo?.carCompanyId,
-          model: carInfo?.carModelId,
-          vehicleYear: carInfo?.manufacturingYear,
-          vehicleSpec: carInfo?.vehicleSpec,
-          licensePlate: carInfo?.licensePlate,
-          vehicleType: carInfo?.vehicleType ?? 'truck',
-          hasLicensePlate: carInfo?.licensePlate?.isNotEmpty == true,
-        ),
-      );
+      if (config.generalConfig.organization == AiCycleOrg.aicycle) {
+        InternalCache.claimId = config.generalConfig.documentId;
+      } else {
+        final carInfo = config.carInformation;
+
+        await _createBuyMeFolderUseCase(
+          CreateBuyMeFolderParams(
+            externalClaimId: config.generalConfig.documentId,
+            claimName:
+                config.generalConfig.documentName ??
+                config.generalConfig.documentId,
+            vehicleBrandId: '5',
+            priceTypeId: 10,
+            isClaim: false,
+            brand: carInfo?.carCompanyId,
+            model: carInfo?.carModelId,
+            vehicleYear: carInfo?.manufacturingYear,
+            vehicleSpec: carInfo?.vehicleSpec,
+            licensePlate: carInfo?.licensePlate,
+            vehicleType: carInfo?.vehicleType ?? 'truck',
+            hasLicensePlate: carInfo?.licensePlate?.isNotEmpty == true,
+          ),
+        );
+      }
 
       await sl.vehicleImageVault.loadAllDirectionalImages();
       await sl.validationVault.validateVehicleAngle();

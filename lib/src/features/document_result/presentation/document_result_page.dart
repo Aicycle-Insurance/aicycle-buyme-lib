@@ -43,6 +43,7 @@ class _DocumentResultPageState extends State<DocumentResultPage> {
       appBar: AppBar(
         backgroundColor: AppColors.surface,
         centerTitle: true,
+        elevation: 0,
         surfaceTintColor: Colors.transparent,
         title: Text(
           AppStrings.documentResultTitle,

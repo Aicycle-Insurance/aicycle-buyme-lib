@@ -105,6 +105,7 @@ class _ImageListPageState extends State<ImageListPage> {
           backgroundColor: AppColors.background,
           appBar: AppBar(
             backgroundColor: AppColors.surface,
+            elevation: 0,
             surfaceTintColor: Colors.transparent,
             title: Text(title, style: AppTextStyles.heading2),
             actions: [

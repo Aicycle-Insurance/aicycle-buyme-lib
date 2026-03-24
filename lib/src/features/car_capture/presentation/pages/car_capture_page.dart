@@ -50,6 +50,8 @@ class _CarCapturePageState extends State<CarCapturePage> {
           backgroundColor: AppColors.background,
           appBar: AppBar(
             backgroundColor: AppColors.surface,
+            elevation: 0,
+            surfaceTintColor: Colors.transparent,
             title: Text(
               '${AppStrings.photo} ${displayName.toLowerCase()}',
               style: AppTextStyles.heading2,

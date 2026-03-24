@@ -124,8 +124,10 @@ class _CameraPageState extends State<CameraPage> {
                 backgroundColor: Colors.black,
                 appBar: AppBar(
                   backgroundColor: Colors.black,
+                  automaticallyImplyLeading: false,
                   systemOverlayStyle: SystemUiOverlayStyle.light,
                   toolbarHeight: 0,
+                  elevation: 0,
                 ),
                 body: SafeArea(
                   child: Stack(
