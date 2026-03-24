@@ -68,7 +68,7 @@ class _SegmentContainerState extends State<SegmentContainer> {
               Expanded(
                 flex: 2,
                 child: Text(
-                  AppStrings.damageLevel,
+                  AppStrings.damageType,
                   style: AppTextStyles.body12Regular,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
@@ -83,35 +83,27 @@ class _SegmentContainerState extends State<SegmentContainer> {
                       .map(
                         (e) => Row(
                           children: [
-                            Expanded(
-                              flex: 4,
-                              child: Text(
-                                e.damageTypeName ?? 'N/A',
-                                style: AppTextStyles.body12Light,
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
+                            Text(
+                              e.damageTypeName ?? 'N/A',
+                              style: AppTextStyles.body12Light,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                            SizedBox(width: 8.h),
+                            Container(
+                              height: 6.r,
+                              width: 6.r,
+                              decoration: BoxDecoration(
+                                color: e.damageTypeColor?.color,
+                                shape: BoxShape.circle,
                               ),
                             ),
-                            Expanded(
-                              flex: 1,
-                              child: Container(
-                                height: 6.r,
-                                width: 6.r,
-                                decoration: BoxDecoration(
-                                  color: e.damageTypeColor?.color,
-                                  shape: BoxShape.circle,
-                                ),
-                              ),
-                            ),
-                            Expanded(
-                              flex: 2,
-                              child: Text(
-                                getPercentage(e),
-                                style: AppTextStyles.body12Light,
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                            ),
+                            // Text(
+                            //   getPercentage(e),
+                            //   style: AppTextStyles.body12Light,
+                            //   maxLines: 1,
+                            //   overflow: TextOverflow.ellipsis,
+                            // ),
                           ],
                         ),
                       )
@@ -152,48 +144,6 @@ class _SegmentContainerState extends State<SegmentContainer> {
               ],
             ),
           ),
-          // Container(
-          //   margin: EdgeInsets.only(top: 8.h),
-          //   color: Colors.black,
-          //   height: 220.h,
-          //   width: double.infinity,
-          //   child: Stack(
-          //     children: [
-          //       Center(
-          //         child: CachedNetworkImage(
-          //           imageUrl:
-          //               widget.segmentResult.images![selectedIndex].filePath ??
-          //               '',
-          //           fit: BoxFit.fitHeight,
-          //           placeholder: (context, url) =>
-          //               const Center(child: CircularProgressIndicator()),
-          //           errorWidget: (context, url, error) =>
-          //               const Center(child: Icon(Icons.error)),
-          //         ),
-          //       ),
-          //       Positioned(
-          //         bottom: 8.h,
-          //         right: 8.h,
-          //         child: Container(
-          //           padding: EdgeInsets.symmetric(
-          //             horizontal: 8.w,
-          //             vertical: 4.h,
-          //           ),
-          //           decoration: BoxDecoration(
-          //             color: Colors.black54,
-          //             borderRadius: BorderRadius.circular(4.r),
-          //           ),
-          //           child: Text(
-          //             '${selectedIndex + 1}/${widget.segmentResult.images?.length}',
-          //             style: AppTextStyles.bodyRegular.copyWith(
-          //               color: AppColors.surface,
-          //             ),
-          //           ),
-          //         ),
-          //       ),
-          //     ],
-          //   ),
-          // ),
           Container(
             color: Color(0xFFE8EAF3),
             height: 68.h,

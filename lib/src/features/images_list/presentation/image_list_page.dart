@@ -13,19 +13,30 @@ import '../../../core/widgets/delete_confirm_dialog.dart';
 import '../../aicycle_buy_me/domain/entities/directional_image.dart';
 import '../../camera/presentation/pages/camera_page.dart';
 
-class ImageListPage extends StatelessWidget {
+class ImageListPage extends StatefulWidget {
   const ImageListPage({super.key, required this.vehicleAngle});
 
   final AicycleCarAngle vehicleAngle;
 
+  @override
+  State<ImageListPage> createState() => _ImageListPageState();
+}
+
+class _ImageListPageState extends State<ImageListPage> {
   String get title {
     final displayName =
-        AiCycleBuyMe
-            .config
-            .displayConfig
-            .carAnglesWithDisplayName[vehicleAngle] ??
+        AiCycleBuyMe.config.displayConfig.carAnglesWithDisplayName[widget
+            .vehicleAngle] ??
         AppStrings.noDisplayName;
     return '${AppStrings.photo} ${displayName.toLowerCase()}';
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      sl.vehicleImageVault.clearSelection();
+    });
+    super.dispose();
   }
 
   void _showDeleteConfirmationDialog(BuildContext context) {
@@ -36,7 +47,7 @@ class ImageListPage extends StatelessWidget {
       ),
       message: AppStrings.deleteImageMessage,
       onDeleteTapped: () =>
-          sl.vehicleImageVault.deleteSelectedImages(vehicleAngle),
+          sl.vehicleImageVault.deleteSelectedImages(widget.vehicleAngle),
     );
   }
 
@@ -85,7 +96,9 @@ class ImageListPage extends StatelessWidget {
     return ListenableBuilder(
       listenable: sl.vehicleImageVault,
       builder: (context, child) {
-        final images = sl.vehicleImageVault.getImagesForAngle(vehicleAngle);
+        final images = sl.vehicleImageVault.getImagesForAngle(
+          widget.vehicleAngle,
+        );
         final showDeleteButton =
             sl.vehicleImageVault.selectedImageIds.isNotEmpty;
         return Scaffold(
@@ -226,7 +239,7 @@ class ImageListPage extends StatelessWidget {
                         MaterialPageRoute(
                           builder: (context) => CameraPage(
                             args: CameraArgs(
-                              vehicleAngle: vehicleAngle,
+                              vehicleAngle: widget.vehicleAngle,
                               isFramedPhoto: false,
                             ),
                           ),

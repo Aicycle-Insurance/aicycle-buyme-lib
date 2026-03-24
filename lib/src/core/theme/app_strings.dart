@@ -128,7 +128,7 @@ class AppStrings {
   static const String noticeDescription =
       'Các vết hỏng trên xe (nếu có), Bảo hiểm sẽ loại trừ đi khi bồi thường';
   static const String part = 'Bộ phận:';
-  static const String damageLevel = 'Mức độ tổn thất:';
+  static const String damageType = 'Loại tổn thất:';
   static const String sendAndComplete = 'Gửi và hoàn thành';
   static const String noDamage = 'Xe không có vết hỏng';
   static const String startCapture = 'Bắt đầu chụp ảnh';

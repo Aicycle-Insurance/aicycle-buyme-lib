@@ -23,6 +23,14 @@ class CarCaptureGuidePage extends StatefulWidget {
 }
 
 class _CarCaptureGuidePageState extends State<CarCaptureGuidePage> {
+  @override
+  void dispose() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      sl.vehicleImageVault.clearSelection();
+    });
+    super.dispose();
+  }
+
   Widget _buildSampleImage(String imagePath) {
     return Container(
       width: double.infinity,

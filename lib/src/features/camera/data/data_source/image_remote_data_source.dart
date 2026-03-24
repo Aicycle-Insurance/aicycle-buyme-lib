@@ -32,9 +32,14 @@ class ImageRemoteDataSourceImpl implements ImageRemoteDataSource {
     required String imagePath,
     required String claimId,
   }) async {
+    final config = AiCycleBuyMe.config;
     final formData = await _dioClient.createFormData({
       'img': await _dioClient.createMultipartFile(imagePath),
       'claimId': claimId,
+      "isValidate": config.validationConfig.sameCarValidation,
+      "carCompany": config.carInformation?.carCompanyId,
+      "carModel": config.carInformation?.carModelId,
+      "licensePlate": config.carInformation?.licensePlate,
     });
 
     final response = await _dioClient.post<dynamic>(
@@ -157,7 +162,7 @@ class ImageRemoteDataSourceImpl implements ImageRemoteDataSource {
       await _dioClient.delete<dynamic>(
         ApiEndpoints.deleteImageById(imageId.toString()),
         queryParameters: vehicleAngleId != null
-            ? {'vehicleAngleId': vehicleAngleId}
+            ? {'direction': vehicleAngleId}
             : null,
       );
     }
