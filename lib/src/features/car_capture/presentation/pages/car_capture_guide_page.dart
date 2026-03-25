@@ -108,6 +108,10 @@ class _CarCaptureGuidePageState extends State<CarCaptureGuidePage> {
           appBar: AppBar(
             backgroundColor: AppColors.surface,
             surfaceTintColor: Colors.transparent,
+            automaticallyImplyLeading: false,
+            leading: AiCycleBuyMe.config.displayConfig.showBackButton
+                ? BackButton(color: AppColors.textPrimary)
+                : null,
             elevation: 0,
             actions: [
               Visibility(

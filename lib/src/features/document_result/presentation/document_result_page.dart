@@ -2,6 +2,7 @@ import 'package:aicycle_buyme_plus/src/core/parse_output.dart';
 import 'package:aicycle_buyme_plus/src/core/utils/screen_utils.dart';
 import 'package:flutter/material.dart';
 
+import '../../../../aicycle_buyme_plus.dart';
 import '../../../core/di/injection.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_strings.dart';
@@ -45,6 +46,10 @@ class _DocumentResultPageState extends State<DocumentResultPage> {
         centerTitle: true,
         elevation: 0,
         surfaceTintColor: Colors.transparent,
+        automaticallyImplyLeading: false,
+        leading: AiCycleBuyMe.config.displayConfig.showBackButton
+            ? BackButton(color: AppColors.textPrimary)
+            : null,
         title: Text(
           AppStrings.documentResultTitle,
           style: AppTextStyles.heading2,
@@ -155,28 +160,31 @@ class _DocumentResultPageState extends State<DocumentResultPage> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              ElevatedButton(
-                onPressed: () {
-                  final data = ParseOutput.parseDamageStatistics(
-                    _controller.damageStatistics ?? [],
-                  );
-                  widget.onComplete?.call(data);
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: AppColors.primary,
-                  foregroundColor: Colors.white,
-                  minimumSize: Size(double.infinity, 40.h),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(6.r),
+              if (AiCycleBuyMe.config.generalConfig.organization !=
+                  AiCycleOrg.aicycle) ...[
+                ElevatedButton(
+                  onPressed: () {
+                    final data = ParseOutput.parseDamageStatistics(
+                      _controller.damageStatistics ?? [],
+                    );
+                    widget.onComplete?.call(data);
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppColors.primary,
+                    foregroundColor: Colors.white,
+                    minimumSize: Size(double.infinity, 40.h),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(6.r),
+                    ),
+                    elevation: 0,
                   ),
-                  elevation: 0,
+                  child: Text(
+                    AppStrings.sendAndComplete,
+                    style: AppTextStyles.button,
+                  ),
                 ),
-                child: Text(
-                  AppStrings.sendAndComplete,
-                  style: AppTextStyles.button,
-                ),
-              ),
-              SizedBox(height: 8.h),
+                SizedBox(height: 8.h),
+              ],
               ElevatedButton(
                 onPressed: () => Navigator.pop(context),
                 style: ElevatedButton.styleFrom(

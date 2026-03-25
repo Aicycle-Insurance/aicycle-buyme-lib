@@ -52,6 +52,10 @@ class _CarCapturePageState extends State<CarCapturePage> {
             backgroundColor: AppColors.surface,
             elevation: 0,
             surfaceTintColor: Colors.transparent,
+            automaticallyImplyLeading: false,
+            leading: AiCycleBuyMe.config.displayConfig.showBackButton
+                ? BackButton(color: AppColors.textPrimary)
+                : null,
             title: Text(
               '${AppStrings.photo} ${displayName.toLowerCase()}',
               style: AppTextStyles.heading2,

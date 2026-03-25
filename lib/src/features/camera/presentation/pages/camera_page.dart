@@ -185,15 +185,7 @@ class _CameraPageState extends State<CameraPage> {
                                         onRetake: _controller.retake,
                                         onSave: () async {
                                           await _controller.upload(
-                                            onSuccess: () {
-                                              /// Biz: Nếu là người có kinh nghiệm thì cho chụp liên tiếp
-                                              if (widget.args.vehicleAngle !=
-                                                  AicycleCarAngle.exterior) {
-                                                Navigator.pop(context);
-                                              } else {
-                                                _controller.retake();
-                                              }
-                                            },
+                                            onSuccess: _controller.retake,
                                             onWarning: _onWarning,
                                             onError: _onError,
                                           );

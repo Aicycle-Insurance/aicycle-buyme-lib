@@ -116,7 +116,10 @@ class GuideLinePage extends StatelessWidget {
         backgroundColor: AppColors.surface,
         elevation: 0,
         surfaceTintColor: Colors.transparent,
-        iconTheme: const IconThemeData(color: AppColors.textPrimary),
+        automaticallyImplyLeading: false,
+        leading: AiCycleBuyMe.config.displayConfig.showBackButton
+            ? BackButton(color: AppColors.textPrimary)
+            : null,
       ),
       body: SingleChildScrollView(
         physics: const ClampingScrollPhysics(),

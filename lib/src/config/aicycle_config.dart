@@ -58,7 +58,7 @@ const Map<AicycleCarAngle, String> _kDefaultCarAnglesWithDisplayName = {
   AicycleCarAngle.regStamp: 'Tem đăng kiểm',
   AicycleCarAngle.vinNumber: 'Số khung',
   AicycleCarAngle.taplo: 'Taplo',
-  AicycleCarAngle.regCert: 'Tổng thể',
+  AicycleCarAngle.regCert: 'Đăng kiểm',
   AicycleCarAngle.exterior: 'Ngoại thất',
 };
 
@@ -176,8 +176,12 @@ class DisplayConfig {
   /// Mặc định sẽ hiển thị đầy đủ các góc với tên được cấu hình bởi AICycle
   final Map<AicycleCarAngle, String> carAnglesWithDisplayName;
 
+  /// Hiển thị nút back
+  final bool showBackButton;
+
   const DisplayConfig({
     this.loadingWidget,
     this.carAnglesWithDisplayName = _kDefaultCarAnglesWithDisplayName,
+    this.showBackButton = false,
   });
 }

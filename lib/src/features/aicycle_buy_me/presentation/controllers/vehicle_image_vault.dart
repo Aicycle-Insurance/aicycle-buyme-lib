@@ -117,64 +117,6 @@ class VehicleImageVault extends ChangeNotifier {
     notifyListeners();
   }
 
-  void resetImagesByAngle(AicycleCarAngle angle) {
-    switch (angle) {
-      case AicycleCarAngle.regCert:
-        _regCertImages.clear();
-        break;
-      case AicycleCarAngle.regStamp:
-        _regStampImages.clear();
-        break;
-      case AicycleCarAngle.vinNumber:
-        _vinNumberImages.clear();
-        break;
-      case AicycleCarAngle.taplo:
-        _taploImages.clear();
-        break;
-      case AicycleCarAngle.front:
-        _exteriorImages.removeWhere((image) => _frontImages.contains(image));
-        _frontImages.clear();
-        break;
-      case AicycleCarAngle.frontLeft:
-        _exteriorImages.removeWhere(
-          (image) => _frontLeftImages.contains(image),
-        );
-        _frontLeftImages.clear();
-        break;
-      case AicycleCarAngle.frontRight:
-        _exteriorImages.removeWhere(
-          (image) => _frontRightImages.contains(image),
-        );
-        _frontRightImages.clear();
-        break;
-      case AicycleCarAngle.rear:
-        _exteriorImages.removeWhere((image) => _rearImages.contains(image));
-        _rearImages.clear();
-        break;
-      case AicycleCarAngle.rearLeft:
-        _exteriorImages.removeWhere((image) => _rearLeftImages.contains(image));
-        _rearLeftImages.clear();
-        break;
-      case AicycleCarAngle.rearRight:
-        _exteriorImages.removeWhere(
-          (image) => _rearRightImages.contains(image),
-        );
-        _rearRightImages.clear();
-        break;
-      case AicycleCarAngle.left:
-        _exteriorImages.removeWhere((image) => _leftImages.contains(image));
-        _leftImages.clear();
-        break;
-      case AicycleCarAngle.right:
-        _exteriorImages.removeWhere((image) => _rightImages.contains(image));
-        _rightImages.clear();
-        break;
-      default:
-        break;
-    }
-    notifyListeners();
-  }
-
   /// Lấy ảnh theo góc
   List<DirectionalImage> getImagesForAngle(AicycleCarAngle angle) {
     switch (angle) {
@@ -315,18 +257,29 @@ class VehicleImageVault extends ChangeNotifier {
     final claimId = InternalCache.claimId;
     if (claimId.isEmpty) return;
 
+    // Danh sách các ID cần fetch (bao gồm các góc trong enum và 4 góc ẩn)
+    final List<({String id, AicycleCarAngle angle})> fetchConfig = [
+      ...AicycleCarAngle.values.map((a) => (id: a.id, angle: a)),
+      (id: 'phai-truoc-eYWg1d', angle: AicycleCarAngle.frontRight),
+      (id: 'trai-truoc-r6BEZd', angle: AicycleCarAngle.frontLeft),
+      (id: 'phai-sau-v1hAm6', angle: AicycleCarAngle.rearRight),
+      (id: 'trai-sau-t8QgFO', angle: AicycleCarAngle.rearLeft),
+    ];
+
+    // Reset trạng thái hiện tại trước khi load mới
+    reset();
+
     final results = await Future.wait(
-      AicycleCarAngle.values.map(
-        (angle) => _fetchAngle(claimId: claimId, angle: angle),
+      fetchConfig.map(
+        (config) => _fetchAngle(claimId: claimId, angleId: config.id),
       ),
     );
 
-    for (int i = 0; i < AicycleCarAngle.values.length; i++) {
-      final angle = AicycleCarAngle.values[i];
+    for (int i = 0; i < fetchConfig.length; i++) {
+      final angle = fetchConfig[i].angle;
       final images = results[i];
 
       if (images.isNotEmpty) {
-        resetImagesByAngle(angle);
         addImagesFromServer(angle, images);
       }
     }
@@ -335,11 +288,11 @@ class VehicleImageVault extends ChangeNotifier {
   /// Fetch ảnh của một góc, trả về list rỗng nếu lỗi.
   Future<List<DirectionalImage>> _fetchAngle({
     required String claimId,
-    required AicycleCarAngle angle,
+    required String angleId,
   }) async {
     try {
       return await _getDirectionalImagesUseCase(
-        GetDirectionalImagesParams(claimId: claimId, angleId: angle.id),
+        GetDirectionalImagesParams(claimId: claimId, angleId: angleId),
       );
     } catch (_) {
       return [];

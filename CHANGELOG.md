@@ -1,3 +1,7 @@
+## 1.0.8
+
+- Fix bugs and update UI
+
 ## 1.0.7
 
 - Fix bugs and update UI

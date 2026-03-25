@@ -108,6 +108,10 @@ class _ImageListPageState extends State<ImageListPage> {
             elevation: 0,
             surfaceTintColor: Colors.transparent,
             title: Text(title, style: AppTextStyles.heading2),
+            automaticallyImplyLeading: false,
+            leading: AiCycleBuyMe.config.displayConfig.showBackButton
+                ? BackButton(color: AppColors.textPrimary)
+                : null,
             actions: [
               Visibility(
                 visible: showDeleteButton,

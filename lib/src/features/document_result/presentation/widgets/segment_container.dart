@@ -79,35 +79,33 @@ class _SegmentContainerState extends State<SegmentContainer> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   spacing: 4.h,
-                  children: (widget.segmentResult.damages ?? [])
-                      .map(
-                        (e) => Row(
-                          children: [
-                            Text(
-                              e.damageTypeName ?? 'N/A',
-                              style: AppTextStyles.body12Light,
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                            SizedBox(width: 8.h),
-                            Container(
-                              height: 6.r,
-                              width: 6.r,
-                              decoration: BoxDecoration(
-                                color: e.damageTypeColor?.color,
-                                shape: BoxShape.circle,
+                  children: (() {
+                    final seen = <String>{};
+                    return (widget.segmentResult.damages ?? [])
+                        .where((e) => seen.add(e.damageTypeName ?? 'N/A'))
+                        .map(
+                          (e) => Row(
+                            children: [
+                              Text(
+                                e.damageTypeName ?? 'N/A',
+                                style: AppTextStyles.body12Light,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
                               ),
-                            ),
-                            // Text(
-                            //   getPercentage(e),
-                            //   style: AppTextStyles.body12Light,
-                            //   maxLines: 1,
-                            //   overflow: TextOverflow.ellipsis,
-                            // ),
-                          ],
-                        ),
-                      )
-                      .toList(),
+                              SizedBox(width: 8.h),
+                              Container(
+                                height: 6.r,
+                                width: 6.r,
+                                decoration: BoxDecoration(
+                                  color: e.damageTypeColor?.color,
+                                  shape: BoxShape.circle,
+                                ),
+                              ),
+                            ],
+                          ),
+                        )
+                        .toList();
+                  }()),
                 ),
               ),
             ],
