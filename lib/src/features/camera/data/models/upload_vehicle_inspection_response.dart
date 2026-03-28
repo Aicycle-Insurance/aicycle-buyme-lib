@@ -7,6 +7,7 @@ class UploadVehicleInspectionResponse {
   final String? carModel;
   final int? imageId;
   final String? imgUrl;
+  final String? imageDirection;
 
   UploadVehicleInspectionResponse({
     this.errorCodeFromEngine,
@@ -17,6 +18,7 @@ class UploadVehicleInspectionResponse {
     this.carModel,
     this.imageId,
     this.imgUrl,
+    this.imageDirection,
   });
 
   factory UploadVehicleInspectionResponse.fromJson(Map<String, dynamic> json) {
@@ -35,6 +37,11 @@ class UploadVehicleInspectionResponse {
           json['vinImageId'] as int?,
       imgUrl: json.containsKey('result')
           ? (json['result'] as Map<String, dynamic>)['imgUrl'] as String?
+          : null,
+      imageDirection: json.containsKey('result')
+          ? ((json['result'] as Map<String, dynamic>)['extraInfor']
+                    as Map<String, dynamic>)['imageDirection']
+                as String?
           : null,
     );
   }

@@ -9,7 +9,7 @@ extension VehicleInfoMapper on VehicleInfoModel {
       carColor: carColor,
       plateNumber: plateNumber,
       vinNumber: vinNumber,
-      odo: odo,
+      odo: odo?.floorToDouble(),
     );
   }
 }

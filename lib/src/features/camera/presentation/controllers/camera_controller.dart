@@ -183,9 +183,10 @@ class XCameraController extends ChangeNotifier {
     );
 
     if (result.imgUrl != null) {
-      sl.vehicleImageVault.addImagesFromServer(angle, [
-        DirectionalImage(imageId: result.imageId, imageUrl: result.imgUrl),
-      ]);
+      sl.vehicleImageVault.addImagesFromServer(
+        result.angleFromEngine ?? angle,
+        [DirectionalImage(imageId: result.imageId, imageUrl: result.imgUrl)],
+      );
     }
   }
 
@@ -201,9 +202,10 @@ class XCameraController extends ChangeNotifier {
     );
 
     if (result.imgUrl != null) {
-      sl.vehicleImageVault.addImagesFromServer(angle, [
-        DirectionalImage(imageId: result.imageId, imageUrl: result.imgUrl),
-      ]);
+      sl.vehicleImageVault.addImagesFromServer(
+        result.angleFromEngine ?? angle,
+        [DirectionalImage(imageId: result.imageId, imageUrl: result.imgUrl)],
+      );
     }
   }
 

@@ -4,7 +4,7 @@ class VehicleInfoModel {
   final List<int>? carColor;
   final String? plateNumber;
   final String? vinNumber;
-  final double? odo;
+  final num? odo;
 
   VehicleInfoModel({
     this.carCompany,
@@ -24,7 +24,7 @@ class VehicleInfoModel {
             : null,
         plateNumber: json['plateNumber'],
         vinNumber: json['vinNumber'],
-        odo: json['odo'],
+        odo: num.tryParse(json['odo']?.toString() ?? ''),
       );
 
   Map<String, dynamic> toJson() => {

@@ -1,3 +1,7 @@
+## 1.0.9
+
+- Update upload image logic and fix bugs
+
 ## 1.0.8
 
 - Fix bugs and update UI
