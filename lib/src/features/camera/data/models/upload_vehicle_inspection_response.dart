@@ -22,6 +22,20 @@ class UploadVehicleInspectionResponse {
   });
 
   factory UploadVehicleInspectionResponse.fromJson(Map<String, dynamic> json) {
+    final result = json['result'] as Map<String, dynamic>?;
+    final extraInfor = result?['extraInfor'] as Map<String, dynamic>?;
+    String? imgDirection = extraInfor?['imageDirection'] as String?;
+    if (imgDirection == null) {
+      if (json.containsKey('stampImageId')) {
+        imgDirection = 'tem-dang-kiem-LC81Ar';
+      } else if (json.containsKey('vehicleInspectionOcrId')) {
+        imgDirection = 'dang-kiem-xe-82YjAa';
+      } else if (json.containsKey('taploImageId')) {
+        imgDirection = 'tap-lo-H4SHs1';
+      } else if (json.containsKey('vinImageId')) {
+        imgDirection = 'so-khung-qmqAsM';
+      }
+    }
     return UploadVehicleInspectionResponse(
       errorCodeFromEngine: json['errorCodeFromEngine'] as int?,
       errorMessage: json['errorMessage'] as String?,
@@ -30,19 +44,14 @@ class UploadVehicleInspectionResponse {
       carCompany: json['carCompany'] as String?,
       carModel: json['carModel'] as String?,
       imageId:
-          json['imageId'] ??
-          json['stampImageId'] ??
-          json['vehicleInspectionOcrId'] ??
-          json['taploImageId'] ??
-          json['vinImageId'] as int?,
-      imgUrl: json.containsKey('result')
-          ? (json['result'] as Map<String, dynamic>)['imgUrl'] as String?
-          : null,
-      imageDirection: json.containsKey('result')
-          ? ((json['result'] as Map<String, dynamic>)['extraInfor']
-                    as Map<String, dynamic>)['imageDirection']
-                as String?
-          : null,
+          (json['imageId'] ??
+                  json['stampImageId'] ??
+                  json['vehicleInspectionOcrId'] ??
+                  json['taploImageId'] ??
+                  json['vinImageId'])
+              as int?,
+      imgUrl: result?['imgUrl'] as String?,
+      imageDirection: imgDirection,
     );
   }
 
@@ -58,6 +67,7 @@ class UploadVehicleInspectionResponse {
       if (carModel != null) 'carModel': carModel,
       if (imageId != null) 'imageId': imageId,
       if (imgUrl != null) 'imgUrl': imgUrl,
+      if (imageDirection != null) 'imageDirection': imageDirection,
     };
   }
 }
