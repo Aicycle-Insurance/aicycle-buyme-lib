@@ -8,6 +8,7 @@ class UploadVehicleInspectionResponse {
   final int? imageId;
   final String? imgUrl;
   final String? imageDirection;
+  final String? errorLevel;
 
   UploadVehicleInspectionResponse({
     this.errorCodeFromEngine,
@@ -19,6 +20,7 @@ class UploadVehicleInspectionResponse {
     this.imageId,
     this.imgUrl,
     this.imageDirection,
+    this.errorLevel,
   });
 
   factory UploadVehicleInspectionResponse.fromJson(Map<String, dynamic> json) {
@@ -37,6 +39,7 @@ class UploadVehicleInspectionResponse {
       }
     }
     return UploadVehicleInspectionResponse(
+      errorLevel: json['errorLevel'] as String?,
       errorCodeFromEngine: json['errorCodeFromEngine'] as int?,
       errorMessage: json['errorMessage'] as String?,
       claimId: json['claimId'] as int?,
@@ -57,6 +60,7 @@ class UploadVehicleInspectionResponse {
 
   Map<String, dynamic> toJson() {
     return {
+      if (errorLevel != null) 'errorLevel': errorLevel,
       if (errorCodeFromEngine != null)
         'errorCodeFromEngine': errorCodeFromEngine,
       if (errorMessage != null) 'errorMessage': errorMessage,

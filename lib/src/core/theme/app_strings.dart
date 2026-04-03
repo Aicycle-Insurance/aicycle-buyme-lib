@@ -138,6 +138,7 @@ class AppStrings {
   static const String firstGuide3 = ' (từ phía trước hoặc phía sau).';
   static const String openCamera = 'Mở camera';
   static const String error = 'Lỗi';
+  static const String warning = 'Cảnh báo';
   static const String isProcessing =
       'Hệ thống đang xử lý dữ liệu.\nVui lòng đợi trong giây lát.';
 }

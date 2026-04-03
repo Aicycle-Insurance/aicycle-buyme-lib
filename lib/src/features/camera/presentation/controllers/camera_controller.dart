@@ -28,6 +28,7 @@ class XCameraController extends ChangeNotifier {
   bool _showFrame = false;
   XXFile? _capturedImage;
   bool _isUploading = false;
+  UploadVehicleInspection? _warningResultCached;
   static const List<int> warningEngineCodes = [
     23212,
     77704,
@@ -144,6 +145,7 @@ class XCameraController extends ChangeNotifier {
     try {
       _setUploading(true);
 
+      _warningResultCached = null;
       final compressedImage = await ImageUtils.compressedImage(_capturedImage!);
       late UploadVehicleInspection result;
       // Chỉ upload nếu góc chụp là regCert (đăng kiểm)
@@ -154,13 +156,12 @@ class XCameraController extends ChangeNotifier {
       }
 
       /// Handle if status 200 mà vẫn có error :)
-      if (result.errorCodeFromEngine != null &&
-          warningEngineCodes.contains(result.errorCodeFromEngine)) {
+      if (result.errorLevel == ErrorLevel.warning) {
+        _warningResultCached = result;
         onWarning(
           EngineException(result.errorMessage, result.errorCodeFromEngine),
         );
-      } else if (result.errorCodeFromEngine != null &&
-          result.errorCodeFromEngine != 0) {
+      } else if (result.errorLevel == ErrorLevel.error) {
         onError(result.errorMessage ?? 'Something went wrong.');
       } else {
         onSuccess();
@@ -176,6 +177,21 @@ class XCameraController extends ChangeNotifier {
     } finally {
       _setUploading(false);
     }
+  }
+
+  void onWarningContinue() {
+    if (_warningResultCached != null) {
+      sl.vehicleImageVault
+          .addImagesFromServer(_warningResultCached!.angleFromEngine ?? angle, [
+            DirectionalImage(
+              imageId: _warningResultCached!.imageId,
+              imageUrl: _warningResultCached!.imgUrl,
+            ),
+          ]);
+    }
+    _warningResultCached = null;
+    _capturedImage = null;
+    notifyListeners();
   }
 
   void _setUploading(bool value) {

@@ -1,3 +1,7 @@
+## 1.0.12
+
+- Fix bug handle warning when upload image
+
 ## 1.0.11
 
 - Fix bug handle warning and error when upload image

@@ -10,6 +10,7 @@ extension UploadVehicleInspectionMapper on UploadVehicleInspectionResponse {
       imageId: imageId,
       imgUrl: imgUrl,
       angleFromEngine: imageDirection.toAngle(),
+      errorLevel: errorLevel?.toErrorLevel(),
     );
   }
 }
@@ -45,6 +46,19 @@ extension on String? {
         return AicycleCarAngle.taplo;
       case 'dang-kiem-xe-82YjAa':
         return AicycleCarAngle.regCert;
+      default:
+        return null;
+    }
+  }
+
+  ErrorLevel? toErrorLevel() {
+    switch (this) {
+      case 'error':
+        return ErrorLevel.error;
+      case 'warning':
+        return ErrorLevel.warning;
+      case 'success':
+        return ErrorLevel.success;
       default:
         return null;
     }
