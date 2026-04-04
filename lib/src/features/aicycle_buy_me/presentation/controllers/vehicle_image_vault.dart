@@ -233,6 +233,28 @@ class VehicleImageVault extends ChangeNotifier {
     }
   }
 
+  /// Xóa 1 ảnh cụ thể theo ID
+  Future<void> deleteImageById(int imageId) async {
+    await _deleteImageUseCase(
+      DeleteImageUseCaseParams(imageIds: [imageId], vehicleAngleId: null),
+    );
+    _regCertImages.removeWhere((img) => img.imageId == imageId);
+    _frontImages.removeWhere((img) => img.imageId == imageId);
+    _frontLeftImages.removeWhere((img) => img.imageId == imageId);
+    _frontRightImages.removeWhere((img) => img.imageId == imageId);
+    _rearImages.removeWhere((img) => img.imageId == imageId);
+    _rearLeftImages.removeWhere((img) => img.imageId == imageId);
+    _rearRightImages.removeWhere((img) => img.imageId == imageId);
+    _exteriorImages.removeWhere((img) => img.imageId == imageId);
+    _leftImages.removeWhere((img) => img.imageId == imageId);
+    _rightImages.removeWhere((img) => img.imageId == imageId);
+    _vinNumberImages.removeWhere((img) => img.imageId == imageId);
+    _taploImages.removeWhere((img) => img.imageId == imageId);
+    _regStampImages.removeWhere((img) => img.imageId == imageId);
+    _regCertImages.removeWhere((img) => img.imageId == imageId);
+    notifyListeners();
+  }
+
   /// Clears all stored images (e.g., when the SDK initializes a new flow).
   void reset() {
     _regCertImages.clear();

@@ -1,3 +1,7 @@
+## 1.0.13
+
+- Fix bug handle warning retake photo
+
 ## 1.0.12
 
 - Fix bug handle warning when upload image

@@ -73,7 +73,7 @@ class _CameraPageState extends State<CameraPage> {
         secondaryButtonLabel: AppStrings.btnContinue,
         onPrimaryTapped: () {
           Navigator.pop(context);
-          _controller.retake();
+          _controller.onWarningRetake();
         },
         onSecondaryTapped: () {
           Navigator.pop(context);

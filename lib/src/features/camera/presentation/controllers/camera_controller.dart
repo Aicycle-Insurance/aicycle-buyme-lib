@@ -194,6 +194,23 @@ class XCameraController extends ChangeNotifier {
     notifyListeners();
   }
 
+  /// Chụp lại sau khi nhận cảnh báo từ engine
+  void onWarningRetake() async {
+    if (_warningResultCached?.imageId == null) {
+      _capturedImage = null;
+      _warningResultCached = null;
+      notifyListeners();
+      return;
+    }
+    _isUploading = true;
+    notifyListeners();
+    await sl.vehicleImageVault.deleteImageById(_warningResultCached!.imageId!);
+    _isUploading = false;
+    _capturedImage = null;
+    _warningResultCached = null;
+    notifyListeners();
+  }
+
   void _setUploading(bool value) {
     _isUploading = value;
     notifyListeners();
