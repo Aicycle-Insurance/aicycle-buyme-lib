@@ -1,4 +1,5 @@
-import '../../../../../aicycle_buyme_plus.dart';
+import 'package:aicycle_buyme_plus/aicycle_buyme_plus.dart';
+import '../../domain/entities/cert_upload_entity.dart';
 import '../../domain/entities/upload_vehicle_inspection.dart';
 import '../models/upload_vehicle_inspection_response.dart';
 
@@ -14,6 +15,19 @@ extension UploadVehicleInspectionMapper on UploadVehicleInspectionResponse {
     );
   }
 }
+
+extension CertUploadResponseMapper on CertUploadResponse {
+  CertUploadEntity toEntity() {
+    return CertUploadEntity(
+      errorCodeFromEngine: errorCodeFromEngine,
+      errorMessage: errorMessage,
+      errorLevel: errorLevel?.toErrorLevel(),
+      imageId: imageId,
+      imgUrls: predictedCarInfo?.imageUrls,
+    );
+  }
+}
+
 
 extension on String? {
   AicycleCarAngle? toAngle() {

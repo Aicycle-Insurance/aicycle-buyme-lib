@@ -1,3 +1,4 @@
+import '../../domain/entities/cert_upload_entity.dart';
 import '../../domain/entities/upload_vehicle_inspection.dart';
 import '../../domain/repositories/image_respository.dart';
 import '../data_source/image_remote_data_source.dart';
@@ -8,12 +9,12 @@ class ImageRepositoryImpl implements ImageRepository {
   ImageRepositoryImpl(this._remoteDataSource);
 
   @override
-  Future<UploadVehicleInspection> uploadVehicleInspection({
-    required String imagePath,
+  Future<CertUploadEntity> uploadVehicleInspection({
+    required List<String> imagePaths,
     required String claimId,
   }) async {
     final response = await _remoteDataSource.uploadVehicleInspection(
-      imagePath: imagePath,
+      imagePaths: imagePaths,
       claimId: claimId,
     );
     return response.toEntity();

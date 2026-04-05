@@ -59,6 +59,8 @@ class AppStrings {
   static const String vinNumber = 'Số khung';
   static const String taplo = 'Taplo';
   static const String regCert = 'Đăng kiểm';
+  static const String captureFrontRegCert = 'Chụp ảnh Đăng kiểm (Mặt trước)';
+  static const String captureRearRegCert = 'Chụp ảnh Đăng kiểm (Mặt sau)';
   static const String exterior = 'Ngoại thất';
   static const String noDisplayName = 'Góc chưa đặt tên';
 
@@ -139,6 +141,9 @@ class AppStrings {
   static const String openCamera = 'Mở camera';
   static const String error = 'Lỗi';
   static const String warning = 'Cảnh báo';
+  static const String btnExit = 'Thoát';
+  static const String regCertRule =
+      'Bạn cần chụp đầy đủ 2 mặt của Đăng kiểm xe để hoàn thiện hồ sơ.';
   static const String isProcessing =
       'Hệ thống đang xử lý dữ liệu.\nVui lòng đợi trong giây lát.';
 }

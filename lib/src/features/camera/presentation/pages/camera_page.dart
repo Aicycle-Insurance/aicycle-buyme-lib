@@ -9,9 +9,11 @@ import 'package:native_device_orientation/native_device_orientation.dart';
 import '../../../../../aicycle_buyme_plus.dart';
 import '../../../../core/error/exceptions.dart';
 import '../../../../core/utils/orientation_utils.dart';
+import '../../../../core/utils/screen_utils.dart';
 import '../controllers/camera_controller.dart';
 import '../widgets/camera_bottom_bar.dart';
 import '../widgets/camera_top_bar.dart';
+import '../widgets/cert_top_bar.dart';
 // import '../widgets/guide_frame.dart';
 import '../widgets/photo_preview.dart';
 import '../../../../core/widgets/validation_dialog.dart';
@@ -99,6 +101,33 @@ class _CameraPageState extends State<CameraPage> {
     }
   }
 
+  Future<bool> _onWillPop() async {
+    if (widget.args.vehicleAngle == AicycleCarAngle.regCert &&
+        _controller.regCertImages.isNotEmpty &&
+        _controller.regCertImages.length < 2) {
+      final shouldPop = await showDialog<bool>(
+        context: context,
+        barrierDismissible: false,
+        builder: (context) {
+          return RotatedBox(
+            quarterTurns: 1,
+            child: ValidationDialog(
+              title: AppStrings.warning,
+              width: 360.h,
+              message: AppStrings.regCertRule,
+              primaryButtonLabel: AppStrings.btnCaptureMore,
+              secondaryButtonLabel: AppStrings.btnExit,
+              onPrimaryTapped: () => Navigator.pop(context, false),
+              onSecondaryTapped: () => Navigator.pop(context, true),
+            ),
+          );
+        },
+      );
+      return shouldPop ?? false;
+    }
+    return true;
+  }
+
   @override
   Widget build(BuildContext context) {
     return NativeDeviceOrientationReader(
@@ -120,101 +149,123 @@ class _CameraPageState extends State<CameraPage> {
 
             if (_controller.status == CameraStatus.ready &&
                 _controller.controller != null) {
-              return Scaffold(
-                backgroundColor: Colors.black,
-                appBar: AppBar(
+              final bool canPop =
+                  !(widget.args.vehicleAngle == AicycleCarAngle.regCert &&
+                      _controller.regCertImages.isNotEmpty &&
+                      _controller.regCertImages.length < 2);
+
+              return PopScope(
+                canPop: canPop,
+                onPopInvokedWithResult: (didPop, result) {
+                  if (didPop) return;
+                  _onWillPop().then((shouldPop) {
+                    if (shouldPop && context.mounted) {
+                      Navigator.pop(context);
+                    }
+                  });
+                },
+                child: Scaffold(
                   backgroundColor: Colors.black,
-                  automaticallyImplyLeading: false,
-                  systemOverlayStyle: SystemUiOverlayStyle.light,
-                  toolbarHeight: 0,
-                  elevation: 0,
-                ),
-                body: SafeArea(
-                  child: Stack(
-                    fit: StackFit.expand,
-                    children: [
-                      Center(
-                        child: ClipRect(
-                          child: FittedBox(
-                            fit: BoxFit.cover,
-                            child: SizedBox(
-                              width: MediaQuery.of(context).size.width,
-                              height:
-                                  MediaQuery.of(context).size.width *
-                                  _controller.controller!.value.aspectRatio,
-                              child: CameraPreview(
-                                _controller.controller!,
-                                child: Stack(
-                                  children: [
-                                    /// Guide Frame
-                                    // if (supportGuide && _controller.showFrame)
-                                    //   Center(
-                                    //     child: GuideFrame(
-                                    //       carCorner: widget.args.vehicleAngle,
-                                    //     ),
-                                    //   ),
-
-                                    /// Top Buttons
-                                    Visibility(
-                                      visible:
-                                          _controller.capturedImage == null,
-                                      child: CameraTopBar(
-                                        controller: _controller,
-                                        turns: turns,
+                  appBar: AppBar(
+                    backgroundColor: Colors.black,
+                    automaticallyImplyLeading: false,
+                    systemOverlayStyle: SystemUiOverlayStyle.light,
+                    toolbarHeight: 0,
+                    elevation: 0,
+                  ),
+                  body: SafeArea(
+                    child: Stack(
+                      fit: StackFit.expand,
+                      children: [
+                        Center(
+                          child: ClipRect(
+                            child: FittedBox(
+                              fit: BoxFit.cover,
+                              child: SizedBox(
+                                width: MediaQuery.of(context).size.width,
+                                height:
+                                    MediaQuery.of(context).size.width *
+                                    _controller.controller!.value.aspectRatio,
+                                child: CameraPreview(
+                                  _controller.controller!,
+                                  child: Stack(
+                                    children: [
+                                      /// Top Buttons
+                                      Visibility(
+                                        visible:
+                                            _controller.capturedImage == null,
+                                        child: CameraTopBar(
+                                          controller: _controller,
+                                          turns: turns,
+                                          onBack: () {
+                                            _onWillPop().then((shouldPop) {
+                                              if (shouldPop &&
+                                                  context.mounted) {
+                                                Navigator.pop(context);
+                                              }
+                                            });
+                                          },
+                                        ),
                                       ),
-                                    ),
 
-                                    /// Bottom Controls
-                                    Visibility(
-                                      visible:
-                                          _controller.capturedImage == null,
-                                      child: CameraBottomBar(
-                                        controller: _controller,
-                                        orientation: orientation,
-                                        turns: turns,
-                                        args: widget.args,
-                                        // supportGuide: supportGuide,
-                                      ),
-                                    ),
+                                      if (widget.args.vehicleAngle ==
+                                          AicycleCarAngle.regCert)
+                                        CertTopBar(controller: _controller),
 
-                                    /// Photo preview
-                                    if (_controller.capturedImage != null)
-                                      PhotoPreview(
-                                        image: _controller.capturedImage!,
-                                        isUploading: _controller.isUploading,
-                                        onRetake: _controller.retake,
-                                        onSave: () async {
-                                          await _controller.upload(
-                                            onSuccess: _controller.retake,
-                                            onWarning: _onWarning,
-                                            onError: _onError,
-                                          );
-                                        },
+                                      /// Bottom Controls
+                                      Visibility(
+                                        visible:
+                                            _controller.capturedImage == null,
+                                        child: CameraBottomBar(
+                                          controller: _controller,
+                                          orientation: orientation,
+                                          turns: turns,
+                                          args: widget.args,
+                                          // supportGuide: supportGuide,
+                                        ),
                                       ),
-                                  ],
+
+                                      /// Photo preview
+                                      if (_controller.capturedImage != null)
+                                        PhotoPreview(
+                                          image: _controller.capturedImage!,
+                                          isUploading: _controller.isUploading,
+                                          onRetake: _controller.retake,
+                                          onSave: () async {
+                                            await _controller.upload(
+                                              onSuccess: _controller.retake,
+                                              onWarning: _onWarning,
+                                              onError: _onError,
+                                            );
+                                          },
+                                        ),
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),
                           ),
                         ),
-                      ),
-                      ListenableBuilder(
-                        listenable: sl.vehicleImageVault,
-                        builder: (context, _) {
-                          if (widget.args.vehicleAngle ==
-                                  AicycleCarAngle.exterior &&
-                              sl.vehicleImageVault.exteriorImages.isEmpty &&
-                              _showGuide) {
-                            return Center(
-                              child: FirstGuidePopup(
-                                onTap: () => setState(() => _showGuide = false),
-                              ),
-                            );
-                          }
-                          return const SizedBox.shrink();
-                        },
-                      ),
-                    ],
+                        ListenableBuilder(
+                          listenable: sl.vehicleImageVault,
+                          builder: (context, _) {
+                            if (widget.args.vehicleAngle !=
+                                AicycleCarAngle.regCert) {
+                              if (!sl.vehicleImageVault.hasAnyImage &&
+                                  _showGuide) {
+                                return Center(
+                                  child: FirstGuidePopup(
+                                    onTap: () =>
+                                        setState(() => _showGuide = false),
+                                  ),
+                                );
+                              }
+                            }
+                            return const SizedBox.shrink();
+                          },
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               );
@@ -229,4 +280,5 @@ class _CameraPageState extends State<CameraPage> {
       },
     );
   }
+
 }

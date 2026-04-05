@@ -1,8 +1,9 @@
+import '../entities/cert_upload_entity.dart';
 import '../entities/upload_vehicle_inspection.dart';
 
 abstract class ImageRepository {
-  Future<UploadVehicleInspection> uploadVehicleInspection({
-    required String imagePath,
+  Future<CertUploadEntity> uploadVehicleInspection({
+    required List<String> imagePaths,
     required String claimId,
   });
 

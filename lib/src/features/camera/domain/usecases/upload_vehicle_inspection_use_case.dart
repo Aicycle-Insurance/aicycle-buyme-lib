@@ -1,12 +1,12 @@
-import '../entities/upload_vehicle_inspection.dart';
+import '../entities/cert_upload_entity.dart';
 import '../repositories/image_respository.dart';
 
 class UploadVehicleInspectionParams {
-  final String imagePath;
+  final List<String> imagePaths;
   final String claimId;
 
   UploadVehicleInspectionParams({
-    required this.imagePath,
+    required this.imagePaths,
     required this.claimId,
   });
 }
@@ -16,9 +16,9 @@ class UploadVehicleInspectionUseCase {
 
   UploadVehicleInspectionUseCase(this._repository);
 
-  Future<UploadVehicleInspection> call(UploadVehicleInspectionParams params) {
+  Future<CertUploadEntity> call(UploadVehicleInspectionParams params) {
     return _repository.uploadVehicleInspection(
-      imagePath: params.imagePath,
+      imagePaths: params.imagePaths,
       claimId: params.claimId,
     );
   }

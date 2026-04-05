@@ -1,3 +1,7 @@
+## 1.0.14
+
+- Apply capture certificate rules
+
 ## 1.0.13
 
 - Fix bug handle warning retake photo

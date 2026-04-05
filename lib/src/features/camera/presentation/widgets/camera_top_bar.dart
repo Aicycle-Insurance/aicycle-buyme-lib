@@ -9,10 +9,12 @@ class CameraTopBar extends StatelessWidget {
     super.key,
     required this.turns,
     required this.controller,
+    required this.onBack,
   });
 
   final double turns;
   final XCameraController controller;
+  final Function() onBack;
 
   IconData _getFlashIcon(FlashMode mode) {
     switch (mode) {
@@ -36,7 +38,7 @@ class CameraTopBar extends StatelessWidget {
           left: 16.r,
           child: SafeArea(
             child: InkWell(
-              onTap: () => Navigator.pop(context),
+              onTap: onBack,
               child: Container(
                 padding: const EdgeInsets.all(8),
                 decoration: const BoxDecoration(

@@ -1,19 +1,21 @@
-import 'package:aicycle_buyme_plus/aicycle_buyme_plus.dart';
-import 'package:aicycle_buyme_plus/src/core/di/injection.dart';
-import 'package:aicycle_buyme_plus/src/core/utils/image_utils.dart';
-import 'package:aicycle_buyme_plus/src/core/extension/xx_file.dart';
-import 'package:aicycle_buyme_plus/src/core/utils/internal_cache.dart';
-import 'package:aicycle_buyme_plus/src/features/camera/domain/usecases/upload_image_use_case.dart';
-import 'package:aicycle_buyme_plus/src/features/camera/domain/usecases/upload_vehicle_inspection_use_case.dart';
-import 'package:aicycle_buyme_plus/src/features/aicycle_buy_me/domain/entities/directional_image.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:native_device_orientation/native_device_orientation.dart';
 
+import '../../../../../aicycle_buyme_plus.dart';
+import '../../../../core/di/injection.dart';
 import '../../../../core/error/exceptions.dart';
 import '../../../../core/extension/car_angle_ext.dart';
+import '../../../../core/extension/xx_file.dart';
+import '../../../../core/theme/app_strings.dart';
+import '../../../../core/utils/image_utils.dart';
+import '../../../../core/utils/internal_cache.dart';
+import '../../../aicycle_buy_me/domain/entities/directional_image.dart';
+import '../../domain/entities/cert_upload_entity.dart';
 import '../../domain/entities/upload_vehicle_inspection.dart';
+import '../../domain/usecases/upload_image_use_case.dart';
+import '../../domain/usecases/upload_vehicle_inspection_use_case.dart';
 
 enum CameraStatus { initial, initializing, ready, error }
 
@@ -28,7 +30,9 @@ class XCameraController extends ChangeNotifier {
   bool _showFrame = false;
   XXFile? _capturedImage;
   bool _isUploading = false;
+  final List<XXFile> _regCertImages = [];
   UploadVehicleInspection? _warningResultCached;
+  CertUploadEntity? _warningCertCached;
   static const List<int> warningEngineCodes = [
     23212,
     77704,
@@ -44,7 +48,17 @@ class XCameraController extends ChangeNotifier {
   bool get showFrame => _showFrame;
   XXFile? get capturedImage => _capturedImage;
   bool get isUploading => _isUploading;
+  List<XXFile> get regCertImages => _regCertImages;
+  bool get isRegCert => angle == AicycleCarAngle.regCert;
 
+  String get regCertInstruction {
+    if (!isRegCert) return angle.title;
+    if (_regCertImages.isEmpty) return AppStrings.captureFrontRegCert;
+    if (_regCertImages.length == 1) return AppStrings.captureRearRegCert;
+    return angle.title;
+  }
+
+  /// Khởi tạo camera
   Future<void> initialize() async {
     try {
       _status = CameraStatus.initializing;
@@ -81,6 +95,7 @@ class XCameraController extends ChangeNotifier {
     }
   }
 
+  /// Chụp ảnh
   Future<void> takePicture(NativeDeviceOrientation orientation) async {
     if (_controller == null || !_controller!.value.isInitialized) return;
     if (_controller!.value.isTakingPicture) return;
@@ -100,11 +115,29 @@ class XCameraController extends ChangeNotifier {
     }
   }
 
+  void setCapturedImage(XXFile image) {
+    _capturedImage = image;
+    notifyListeners();
+  }
+
+  /// Chụp lại (reset ảnh đã chụp)
   void retake() {
+    if (isRegCert) {
+      if (_capturedImage != null && _regCertImages.contains(_capturedImage!)) {
+        _regCertImages.remove(_capturedImage!);
+      }
+    }
     _capturedImage = null;
     notifyListeners();
   }
 
+  /// Xoá ảnh đăng kiểm đã chụp
+  void discardRegCertImage(XXFile image) {
+    _regCertImages.removeWhere((e) => e.path == image.path);
+    notifyListeners();
+  }
+
+  /// Chuyển đổi chế độ flash
   Future<void> toggleFlash() async {
     if (_controller == null) return;
 
@@ -117,11 +150,13 @@ class XCameraController extends ChangeNotifier {
     notifyListeners();
   }
 
+  /// Chuyển đổi hiển thị khung hướng dẫn
   void toggleFrame() {
     _showFrame = !_showFrame;
     notifyListeners();
   }
 
+  /// Chọn ảnh từ thư viện
   Future<void> pickImageFromGallery() async {
     final picker = ImagePicker();
     final file = await picker.pickImage(source: ImageSource.gallery);
@@ -143,28 +178,56 @@ class XCameraController extends ChangeNotifier {
     if (_capturedImage == null) return;
 
     try {
-      _setUploading(true);
-
-      _warningResultCached = null;
-      final compressedImage = await ImageUtils.compressedImage(_capturedImage!);
-      late UploadVehicleInspection result;
-      // Chỉ upload nếu góc chụp là regCert (đăng kiểm)
-      if (angle == AicycleCarAngle.regCert) {
-        result = await _uploadRegCert(compressedImage);
-      } else {
-        result = await _uploadRegularImage(compressedImage);
+      if (isRegCert) {
+        if (!_regCertImages.contains(_capturedImage!)) {
+          _regCertImages.add(_capturedImage!);
+        }
+        if (_regCertImages.length < 2) {
+          _capturedImage = null;
+          notifyListeners();
+          return;
+        }
       }
 
-      /// Handle if status 200 mà vẫn có error :)
-      if (result.errorLevel == ErrorLevel.warning) {
-        _warningResultCached = result;
-        onWarning(
-          EngineException(result.errorMessage, result.errorCodeFromEngine),
+      _setUploading(true);
+
+      if (isRegCert) {
+        _warningCertCached = null;
+        final images = await Future.wait(
+          _regCertImages.map((e) => ImageUtils.compressedImage(e)),
         );
-      } else if (result.errorLevel == ErrorLevel.error) {
-        onError(result.errorMessage ?? 'Something went wrong.');
+        final result = await _uploadRegCert(images);
+        _handleUploadResult(
+          result.errorLevel,
+          onWarning: () {
+            _warningCertCached = result;
+            onWarning(
+              EngineException(result.errorMessage, result.errorCodeFromEngine),
+            );
+          },
+          onError: (msg) =>
+              onError(msg ?? result.errorMessage ?? 'Something went wrong.'),
+          onSuccess: () {
+            _regCertImages.clear();
+            onSuccess();
+          },
+        );
       } else {
-        onSuccess();
+        _warningResultCached = null;
+        final image = await ImageUtils.compressedImage(_capturedImage!);
+        final result = await _uploadRegularImage(image);
+        _handleUploadResult(
+          result.errorLevel,
+          onWarning: () {
+            _warningResultCached = result;
+            onWarning(
+              EngineException(result.errorMessage, result.errorCodeFromEngine),
+            );
+          },
+          onError: (msg) =>
+              onError(msg ?? result.errorMessage ?? 'Something went wrong.'),
+          onSuccess: onSuccess,
+        );
       }
     } on EngineException catch (e) {
       if (warningEngineCodes.contains(e.engineCode)) {
@@ -179,89 +242,113 @@ class XCameraController extends ChangeNotifier {
     }
   }
 
-  void onWarningContinue() {
-    if (_warningResultCached != null) {
-      sl.vehicleImageVault
-          .addImagesFromServer(_warningResultCached!.angleFromEngine ?? angle, [
-            DirectionalImage(
-              imageId: _warningResultCached!.imageId,
-              imageUrl: _warningResultCached!.imgUrl,
-            ),
-          ]);
+  void _handleUploadResult(
+    ErrorLevel? errorLevel, {
+    required VoidCallback onWarning,
+    required void Function(String? message) onError,
+    required VoidCallback onSuccess,
+  }) {
+    if (errorLevel == ErrorLevel.warning) {
+      onWarning();
+    } else if (errorLevel == ErrorLevel.error) {
+      onError(null);
+    } else {
+      onSuccess();
     }
-    _warningResultCached = null;
+  }
+
+  /// Tiếp tục sau khi nhận cảnh báo từ engine
+  void onWarningContinue() {
+    if (isRegCert) {
+      if (_warningCertCached != null) {
+        _addCertToVault(_warningCertCached!);
+        _warningCertCached = null;
+        _regCertImages.clear();
+      }
+    } else {
+      if (_warningResultCached != null) {
+        _addRegularToVault(_warningResultCached!);
+        _warningResultCached = null;
+      }
+    }
     _capturedImage = null;
     notifyListeners();
   }
 
   /// Chụp lại sau khi nhận cảnh báo từ engine
-  void onWarningRetake() async {
-    if (_warningResultCached?.imageId == null) {
-      _capturedImage = null;
+  void onWarningRetake() {
+    if (isRegCert) {
+      if (_capturedImage != null && _regCertImages.contains(_capturedImage!)) {
+        _regCertImages.remove(_capturedImage!);
+      }
+      _warningCertCached = null;
+    } else {
       _warningResultCached = null;
-      notifyListeners();
-      return;
     }
-    _isUploading = true;
-    notifyListeners();
-    await sl.vehicleImageVault.deleteImageById(_warningResultCached!.imageId!);
-    _isUploading = false;
     _capturedImage = null;
-    _warningResultCached = null;
     notifyListeners();
   }
 
+  /// Cập nhật trạng thái đang upload
   void _setUploading(bool value) {
     _isUploading = value;
     notifyListeners();
   }
 
-  Future<UploadVehicleInspection> _uploadRegCert(XFile compressedImage) async {
-    final claimId = InternalCache.claimId;
-
+  /// Upload ảnh đăng kiểm (regCert)
+  Future<CertUploadEntity> _uploadRegCert(List<XFile> compressedImages) async {
     final result = await sl.uploadVehicleInspectionUseCase(
       UploadVehicleInspectionParams(
-        imagePath: compressedImage.path,
-        claimId: claimId,
+        imagePaths: compressedImages.map((e) => e.path).toList(),
+        claimId: InternalCache.claimId,
       ),
     );
 
-    if (result.imgUrl != null) {
-      sl.vehicleImageVault.addImagesFromServer(
-        result.angleFromEngine ?? angle,
-        [DirectionalImage(imageId: result.imageId, imageUrl: result.imgUrl)],
-      );
+    if (result.errorLevel == ErrorLevel.success) {
+      _addCertToVault(result);
     }
-
     return result;
   }
 
   Future<UploadVehicleInspection> _uploadRegularImage(
     XFile compressedImage,
   ) async {
-    final claimId = InternalCache.claimId;
-
     final result = await sl.uploadImageUseCase(
       UploadImageParams(
         imagePath: compressedImage.path,
-        claimId: claimId,
+        claimId: InternalCache.claimId,
         angleId: angle.id,
       ),
     );
 
-    if (result.imgUrl != null) {
-      sl.vehicleImageVault.addImagesFromServer(
-        result.angleFromEngine ?? angle,
-        [DirectionalImage(imageId: result.imageId, imageUrl: result.imgUrl)],
-      );
+    if (result.errorLevel == ErrorLevel.success) {
+      _addRegularToVault(result);
     }
-
     return result;
   }
 
+  void _addCertToVault(CertUploadEntity result) {
+    if (result.imgUrls == null) return;
+    sl.vehicleImageVault.addImagesFromServer(
+      AicycleCarAngle.regCert,
+      result.imgUrls!
+          .map((e) => DirectionalImage(imageId: result.imageId, imageUrl: e))
+          .toList(),
+    );
+  }
+
+  void _addRegularToVault(UploadVehicleInspection result) {
+    if (result.imgUrl == null) return;
+    sl.vehicleImageVault.addImagesFromServer(result.angleFromEngine ?? angle, [
+      DirectionalImage(imageId: result.imageId, imageUrl: result.imgUrl),
+    ]);
+  }
+
+  /// Giải phóng tài nguyên camera
   @override
   void dispose() {
     _controller?.dispose();
     super.dispose();
   }
 }
+

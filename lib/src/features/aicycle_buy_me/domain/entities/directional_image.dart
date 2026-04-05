@@ -17,13 +17,9 @@ class DirectionalImage {
 
     if (other is! DirectionalImage) return false;
 
-    if (imageId != null && other.imageId != null) {
-      return imageId == other.imageId;
-    }
-
-    return imageId == other.imageId && other.imageUrl == imageUrl;
+    return other.imageUrl == imageUrl;
   }
 
   @override
-  int get hashCode => imageId?.hashCode ?? imageUrl.hashCode;
+  int get hashCode => imageUrl.hashCode;
 }

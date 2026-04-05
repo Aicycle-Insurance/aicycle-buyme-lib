@@ -108,14 +108,14 @@ class CarCaptureSection extends StatelessWidget {
                       height: 90.h,
                       width: double.infinity,
                     ),
-                    if (showCount && images.length > 1)
+                    if (showCount && images.length > 2)
                       Container(
                         height: double.infinity,
                         width: double.infinity,
                         color: Colors.black54,
                         child: Center(
                           child: Text(
-                            '+${images.length}',
+                            '+${images.length - 2}',
                             style: AppTextStyles.body12Medium.copyWith(
                               color: Colors.white,
                             ),
