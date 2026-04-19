@@ -21,4 +21,10 @@ class DocumentResultRepositoryImpl implements DocumentResultRepository {
     final response = await _remoteDataSource.getDamageStatistics(claimId);
     return response.map((e) => e.toEntity()).toList();
   }
+
+  @override
+  Future<Map<String, dynamic>> getImageDetails(int imageId) async {
+    final response = await _remoteDataSource.getImageDetails(imageId);
+    return response;
+  }
 }

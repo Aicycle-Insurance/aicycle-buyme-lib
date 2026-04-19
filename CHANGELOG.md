@@ -1,3 +1,7 @@
+## 1.0.15
+
+- Fix bug handle submit
+
 ## 1.0.14
 
 - Apply capture certificate rules

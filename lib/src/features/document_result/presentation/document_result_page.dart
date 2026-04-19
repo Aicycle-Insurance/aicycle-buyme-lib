@@ -1,5 +1,3 @@
-import 'package:aicycle_buyme_plus/src/core/parse_output.dart';
-import 'package:aicycle_buyme_plus/src/core/utils/screen_utils.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../aicycle_buyme_plus.dart';
@@ -7,6 +5,7 @@ import '../../../core/di/injection.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_strings.dart';
 import '../../../core/theme/app_text_styles.dart';
+import '../../../core/utils/screen_utils.dart';
 import 'controllers/document_result_controller.dart';
 import 'widgets/car_info_container.dart';
 import 'widgets/segment_container.dart';
@@ -28,6 +27,7 @@ class _DocumentResultPageState extends State<DocumentResultPage> {
     _controller = DocumentResultController(
       sl.getVehicleInfoUseCase,
       sl.getDamageStatisticsUseCase,
+      sl.getImageDetailUseCase,
     );
   }
 
@@ -163,12 +163,7 @@ class _DocumentResultPageState extends State<DocumentResultPage> {
               if (AiCycleBuyMe.config.generalConfig.organization !=
                   AiCycleOrg.aicycle) ...[
                 ElevatedButton(
-                  onPressed: () {
-                    final data = ParseOutput.parseDamageStatistics(
-                      _controller.damageStatistics ?? [],
-                    );
-                    widget.onComplete?.call(data);
-                  },
+                  onPressed: () => _controller.onSubmit(widget.onComplete),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.primary,
                     foregroundColor: Colors.white,

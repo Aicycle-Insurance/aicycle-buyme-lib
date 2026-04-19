@@ -1,6 +1,7 @@
 import '../entities/segment_result.dart';
 import '../repositories/document_result_repository.dart';
 
+/// API: GET /v2/claimfolders/$claimId/segment-classify-result
 class GetDamageStatisticsUseCase {
   final DocumentResultRepository _repository;
 

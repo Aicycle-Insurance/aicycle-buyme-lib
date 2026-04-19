@@ -1,9 +1,8 @@
-import 'package:aicycle_buyme_plus/aicycle_buyme_plus.dart';
 import 'package:flutter/material.dart';
+import '../../../../../aicycle_buyme_plus.dart';
 import '../../../../core/di/injection.dart';
-import '../../../../core/parse_output.dart';
 import '../../../../core/utils/internal_cache.dart';
-import '../../../document_result/domain/usecases/get_damage_statistics_use_case.dart';
+import '../../../document_result/domain/usecases/get_image_detail_use_case.dart';
 import '../../domain/use_cases/create_buyme_folder_use_case.dart';
 
 /// Status of the BuyMe folder creation or initialization process.
@@ -14,15 +13,15 @@ enum BuyMeStatus { initial, loading, success, error }
 /// and synchronization with the backend.
 class BuyMeController extends ChangeNotifier {
   final CreateBuyMeFolderUseCase _createBuyMeFolderUseCase;
-  final GetDamageStatisticsUseCase _getDamageStatisticsUseCase;
+  final GetImageDetailUseCase _getImageDetailUseCase;
 
   BuyMeController({
     CreateBuyMeFolderUseCase? createBuyMeFolderUseCase,
-    GetDamageStatisticsUseCase? getDamageStatisticsUseCase,
+    GetImageDetailUseCase? getImageDetailUseCase,
   }) : _createBuyMeFolderUseCase =
            createBuyMeFolderUseCase ?? sl.createBuyMeFolderUseCase,
-       _getDamageStatisticsUseCase =
-           getDamageStatisticsUseCase ?? sl.getDamageStatisticsUseCase;
+       _getImageDetailUseCase =
+           getImageDetailUseCase ?? sl.getImageDetailUseCase;
   bool _isDisposed = false;
 
   BuyMeStatus _status = BuyMeStatus.initial;
@@ -86,13 +85,41 @@ class BuyMeController extends ChangeNotifier {
   }
 
   Future<void> submit(Function(dynamic data)? onComplete) async {
-    final claimId = InternalCache.claimId;
     try {
-      final damageStatistics = await _getDamageStatisticsUseCase(claimId);
-      final data = ParseOutput.parseDamageStatistics(damageStatistics);
-      onComplete?.call(data);
+      _status = BuyMeStatus.loading;
+      notifyListeners();
+      final imageIds = sl.vehicleImageVault.exteriorImages
+          .map((e) => e.imageId)
+          .toList();
+      List<Map<String, dynamic>> imageDetails = [];
+      for (int? id in imageIds) {
+        if (id != null) {
+          final imageDetail = await _getImageDetailUseCase(id);
+          imageDetails.add(imageDetail);
+        }
+      }
+      final Map<String, dynamic> sentData = {
+        'regCertImages': sl.vehicleImageVault.regCertImages
+            .map((e) => e.imageUrl)
+            .toList(),
+        'regStampImages': sl.vehicleImageVault.regStampImages
+            .map((e) => e.imageUrl)
+            .toList(),
+        'vinNumberImages': sl.vehicleImageVault.vinNumberImages
+            .map((e) => e.imageUrl)
+            .toList(),
+        'taploImages': sl.vehicleImageVault.taploImages
+            .map((e) => e.imageUrl)
+            .toList(),
+        'results': imageDetails,
+        'itemsCount': imageDetails.length,
+      };
+      onComplete?.call(sentData);
     } catch (e) {
-      debugPrint('Error getting damage statistics: $e');
+      debugPrint('Error getting image detail: $e');
+    } finally {
+      _status = BuyMeStatus.success;
+      notifyListeners();
     }
   }
 

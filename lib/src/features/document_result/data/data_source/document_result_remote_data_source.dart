@@ -4,8 +4,14 @@ import '../models/segment_result_model.dart';
 import '../models/vehicle_info_model.dart';
 
 abstract class DocumentResultRemoteDataSource {
+  /// API: GET /v2/claimfolders/car-info
   Future<VehicleInfoModel> getVehicleInfo(String claimId);
+
+  /// API: GET /v2/claimfolders/$claimId/segment-classify-result
   Future<List<SegmentResultModel>> getDamageStatistics(String claimId);
+
+  /// API: GET /insurance/images/{imageId}
+  Future<Map<String, dynamic>> getImageDetails(int imageId);
 }
 
 class DocumentResultRemoteDataSourceImpl
@@ -29,5 +35,19 @@ class DocumentResultRemoteDataSourceImpl
       ApiEndpoints.getSegmentResult(claimId),
     );
     return response.map((e) => SegmentResultModel.fromJson(e)).toList();
+  }
+
+  @override
+  Future<Map<String, dynamic>> getImageDetails(int imageId) async {
+    final response = await _dioClient.get<dynamic>(
+      ApiEndpoints.getImageDetails(imageId),
+    );
+    if (response is! Map<String, dynamic>) {
+      return {'error': 'Fail to get image details'};
+    }
+    if (response.containsKey('results')) {
+      return response['results'];
+    }
+    return response;
   }
 }
