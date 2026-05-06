@@ -1,9 +1,10 @@
-import 'package:aicycle_buyme_plus/src/core/theme/app_strings.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
+import '../../../../../aicycle_buyme_plus.dart';
 import '../../../../core/extension/color_ext.dart';
 import '../../../../core/theme/app_colors.dart';
+import '../../../../core/theme/app_strings.dart';
 import '../../../../core/theme/app_text_styles.dart';
 import '../../../../core/utils/screen_utils.dart';
 import '../../domain/entities/segment_result.dart';
@@ -118,6 +119,7 @@ class _SegmentContainerState extends State<SegmentContainer> {
               children: [
                 SegmentedPhoto(
                   imageEntity: widget.segmentResult.images![selectedIndex],
+                  maskType: AiCycleBuyMe.config.displayConfig.maskType,
                 ),
                 Positioned(
                   bottom: 8.h,

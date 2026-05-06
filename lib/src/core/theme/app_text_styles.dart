@@ -128,4 +128,12 @@ class AppTextStyles {
     color: const Color(0xFF7B8090),
     height: 2,
   );
+
+  static TextStyle get body8Regular => TextStyle(
+    fontFamily: _fontFamily,
+    fontSize: 8.sp,
+    fontWeight: FontWeight.w400,
+    color: const Color(0xFF7B8090),
+    height: 12 / 8,
+  );
 }

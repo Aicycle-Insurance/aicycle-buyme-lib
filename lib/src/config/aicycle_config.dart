@@ -45,6 +45,8 @@ enum AicycleCarAngle {
   exterior,
 }
 
+enum MaskType { boundingBox, segmentation }
+
 /// Map góc xe với tên hiển thị mặc định
 const Map<AicycleCarAngle, String> _kDefaultCarAnglesWithDisplayName = {
   AicycleCarAngle.front: 'Trước',
@@ -179,9 +181,13 @@ class DisplayConfig {
   /// Hiển thị nút back
   final bool showBackButton;
 
+  /// Loại mask
+  final MaskType maskType;
+
   const DisplayConfig({
     this.loadingWidget,
     this.carAnglesWithDisplayName = _kDefaultCarAnglesWithDisplayName,
     this.showBackButton = false,
+    this.maskType = MaskType.segmentation,
   });
 }

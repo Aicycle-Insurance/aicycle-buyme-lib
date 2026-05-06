@@ -53,6 +53,7 @@ class _ExampleHomePageState extends State<ExampleHomePage> {
   bool _missingPartValidation = false;
 
   // Display Config - selected angles
+  MaskType _maskType = MaskType.boundingBox;
   final Map<AicycleCarAngle, bool> _selectedAngles = {
     for (var angle in AicycleCarAngle.values) angle: true,
   };
@@ -122,7 +123,14 @@ class _ExampleHomePageState extends State<ExampleHomePage> {
             ),
 
             const Divider(height: 32),
-            _sectionTitle('Display Configuration - Car Angles'),
+            _sectionTitle('Display Configuration'),
+            _dropdown<MaskType>(
+              'Mask Type',
+              _maskType,
+              MaskType.values,
+              (val) => setState(() => _maskType = val!),
+            ),
+            const SizedBox(height: 16),
             Wrap(
               spacing: 8,
               children: AicycleCarAngle.values.map((angle) {
@@ -306,6 +314,7 @@ class _ExampleHomePageState extends State<ExampleHomePage> {
       ),
       displayConfig: DisplayConfig(
         carAnglesWithDisplayName: carAnglesWithDisplayName,
+        maskType: _maskType,
       ),
     );
 

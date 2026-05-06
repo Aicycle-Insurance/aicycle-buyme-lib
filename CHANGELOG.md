@@ -1,3 +1,7 @@
+## 1.0.16
+
+- Add configurable MaskType to support both segmentation and bounding box visualizations
+
 ## 1.0.15
 
 - Fix bug handle submit
