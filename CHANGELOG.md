@@ -1,3 +1,7 @@
+## 1.0.17
+
+- Fix bug when switch segment and show/hide mask
+
 ## 1.0.16
 
 - Add configurable MaskType to support both segmentation and bounding box visualizations

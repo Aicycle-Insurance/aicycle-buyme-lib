@@ -20,6 +20,7 @@ class SegmentContainer extends StatefulWidget {
 
 class _SegmentContainerState extends State<SegmentContainer> {
   int selectedIndex = 0;
+  final Map<int, bool> _maskVisibility = {};
 
   String getPercentage(DamageEntity damageResult) {
     final double percent = (damageResult.damagePercentage ?? 0) * 100;
@@ -120,6 +121,13 @@ class _SegmentContainerState extends State<SegmentContainer> {
                 SegmentedPhoto(
                   imageEntity: widget.segmentResult.images![selectedIndex],
                   maskType: AiCycleBuyMe.config.displayConfig.maskType,
+                  showMask: _maskVisibility[selectedIndex] ?? true,
+                  onToggleMask: () {
+                    setState(() {
+                      _maskVisibility[selectedIndex] =
+                          !(_maskVisibility[selectedIndex] ?? true);
+                    });
+                  },
                 ),
                 Positioned(
                   bottom: 8.h,

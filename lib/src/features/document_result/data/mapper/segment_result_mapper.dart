@@ -33,6 +33,7 @@ extension ImageMapper on SegmentImageModel {
       damagesInImage: damageImageInfo
           ?.map(
             (e) => DamageEntity(
+              damageTypeId: e.damageTypeSlug,
               damageTypeName: e.damageTypeName,
               damagePercentage: e.damagePercentage,
               damageTypeColor: e.damageTypeColor,

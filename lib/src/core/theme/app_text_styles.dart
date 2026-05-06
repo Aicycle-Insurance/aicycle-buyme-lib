@@ -129,11 +129,11 @@ class AppTextStyles {
     height: 2,
   );
 
-  static TextStyle get body8Regular => TextStyle(
+  static TextStyle get body6Regular => TextStyle(
     fontFamily: _fontFamily,
-    fontSize: 8.sp,
+    fontSize: 6.sp,
     fontWeight: FontWeight.w400,
     color: const Color(0xFF7B8090),
-    height: 12 / 8,
+    height: 1.2,
   );
 }

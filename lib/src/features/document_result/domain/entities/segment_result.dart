@@ -31,6 +31,7 @@ class ImageEntity {
 }
 
 class DamageEntity {
+  final String? damageTypeId;
   final String? damageTypeName;
   final double? damagePercentage;
   final String? damageTypeColor;
@@ -38,6 +39,7 @@ class DamageEntity {
   final List<double>? boxes;
 
   DamageEntity({
+    this.damageTypeId,
     this.damageTypeName,
     this.damagePercentage,
     this.damageTypeColor,
