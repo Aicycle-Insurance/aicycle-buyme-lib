@@ -351,4 +351,3 @@ class XCameraController extends ChangeNotifier {
     super.dispose();
   }
 }
-

@@ -24,6 +24,10 @@ class GuideFrame extends StatelessWidget {
         return Assets.images.rearLeft.imgFrameRearLeft.path;
       case AicycleCarAngle.rearRight:
         return Assets.images.rearRight.imgFrameRearRight.path;
+      case AicycleCarAngle.right:
+        return Assets.images.right.imgFrameRight.path;
+      case AicycleCarAngle.left:
+        return Assets.images.left.imgFrameLeft.path;
       default:
         return '';
     }

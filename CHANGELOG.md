@@ -1,3 +1,7 @@
+## 1.0.18
+
+- Update car guide frames
+
 ## 1.0.17
 
 - Fix bug when switch segment and show/hide mask

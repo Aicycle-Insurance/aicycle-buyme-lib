@@ -231,12 +231,16 @@ class $AssetsImagesFrontRightGen {
 class $AssetsImagesLeftGen {
   const $AssetsImagesLeftGen();
 
+  /// File path: assets/images/left/img_frame_left.png
+  AssetGenImage get imgFrameLeft =>
+      const AssetGenImage('assets/images/left/img_frame_left.png');
+
   /// File path: assets/images/left/img_left.png
   AssetGenImage get imgLeft =>
       const AssetGenImage('assets/images/left/img_left.png');
 
   /// List of all assets
-  List<AssetGenImage> get values => [imgLeft];
+  List<AssetGenImage> get values => [imgFrameLeft, imgLeft];
 }
 
 class $AssetsImagesRearGen {
@@ -313,12 +317,16 @@ class $AssetsImagesRearRightGen {
 class $AssetsImagesRightGen {
   const $AssetsImagesRightGen();
 
+  /// File path: assets/images/right/img_frame_right.png
+  AssetGenImage get imgFrameRight =>
+      const AssetGenImage('assets/images/right/img_frame_right.png');
+
   /// File path: assets/images/right/img_right.png
   AssetGenImage get imgRight =>
       const AssetGenImage('assets/images/right/img_right.png');
 
   /// List of all assets
-  List<AssetGenImage> get values => [imgRight];
+  List<AssetGenImage> get values => [imgFrameRight, imgRight];
 }
 
 class Assets {

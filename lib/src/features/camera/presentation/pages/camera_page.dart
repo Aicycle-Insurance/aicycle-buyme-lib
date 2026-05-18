@@ -14,7 +14,7 @@ import '../controllers/camera_controller.dart';
 import '../widgets/camera_bottom_bar.dart';
 import '../widgets/camera_top_bar.dart';
 import '../widgets/cert_top_bar.dart';
-// import '../widgets/guide_frame.dart';
+import '../widgets/guide_frame.dart';
 import '../widgets/photo_preview.dart';
 import '../../../../core/widgets/validation_dialog.dart';
 
@@ -38,7 +38,7 @@ class _CameraPageState extends State<CameraPage> {
   late final XCameraController _controller;
   bool _showGuide = true;
 
-  // bool get supportGuide => widget.args.isFramedPhoto;
+  bool get supportGuide => widget.args.isFramedPhoto;
 
   @override
   void initState() {
@@ -190,6 +190,14 @@ class _CameraPageState extends State<CameraPage> {
                                   _controller.controller!,
                                   child: Stack(
                                     children: [
+                                      /// Guide Frame
+                                      if (supportGuide && _controller.showFrame)
+                                        Center(
+                                          child: GuideFrame(
+                                            carCorner: widget.args.vehicleAngle,
+                                          ),
+                                        ),
+
                                       /// Top Buttons
                                       Visibility(
                                         visible:
@@ -197,6 +205,7 @@ class _CameraPageState extends State<CameraPage> {
                                         child: CameraTopBar(
                                           controller: _controller,
                                           turns: turns,
+                                          showGuidleFrameButton: supportGuide,
                                           onBack: () {
                                             _onWillPop().then((shouldPop) {
                                               if (shouldPop &&
@@ -280,5 +289,4 @@ class _CameraPageState extends State<CameraPage> {
       },
     );
   }
-
 }
