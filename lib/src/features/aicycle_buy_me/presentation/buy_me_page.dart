@@ -148,9 +148,11 @@ class BuyMePage extends StatelessWidget {
                 child: ListenableBuilder(
                   listenable: sl.validationVault,
                   builder: (context, _) {
+                    final hasImage = sl.validationVault.isHasImage;
+                    final isError = sl.validationVault.isError;
                     final canSubmit =
-                        sl.validationVault.isHasImage &&
-                        !sl.validationVault.isError;
+                        hasImage &&
+                        (config.generalConfig.disableValidation || !isError);
                     return ElevatedButton(
                       onPressed: canSubmit ? () => onSubmit(context) : null,
                       style: ElevatedButton.styleFrom(

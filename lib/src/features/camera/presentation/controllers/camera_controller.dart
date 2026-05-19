@@ -27,7 +27,7 @@ class XCameraController extends ChangeNotifier {
   CameraStatus _status = CameraStatus.initial;
   String _errorMessage = '';
   FlashMode _flashMode = FlashMode.off;
-  bool _showFrame = false;
+  bool _showFrame = true;
   XXFile? _capturedImage;
   bool _isUploading = false;
   final List<XXFile> _regCertImages = [];

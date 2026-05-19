@@ -111,6 +111,10 @@ class GeneralConfig {
   /// Tổ chức sử dụng SDK
   final AiCycleOrg organization;
 
+  /// Nếu true: Cho phép ấn `Hoàn thành` dù hồ sơ chưa hợp lệ.
+  /// Mặc định là false
+  final bool disableValidation;
+
   GeneralConfig({
     required this.apiToken,
     required this.documentId,
@@ -119,6 +123,7 @@ class GeneralConfig {
     this.documentName,
     this.showResultScreen = true,
     this.loggingEnabled = false,
+    this.disableValidation = false,
   });
 }
 

@@ -1,3 +1,7 @@
+## 1.0.19
+
+- Add disableValidation config and enable camera frame by default
+
 ## 1.0.18
 
 - Update car guide frames
