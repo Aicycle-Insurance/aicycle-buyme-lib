@@ -40,6 +40,12 @@ class _CameraPageState extends State<CameraPage> {
 
   bool get supportGuide => widget.args.isFramedPhoto;
 
+  bool get _disableShowGuide =>
+      widget.args.vehicleAngle == AicycleCarAngle.regCert ||
+      widget.args.vehicleAngle == AicycleCarAngle.regStamp ||
+      widget.args.vehicleAngle == AicycleCarAngle.vinNumber ||
+      widget.args.vehicleAngle == AicycleCarAngle.taplo;
+
   @override
   void initState() {
     super.initState();
@@ -255,11 +261,10 @@ class _CameraPageState extends State<CameraPage> {
                             ),
                           ),
                         ),
-                        ListenableBuilder(
-                          listenable: sl.vehicleImageVault,
-                          builder: (context, _) {
-                            if (widget.args.vehicleAngle !=
-                                AicycleCarAngle.regCert) {
+                        if (!_disableShowGuide)
+                          ListenableBuilder(
+                            listenable: sl.vehicleImageVault,
+                            builder: (context, _) {
                               if (!sl.vehicleImageVault.hasAnyImage &&
                                   _showGuide) {
                                 return Center(
@@ -269,10 +274,9 @@ class _CameraPageState extends State<CameraPage> {
                                   ),
                                 );
                               }
-                            }
-                            return const SizedBox.shrink();
-                          },
-                        ),
+                              return const SizedBox.shrink();
+                            },
+                          ),
                       ],
                     ),
                   ),
