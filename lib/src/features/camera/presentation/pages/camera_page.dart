@@ -18,34 +18,49 @@ import '../widgets/guide_frame.dart';
 import '../widgets/photo_preview.dart';
 import '../../../../core/widgets/validation_dialog.dart';
 
+/// Đối số truyền vào cho màn hình chụp ảnh [CameraPage].
 class CameraArgs {
+  /// Góc chụp hiện tại của xe (ví dụ: sườn trái, sườn phải, đăng kiểm...).
   final AicycleCarAngle vehicleAngle;
+
+  /// Xác định xem ảnh chụp có hiển thị khung hướng dẫn (Guide Frame) hay không.
   final bool isFramedPhoto;
 
+  /// Khởi tạo [CameraArgs] với góc chụp xe và cờ kiểm tra khung hướng dẫn.
   const CameraArgs({required this.vehicleAngle, required this.isFramedPhoto});
 }
 
+/// Trang chính hiển thị giao diện Camera chụp ảnh xe.
 class CameraPage extends StatefulWidget {
+  /// Khởi tạo màn hình Camera.
   const CameraPage({super.key, required this.args});
 
+  /// Đối số cấu hình góc chụp và khung hướng dẫn.
   final CameraArgs args;
 
   @override
   State<CameraPage> createState() => _CameraPageState();
 }
 
+/// State quản lý vòng đời và các sự kiện xảy ra trên màn hình [CameraPage].
 class _CameraPageState extends State<CameraPage> {
+  /// Controller quản lý camera và tải ảnh lên server.
   late final XCameraController _controller;
+
+  /// Cờ hiển thị hộp thoại popup hướng dẫn chụp lần đầu.
   bool _showGuide = true;
 
+  /// Kiểm tra góc chụp hiện tại có hỗ trợ hiển thị khung hướng dẫn hay không.
   bool get supportGuide => widget.args.isFramedPhoto;
 
+  /// Các góc chụp cụ thể không cần hiển thị hướng dẫn ban đầu (ví dụ: đăng kiểm, tem đăng kiểm, số VIN, taplo).
   bool get _disableShowGuide =>
       widget.args.vehicleAngle == AicycleCarAngle.regCert ||
       widget.args.vehicleAngle == AicycleCarAngle.regStamp ||
       widget.args.vehicleAngle == AicycleCarAngle.vinNumber ||
       widget.args.vehicleAngle == AicycleCarAngle.taplo;
 
+  /// Khởi tạo trạng thái ban đầu của trang, gán listener và gọi hàm initialize camera.
   @override
   void initState() {
     super.initState();
@@ -54,6 +69,7 @@ class _CameraPageState extends State<CameraPage> {
     _controller.initialize();
   }
 
+  /// Phản hồi khi trạng thái camera thay đổi. Nếu xảy ra lỗi khởi tạo, tự động quay về màn hình trước.
   void _onStatusChanged() {
     if (_controller.status == CameraStatus.error) {
       debugPrint(_controller.errorMessage);
@@ -63,6 +79,7 @@ class _CameraPageState extends State<CameraPage> {
     }
   }
 
+  /// Giải phóng tài nguyên và huỷ lắng nghe thay đổi trạng thái của camera khi huỷ widget.
   @override
   void dispose() {
     _controller.removeListener(_onStatusChanged);
@@ -70,6 +87,7 @@ class _CameraPageState extends State<CameraPage> {
     super.dispose();
   }
 
+  /// Hiển thị hộp thoại cảnh báo khi máy chủ (Engine AI) trả về cảnh báo về chất lượng hình ảnh hoặc loại xe.
   void _onWarning(EngineException warning) {
     if (mounted) {
       CommonValidationDialog.show(
@@ -91,6 +109,7 @@ class _CameraPageState extends State<CameraPage> {
     }
   }
 
+  /// Hiển thị hộp thoại lỗi khi quá trình chụp, nén hoặc tải ảnh lên server bị thất bại hoàn toàn.
   void _onError(String message) {
     if (mounted) {
       CommonValidationDialog.show(
@@ -107,6 +126,7 @@ class _CameraPageState extends State<CameraPage> {
     }
   }
 
+  /// Kiểm tra và cảnh báo khi người dùng nhấn nút thoát nếu ảnh đăng kiểm chưa chụp đủ cả mặt trước và mặt sau (tối thiểu 2 ảnh).
   Future<bool> _onWillPop() async {
     if (widget.args.vehicleAngle == AicycleCarAngle.regCert &&
         _controller.regCertImages.isNotEmpty &&
