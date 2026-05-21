@@ -115,6 +115,9 @@ class GeneralConfig {
   /// Mặc định là false
   final bool disableValidation;
 
+  /// Mặc định là true. Nếu true: Cho phép lưu ảnh vào thư viện sau khi chụp.
+  final bool saveToGalleryAfterCapture;
+
   GeneralConfig({
     required this.apiToken,
     required this.documentId,
@@ -124,6 +127,7 @@ class GeneralConfig {
     this.showResultScreen = true,
     this.loggingEnabled = false,
     this.disableValidation = false,
+    this.saveToGalleryAfterCapture = true,
   });
 }
 

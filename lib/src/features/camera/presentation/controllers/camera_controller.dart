@@ -1,5 +1,6 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:gallery_saver_plus/gallery_saver.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:native_device_orientation/native_device_orientation.dart';
 
@@ -57,6 +58,9 @@ class XCameraController extends ChangeNotifier {
 
   /// Tệp ảnh đã chụp thành công và đang chờ xử lý hoặc upload.
   XXFile? _capturedImage;
+
+  /// Xác định xem ảnh hiện tại có phải được chọn từ thư viện (gallery) hay không.
+  bool _isPickedFromGallery = false;
 
   /// Trạng thái đang thực hiện tải (upload) ảnh lên máy chủ.
   bool _isUploading = false;
@@ -167,6 +171,7 @@ class XCameraController extends ChangeNotifier {
         orientation,
       );
 
+      _isPickedFromGallery = false;
       _capturedImage = XXFile.fromXFile(rotatedImage, orientation: orientation);
       notifyListeners();
     } catch (e) {
@@ -222,6 +227,7 @@ class XCameraController extends ChangeNotifier {
     final picker = ImagePicker();
     final file = await picker.pickImage(source: ImageSource.gallery);
     if (file != null) {
+      _isPickedFromGallery = true;
       _capturedImage = XXFile.fromXFile(
         file,
         orientation: NativeDeviceOrientation.landscapeLeft,
@@ -270,7 +276,8 @@ class XCameraController extends ChangeNotifier {
           },
           onError: (msg) =>
               onError(msg ?? result.errorMessage ?? 'Something went wrong.'),
-          onSuccess: () {
+          onSuccess: () async {
+            await _savePictureToGallery();
             _regCertImages.clear();
             onSuccess();
           },
@@ -289,7 +296,10 @@ class XCameraController extends ChangeNotifier {
           },
           onError: (msg) =>
               onError(msg ?? result.errorMessage ?? 'Something went wrong.'),
-          onSuccess: onSuccess,
+          onSuccess: () async {
+            await _savePictureToGallery();
+            onSuccess();
+          },
         );
       }
     } on EngineException catch (e) {
@@ -302,6 +312,24 @@ class XCameraController extends ChangeNotifier {
       onError(e.toString());
     } finally {
       _setUploading(false);
+    }
+  }
+
+  Future<void> _savePictureToGallery() async {
+    // Lưu ảnh vào thư viện ảnh nếu được cấu hình và ảnh chụp từ camera
+    if (AiCycleBuyMe.config.generalConfig.saveToGalleryAfterCapture &&
+        !_isPickedFromGallery) {
+      try {
+        if (isRegCert) {
+          for (final img in _regCertImages) {
+            await GallerySaver.saveImage(img.path);
+          }
+        } else {
+          await GallerySaver.saveImage(_capturedImage!.path);
+        }
+      } catch (e) {
+        debugPrint('Failed to save to gallery: $e');
+      }
     }
   }
 
@@ -336,6 +364,7 @@ class XCameraController extends ChangeNotifier {
       }
     }
     _capturedImage = null;
+    _savePictureToGallery();
     notifyListeners();
   }
 
