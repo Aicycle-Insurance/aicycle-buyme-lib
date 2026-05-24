@@ -55,3 +55,12 @@ class EngineException implements Exception {
   @override
   String toString() => 'EngineException($engineCode): $message';
 }
+
+/// Location / geocoding errors (permission denied, service disabled, etc.).
+class LocationException implements Exception {
+  final String? message;
+  const LocationException([this.message]);
+
+  @override
+  String toString() => 'LocationException: $message';
+}

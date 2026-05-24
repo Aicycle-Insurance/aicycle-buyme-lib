@@ -26,12 +26,18 @@ class ImageRepositoryImpl implements ImageRepository {
     required String claimId,
     String? angleId,
     bool isFramedPhoto = false,
+    String? locationName,
+    String? uploadLocation,
+    String? utcTimeCreated,
   }) async {
     final response = await _remoteDataSource.uploadImage(
       imagePath: imagePath,
       claimId: claimId,
       angleId: angleId,
       isFramedPhoto: isFramedPhoto,
+      locationName: locationName,
+      uploadLocation: uploadLocation,
+      utcTimeCreated: utcTimeCreated,
     );
     return response.toEntity();
   }

@@ -12,6 +12,12 @@ abstract class ImageRepository {
     required String claimId,
     String? angleId,
     bool isFramedPhoto = false,
+    // địa diểm chụp ảnh hoặc lấy từ metadata ảnh
+    String? locationName,
+    // địa điểm upload
+    String? uploadLocation,
+    // thời gian chụp ảnh (lấy từ metadata ảnh)
+    String? utcTimeCreated,
   });
 
   Future<void> deleteImageById({

@@ -49,37 +49,39 @@ class ImageUtils {
     return rawImage;
   }
 
+  // Tạm dừng nén ảnh
   static Future<XFile> compressedImage(XFile rawImage) async {
-    try {
-      final bytes = await rawImage.readAsBytes();
-      if (bytes.length < 3 * 1000 * 1000) {
-        return rawImage;
-      }
-      img.Image? image = img.decodeImage(bytes);
-      if (image != null) {
-        int quality = 90;
-        if (image.width > image.height && image.width > 1920) {
-          image = img.copyResize(image, width: 1920);
-        } else if (image.height > image.width && image.height > 1920) {
-          image = img.copyResize(image, height: 1920);
-        }
-        List<int> compressedBytes = img.encodeJpg(image, quality: quality);
+    return rawImage;
+    // try {
+    //   final bytes = await rawImage.readAsBytes();
+    //   if (bytes.length < 3 * 1000 * 1000) {
+    //     return rawImage;
+    //   }
+    //   img.Image? image = img.decodeImage(bytes);
+    //   if (image != null) {
+    //     int quality = 90;
+    //     if (image.width > image.height && image.width > 1920) {
+    //       image = img.copyResize(image, width: 1920);
+    //     } else if (image.height > image.width && image.height > 1920) {
+    //       image = img.copyResize(image, height: 1920);
+    //     }
+    //     List<int> compressedBytes = img.encodeJpg(image, quality: quality);
 
-        while (compressedBytes.length > 3 * 1000 * 1000 && quality > 10) {
-          quality -= 10;
-          compressedBytes = img.encodeJpg(image, quality: quality);
-        }
+    //     while (compressedBytes.length > 3 * 1000 * 1000 && quality > 10) {
+    //       quality -= 10;
+    //       compressedBytes = img.encodeJpg(image, quality: quality);
+    //     }
 
-        final tempDir = await getTemporaryDirectory();
-        final file = await File(
-          '${tempDir.path}/${DateTime.now().millisecondsSinceEpoch}.jpg',
-        ).create();
-        await file.writeAsBytes(compressedBytes);
-        return XFile(file.path);
-      }
-      return rawImage;
-    } catch (e) {
-      return rawImage;
-    }
+    //     final tempDir = await getTemporaryDirectory();
+    //     final file = await File(
+    //       '${tempDir.path}/${DateTime.now().millisecondsSinceEpoch}.jpg',
+    //     ).create();
+    //     await file.writeAsBytes(compressedBytes);
+    //     return XFile(file.path);
+    //   }
+    //   return rawImage;
+    // } catch (e) {
+    //   return rawImage;
+    // }
   }
 }

@@ -32,3 +32,8 @@ class ParseFailure extends Failure {
 class CacheFailure extends Failure {
   const CacheFailure([super.message = 'Cache error occurred']);
 }
+
+/// Location / geocoding errors.
+class LocationFailure extends Failure {
+  const LocationFailure([super.message = 'Failed to get location']);
+}

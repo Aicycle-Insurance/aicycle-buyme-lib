@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:gallery_saver_plus/gallery_saver.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:native_device_orientation/native_device_orientation.dart';
+import 'package:native_exif/native_exif.dart';
 
 import '../../../../../aicycle_buyme_plus.dart';
 import '../../../../core/di/injection.dart';
@@ -12,6 +13,7 @@ import '../../../../core/extension/xx_file.dart';
 import '../../../../core/theme/app_strings.dart';
 import '../../../../core/utils/image_utils.dart';
 import '../../../../core/utils/internal_cache.dart';
+import '../../../../core/utils/location_service.dart';
 import '../../../aicycle_buy_me/domain/entities/directional_image.dart';
 import '../../domain/entities/cert_upload_entity.dart';
 import '../../domain/entities/upload_vehicle_inspection.dart';
@@ -285,7 +287,7 @@ class XCameraController extends ChangeNotifier {
       } else {
         _warningResultCached = null;
         final image = await ImageUtils.compressedImage(_capturedImage!);
-        final result = await _uploadRegularImage(image);
+        final result = await _uploadRegularImage(image, _capturedImage!.path);
         _handleUploadResult(
           result.errorLevel,
           onWarning: () {
@@ -423,12 +425,48 @@ class XCameraController extends ChangeNotifier {
   /// Upload ảnh giám định thông thường lên máy chủ sau khi đã nén.
   Future<UploadVehicleInspection> _uploadRegularImage(
     XFile compressedImage,
+    String? rawPath,
   ) async {
+    String? locationName;
+    String? utcTimeCreated;
+
+    if (_isPickedFromGallery) {
+      final exif = await Exif.fromPath(rawPath ?? compressedImage.path);
+      utcTimeCreated = (await exif.getOriginalDate())
+          ?.toUtc()
+          .toIso8601String();
+      final latLong = await exif.getLatLong();
+      if (latLong != null) {
+        final location = await LocationService().getAddressFromCoordinates(
+          latitude: latLong.latitude,
+          longitude: latLong.longitude,
+        );
+        locationName = location.fold(
+          (_) => null,
+          (data) => data.formattedAddress,
+        );
+      }
+    } else {
+      utcTimeCreated = DateTime.now().toUtc().toIso8601String();
+    }
+
+    // Lấy vị trí upload
+    final locationFuture = LocationService().getCurrentLocation();
+
+    final locationResult = await locationFuture;
+    final uploadLocation = locationResult.fold(
+      (_) => null,
+      (data) => data.formattedAddress,
+    );
+
     final result = await sl.uploadImageUseCase(
       UploadImageParams(
         imagePath: compressedImage.path,
         claimId: InternalCache.claimId,
         angleId: angle.id,
+        locationName: _isPickedFromGallery ? locationName : uploadLocation,
+        uploadLocation: uploadLocation,
+        utcTimeCreated: utcTimeCreated,
       ),
     );
 

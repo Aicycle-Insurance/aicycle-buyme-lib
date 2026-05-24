@@ -6,12 +6,21 @@ class UploadImageParams {
   final String claimId;
   final String? angleId;
   final bool isFramedPhoto;
+  // địa diểm chụp ảnh hoặc lấy từ metadata ảnh
+  final String? locationName;
+  // địa điểm upload
+  final String? uploadLocation;
+  // thời gian chụp ảnh (lấy từ metadata ảnh)
+  final String? utcTimeCreated;
 
   UploadImageParams({
     required this.imagePath,
     required this.claimId,
     this.angleId,
     this.isFramedPhoto = false,
+    this.locationName,
+    this.uploadLocation,
+    this.utcTimeCreated,
   });
 }
 
@@ -26,6 +35,9 @@ class UploadImageUseCase {
       claimId: params.claimId,
       angleId: params.angleId,
       isFramedPhoto: params.isFramedPhoto,
+      locationName: params.locationName,
+      uploadLocation: params.uploadLocation,
+      utcTimeCreated: params.utcTimeCreated,
     );
   }
 }
