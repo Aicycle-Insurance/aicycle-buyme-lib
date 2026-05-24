@@ -21,12 +21,36 @@ class ImageEntity {
   final List<int>? resolution;
   final String? filePath;
   final List<DamageEntity>? damagesInImage;
+  // Thời gian tải lên ảnh
+  final double? uploadingTime;
+  // Thời gian xử lý ảnh
+  final double? processingTime;
+  // Thời điểm chụp ảnh
+  final DateTime? capturedDate;
+  // Vị trí chụp ảnh
+  final String? capturedLocation;
+  // Thời gian tải lên
+  final DateTime? uploadedDate;
+  // Địa điểm tải lên
+  final String? uploadedLocation;
+  // Mã xử lý
+  final String? traceId;
+  // Id của folder aicycle
+  final String? aicycleFolderId;
 
   ImageEntity({
     this.imageId,
     this.resolution,
     this.filePath,
     this.damagesInImage,
+    this.uploadingTime,
+    this.processingTime,
+    this.capturedDate,
+    this.capturedLocation,
+    this.uploadedDate,
+    this.uploadedLocation,
+    this.traceId,
+    this.aicycleFolderId,
   });
 }
 

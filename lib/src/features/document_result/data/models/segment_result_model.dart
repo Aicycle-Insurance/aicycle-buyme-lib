@@ -94,6 +94,7 @@ class SegmentImageModel {
   final String? location;
   final String? imageUrl;
   final String? imageDrawUrl;
+  final String? traceId;
   final List<DamageImageInfoModel>? damageImageInfo;
 
   SegmentImageModel({
@@ -117,6 +118,7 @@ class SegmentImageModel {
     this.imageUrl,
     this.imageDrawUrl,
     this.damageImageInfo,
+    this.traceId,
   });
 
   factory SegmentImageModel.fromJson(Map<String, dynamic> json) {
@@ -145,6 +147,7 @@ class SegmentImageModel {
       damageImageInfo: (json['damageImageInfo'] as List?)
           ?.map((e) => DamageImageInfoModel.fromJson(e))
           .toList(),
+      traceId: json['traceId'],
     );
   }
 
@@ -170,6 +173,7 @@ class SegmentImageModel {
       'imageUrl': imageUrl,
       'imageDrawUrl': imageDrawUrl,
       'damageImageInfo': damageImageInfo?.map((e) => e.toJson()).toList(),
+      'traceId': traceId,
     };
   }
 }

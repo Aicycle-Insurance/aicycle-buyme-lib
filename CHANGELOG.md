@@ -1,3 +1,9 @@
+## 1.0.20
+
+- Detect and show image's location, processing time, upload time
+- Improve performance
+- Fix bugs
+
 ## 1.0.19
 
 - Add disableValidation config and enable camera frame by default

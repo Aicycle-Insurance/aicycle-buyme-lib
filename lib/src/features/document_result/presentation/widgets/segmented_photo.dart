@@ -7,6 +7,7 @@ import '../../../../core/extension/damage_ext.dart';
 import '../../../../core/theme/app_text_styles.dart';
 import '../../../../core/utils/screen_utils.dart';
 import '../../domain/entities/segment_result.dart';
+import 'image_info_bottomsheet.dart';
 
 const double maskOpacity = 0.4;
 
@@ -147,6 +148,22 @@ class _SegmentedPhotoState extends State<SegmentedPhoto> {
     }
   }
 
+  void showImageInfo() async {
+    await showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(16.r),
+          topRight: Radius.circular(16.r),
+        ),
+      ),
+      builder: (context) {
+        return ImageInfoBottomsheet(image: widget.imageEntity);
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -182,7 +199,30 @@ class _SegmentedPhotoState extends State<SegmentedPhoto> {
                             errorWidget: (context, url, error) =>
                                 const SizedBox.shrink(),
                           ),
+
+                          /// Masks
                           if (widget.showMask) ..._masks(imageSize),
+
+                          /// Image info button
+                          Positioned(
+                            bottom: 16.h,
+                            left: 16.w,
+                            child: Container(
+                              padding: const EdgeInsets.all(2),
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: Colors.black.withValues(alpha: 0.4),
+                              ),
+                              child: InkWell(
+                                onTap: showImageInfo,
+                                child: Icon(
+                                  Icons.info_rounded,
+                                  color: Colors.white,
+                                  size: 20.r,
+                                ),
+                              ),
+                            ),
+                          ),
                         ],
                       ),
                     ),

@@ -30,6 +30,14 @@ extension ImageMapper on SegmentImageModel {
       imageId: imageId,
       resolution: resolution,
       filePath: filePath,
+      uploadingTime: timeAppUpload?.toDouble(),
+      processingTime: timeProcess,
+      uploadedDate: DateTime.tryParse(uploadedTime ?? '')?.toLocal(),
+      capturedDate: DateTime.tryParse(requestedTime ?? '')?.toLocal(),
+      capturedLocation: location,
+      uploadedLocation: uploadLocation,
+      aicycleFolderId: claimId?.toString(),
+      traceId: traceId,
       damagesInImage: damageImageInfo
           ?.map(
             (e) => DamageEntity(

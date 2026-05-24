@@ -92,10 +92,7 @@ class ImageRemoteDataSourceImpl implements ImageRemoteDataSource {
     if (validate['claimImageIsValid'] != true) {
       throw EngineException(validate['message'] ?? 'Image is not valid', 500);
     }
-    print('timeAppUpload: $timeAppUpload');
-    print('locationName: $locationName');
-    print('uploadLocation: $uploadLocation');
-    print('utcTimeCreated: $utcTimeCreated');
+
     // 4. Process image
     final response = await _processImage(
       claimId,

@@ -146,4 +146,17 @@ class AppStrings {
       'Bạn cần chụp đầy đủ 2 mặt của Đăng kiểm xe để hoàn thiện hồ sơ.';
   static const String isProcessing =
       'Hệ thống đang xử lý dữ liệu.\nVui lòng đợi trong giây lát.';
+
+  // Image Info Bottom Sheet
+  static const String imageInfo = 'Thông tin ảnh';
+  static const String imageFilePath = 'Đường dẫn file';
+  static const String imageUploadingTime = 'Thời gian tải lên ảnh:';
+  static const String imageProcessingTime = 'Thời gian xử lý ảnh:';
+  static const String imageCapturedDate = 'Thời điểm chụp:';
+  static const String imageCapturedLocation = 'Địa điểm chụp:';
+  static const String imageUploadedDate = 'Thời điểm tải lên:';
+  static const String imageUploadedLocation = 'Địa điểm tải lên:';
+  static const String traceId = 'Trace ID:';
+  static const String folderId = 'Mã hồ sơ AICycle:';
+  static const String copied = 'Đã sao chép';
 }
