@@ -19,7 +19,7 @@ class SegmentResult {
 class ImageEntity {
   final int? imageId;
   final List<int>? resolution;
-  final String? filePath;
+  final String? imageUrl;
   final List<DamageEntity>? damagesInImage;
   // Thời gian tải lên ảnh
   final double? uploadingTime;
@@ -41,7 +41,7 @@ class ImageEntity {
   ImageEntity({
     this.imageId,
     this.resolution,
-    this.filePath,
+    this.imageUrl,
     this.damagesInImage,
     this.uploadingTime,
     this.processingTime,

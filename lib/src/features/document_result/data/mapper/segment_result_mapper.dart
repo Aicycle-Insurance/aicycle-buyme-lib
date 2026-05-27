@@ -29,7 +29,7 @@ extension ImageMapper on SegmentImageModel {
     return ImageEntity(
       imageId: imageId,
       resolution: resolution,
-      filePath: filePath,
+      imageUrl: imageUrl,
       uploadingTime: timeAppUpload?.toDouble(),
       processingTime: timeProcess,
       uploadedDate: DateTime.tryParse(uploadedTime ?? '')?.toLocal(),

@@ -1,3 +1,7 @@
+## 1.0.22
+
+- Rename ImageEntity property filePath to imageUrl and remove unused navigation logic
+
 ## 1.0.21
 
 - Implement claim folder detail retrieval to track and restrict image modification after results availability

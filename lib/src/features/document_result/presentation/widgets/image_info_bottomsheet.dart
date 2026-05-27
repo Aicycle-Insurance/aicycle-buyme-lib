@@ -49,7 +49,7 @@ class ImageInfoBottomsheet extends StatelessWidget {
                   /// File path
                   _SectionLabel(AppStrings.imageFilePath),
                   SizedBox(height: 6.h),
-                  _FilePathRow(filePath: image.filePath),
+                  _FilePathRow(filePath: image.imageUrl),
                   SizedBox(height: 32.h),
 
                   /// Uploading time

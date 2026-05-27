@@ -182,7 +182,7 @@ class _SegmentContainerState extends State<SegmentContainer> {
                       borderRadius: BorderRadius.circular(2.r),
                       child: CachedNetworkImage(
                         imageUrl:
-                            widget.segmentResult.images![index].filePath ?? '',
+                            widget.segmentResult.images![index].imageUrl ?? '',
                         fit: BoxFit.cover,
                         placeholder: (context, url) =>
                             const Center(child: CircularProgressIndicator()),

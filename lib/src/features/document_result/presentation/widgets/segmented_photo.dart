@@ -192,7 +192,7 @@ class _SegmentedPhotoState extends State<SegmentedPhoto> {
                         alignment: AlignmentGeometry.center,
                         children: [
                           CachedNetworkImage(
-                            imageUrl: widget.imageEntity.filePath ?? '',
+                            imageUrl: widget.imageEntity.imageUrl ?? '',
                             fit: BoxFit.fill,
                             placeholder: (context, url) =>
                                 const SizedBox.shrink(),

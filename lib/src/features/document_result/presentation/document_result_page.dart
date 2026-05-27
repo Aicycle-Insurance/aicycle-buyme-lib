@@ -31,22 +31,6 @@ class _DocumentResultPageState extends State<DocumentResultPage> {
     );
   }
 
-  // void backToBuyMe() {
-  //   if (widget.isFromBuyMePage) {
-  //     Navigator.pop(context);
-  //     return;
-  //   }
-  //   Navigator.pushReplacement(
-  //     context,
-  //     MaterialPageRoute(
-  //       builder: (context) => AiCycleBuyMe(
-  //         aiCycleConfig: AiCycleBuyMe.config,
-  //         onComplete: widget.onComplete,
-  //       ),
-  //     ),
-  //   );
-  // }
-
   @override
   void dispose() {
     _controller.dispose();
