@@ -22,4 +22,6 @@ abstract class BuyMeRepository {
   });
 
   Future<String> getValidationResult({required String claimId});
+
+  Future<void> getClaimFolderById(String claimId);
 }

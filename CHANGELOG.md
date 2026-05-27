@@ -1,3 +1,7 @@
+## 1.0.21
+
+- Implement claim folder detail retrieval to track and restrict image modification after results availability
+
 ## 1.0.20
 
 - Detect and show image's location, processing time, upload time

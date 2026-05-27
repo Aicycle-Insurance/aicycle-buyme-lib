@@ -5,6 +5,10 @@ class ApiEndpoints {
   /// Endpoint for creating and managing claim folders.
   static const String createClaimDocument = '/claimfolders';
 
+  /// Endpoint for get claim document by id.
+  static String getClaimDocumentById(String claimId) =>
+      '/claimfolders/$claimId';
+
   /// Endpoint for fetching directional images of a claim folder.
   static const String directionalImages = '/v2/claimfolders/directional-images';
 

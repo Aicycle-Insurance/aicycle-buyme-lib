@@ -1,5 +1,4 @@
-import 'package:aicycle_buyme_plus/src/features/aicycle_buy_me/domain/entities/directional_image.dart';
-
+import '../../domain/entities/directional_image.dart';
 import '../../domain/repositories/buy_me_repository.dart';
 import '../../../../core/utils/internal_cache.dart';
 import '../data_sources/buy_me_remote_data_source.dart';
@@ -60,6 +59,7 @@ class BuyMeRepositoryImpl implements BuyMeRepository {
   String _processResponse(BuyMeFolderModel model) {
     final id = model.claimId?.toString() ?? '';
     InternalCache.claimId = id;
+    InternalCache.resultsAvailable = model.resultsAvailable ?? false;
     return id;
   }
 
@@ -78,5 +78,11 @@ class BuyMeRepositoryImpl implements BuyMeRepository {
   @override
   Future<String> getValidationResult({required String claimId}) {
     return _remoteDataSource.getValidationResult(claimId: claimId);
+  }
+
+  @override
+  Future<void> getClaimFolderById(String claimId) async {
+    final model = await _remoteDataSource.getClaimFolderById(claimId);
+    InternalCache.resultsAvailable = model.resultsAvailable ?? false;
   }
 }

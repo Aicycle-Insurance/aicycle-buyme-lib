@@ -7,6 +7,7 @@ import '../../../core/di/injection.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_strings.dart';
 import '../../../core/theme/app_text_styles.dart';
+import '../../../core/utils/internal_cache.dart';
 import '../../../core/utils/screen_utils.dart';
 import '../../../core/widgets/app_checkbox.dart';
 import '../../../core/widgets/delete_confirm_dialog.dart';
@@ -52,11 +53,14 @@ class _ImageListPageState extends State<ImageListPage> {
   }
 
   Widget _buildCapturedImages(DirectionalImage image) {
+    final resultsAvailable = InternalCache.resultsAvailable;
     return ListenableBuilder(
       listenable: sl.vehicleImageVault,
       builder: (context, child) {
         return GestureDetector(
-          onTap: () => sl.vehicleImageVault.toggleImageSelection(image.imageId),
+          onTap: !resultsAvailable
+              ? () => sl.vehicleImageVault.toggleImageSelection(image.imageId)
+              : null,
           child: Container(
             width: double.infinity,
             decoration: BoxDecoration(
@@ -72,16 +76,17 @@ class _ImageListPageState extends State<ImageListPage> {
                     height: double.infinity,
                     width: double.infinity,
                   ),
-                  Positioned(
-                    right: 8,
-                    top: 8,
-                    child: AppCheckbox(
-                      size: 16.h,
-                      value: sl.vehicleImageVault.isSelected(image.imageId),
-                      onChanged: (value) => sl.vehicleImageVault
-                          .toggleImageSelection(image.imageId),
+                  if (!resultsAvailable)
+                    Positioned(
+                      right: 8,
+                      top: 8,
+                      child: AppCheckbox(
+                        size: 16.h,
+                        value: sl.vehicleImageVault.isSelected(image.imageId),
+                        onChanged: (value) => sl.vehicleImageVault
+                            .toggleImageSelection(image.imageId),
+                      ),
                     ),
-                  ),
                 ],
               ),
             ),
@@ -100,6 +105,7 @@ class _ImageListPageState extends State<ImageListPage> {
           widget.vehicleAngle,
         );
         final showDeleteButton =
+            !InternalCache.resultsAvailable &&
             sl.vehicleImageVault.selectedImageIds.isNotEmpty;
         return Scaffold(
           backgroundColor: AppColors.background,

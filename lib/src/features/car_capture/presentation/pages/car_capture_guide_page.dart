@@ -1,9 +1,3 @@
-import 'package:aicycle_buyme_plus/aicycle_buyme_plus.dart';
-import 'package:aicycle_buyme_plus/src/core/di/injection.dart';
-import 'package:aicycle_buyme_plus/src/core/extension/car_angle_ext.dart';
-import 'package:aicycle_buyme_plus/src/core/theme/app_strings.dart';
-import 'package:aicycle_buyme_plus/src/core/utils/screen_utils.dart';
-import 'package:aicycle_buyme_plus/src/core/widgets/app_checkbox.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
@@ -12,6 +6,13 @@ import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_text_styles.dart';
 import '../../../../core/widgets/delete_confirm_dialog.dart';
 import '../../../aicycle_buy_me/domain/entities/directional_image.dart';
+import '../../../../../aicycle_buyme_plus.dart';
+import '../../../../core/di/injection.dart';
+import '../../../../core/extension/car_angle_ext.dart';
+import '../../../../core/theme/app_strings.dart';
+import '../../../../core/utils/internal_cache.dart';
+import '../../../../core/utils/screen_utils.dart';
+import '../../../../core/widgets/app_checkbox.dart';
 import '../widgets/guide_page_bottom_bar.dart';
 
 class CarCaptureGuidePage extends StatefulWidget {
@@ -44,11 +45,14 @@ class _CarCaptureGuidePageState extends State<CarCaptureGuidePage> {
   }
 
   Widget _buildCapturedImages(DirectionalImage image) {
+    final resultsAvailable = InternalCache.resultsAvailable;
     return ListenableBuilder(
       listenable: sl.vehicleImageVault,
       builder: (context, child) {
         return GestureDetector(
-          onTap: () => sl.vehicleImageVault.toggleImageSelection(image.imageId),
+          onTap: !resultsAvailable
+              ? () => sl.vehicleImageVault.toggleImageSelection(image.imageId)
+              : null,
           child: Container(
             width: double.infinity,
             decoration: BoxDecoration(
@@ -64,16 +68,17 @@ class _CarCaptureGuidePageState extends State<CarCaptureGuidePage> {
                     height: double.infinity,
                     width: double.infinity,
                   ),
-                  Positioned(
-                    right: 8,
-                    top: 8,
-                    child: AppCheckbox(
-                      size: 16.h,
-                      value: sl.vehicleImageVault.isSelected(image.imageId),
-                      onChanged: (value) => sl.vehicleImageVault
-                          .toggleImageSelection(image.imageId),
+                  if (!resultsAvailable)
+                    Positioned(
+                      right: 8,
+                      top: 8,
+                      child: AppCheckbox(
+                        size: 16.h,
+                        value: sl.vehicleImageVault.isSelected(image.imageId),
+                        onChanged: (value) => sl.vehicleImageVault
+                            .toggleImageSelection(image.imageId),
+                      ),
                     ),
-                  ),
                 ],
               ),
             ),
@@ -102,6 +107,7 @@ class _CarCaptureGuidePageState extends State<CarCaptureGuidePage> {
       builder: (context, child) {
         final images = sl.vehicleImageVault.getImagesForAngle(widget.angle);
         final showDeleteButton =
+            !InternalCache.resultsAvailable &&
             sl.vehicleImageVault.selectedImageIds.isNotEmpty;
         return Scaffold(
           backgroundColor: AppColors.background,

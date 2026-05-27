@@ -66,7 +66,7 @@ class BuyMeController extends ChangeNotifier {
 
       await sl.vehicleImageVault.loadAllDirectionalImages();
       await sl.validationVault.validateVehicleAngle();
-
+      await sl.getFolderDetailUsecase.call(InternalCache.claimId);
       _status = BuyMeStatus.success;
       if (!_isDisposed) notifyListeners();
     } catch (e) {
@@ -84,7 +84,7 @@ class BuyMeController extends ChangeNotifier {
     if (!_isDisposed) notifyListeners();
   }
 
-  Future<void> submit(Function(dynamic data)? onComplete) async {
+  Future<void> submit(Function(Map<String, dynamic> data)? onComplete) async {
     try {
       _status = BuyMeStatus.loading;
       notifyListeners();
@@ -115,6 +115,7 @@ class BuyMeController extends ChangeNotifier {
         'itemsCount': imageDetails.length,
       };
       onComplete?.call(sentData);
+      await sl.getFolderDetailUsecase.call(InternalCache.claimId);
     } catch (e) {
       debugPrint('Error getting image detail: $e');
     } finally {

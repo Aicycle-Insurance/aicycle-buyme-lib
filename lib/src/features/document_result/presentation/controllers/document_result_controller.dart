@@ -35,6 +35,7 @@ class DocumentResultController extends ChangeNotifier {
     }
     await getVehicleInfo();
     await getDamageStatistics();
+    await sl.getFolderDetailUsecase.call(InternalCache.claimId);
     _isLoading = false;
     notifyListeners();
   }
@@ -88,6 +89,7 @@ class DocumentResultController extends ChangeNotifier {
         'itemsCount': imageDetails.length,
       };
       onComplete?.call(sentData);
+      await sl.getFolderDetailUsecase.call(InternalCache.claimId);
     } catch (e) {
       debugPrint('Error getting image detail: $e');
     } finally {

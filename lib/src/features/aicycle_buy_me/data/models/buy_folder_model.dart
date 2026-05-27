@@ -1,11 +1,13 @@
 class BuyMeFolderModel {
   final int? claimId;
+  final bool? resultsAvailable;
 
-  BuyMeFolderModel({this.claimId});
+  BuyMeFolderModel({this.claimId, this.resultsAvailable});
 
   factory BuyMeFolderModel.fromJson(Map<String, dynamic> json) {
     return BuyMeFolderModel(
       claimId: int.tryParse(json['claimId']?.toString() ?? ''),
+      resultsAvailable: json['resultsAvailable']?.toString().contains('true'),
     );
   }
 

@@ -12,6 +12,9 @@ abstract class BuyMeRemoteDataSource {
     required String claimId,
     required String angleId,
   });
+
+  Future<BuyMeFolderModel> getClaimFolderById(String claimId);
+
   Future<String> getValidationResult({required String claimId});
 }
 
@@ -62,5 +65,13 @@ class BuyMeRemoteDataSourceImpl implements BuyMeRemoteDataSource {
       return response['message'] as String;
     }
     return '';
+  }
+
+  @override
+  Future<BuyMeFolderModel> getClaimFolderById(String claimId) async {
+    final response = await _dioClient.get<dynamic>(
+      ApiEndpoints.getClaimDocumentById(claimId),
+    );
+    return BuyMeFolderModel.fromDynamic(response);
   }
 }

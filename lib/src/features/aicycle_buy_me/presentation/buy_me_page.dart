@@ -14,7 +14,7 @@ import 'widgets/car_capture_section.dart';
 class BuyMePage extends StatelessWidget {
   final BuyMeController controller;
   final AiCycleConfig config;
-  final Function(dynamic data)? onComplete;
+  final Function(Map<String, dynamic> data)? onComplete;
 
   const BuyMePage({
     super.key,

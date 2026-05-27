@@ -4,6 +4,7 @@ import '../../features/aicycle_buy_me/data/repositories/buy_me_repository_impl.d
 import '../../features/aicycle_buy_me/domain/repositories/buy_me_repository.dart';
 import '../../features/aicycle_buy_me/domain/use_cases/create_buyme_folder_use_case.dart';
 import '../../features/aicycle_buy_me/domain/use_cases/get_directional_image_use_case.dart';
+import '../../features/aicycle_buy_me/domain/use_cases/get_folder_detail_usecase.dart';
 import '../../features/aicycle_buy_me/domain/use_cases/validate_vehicle_angle_use_case.dart';
 import '../../features/aicycle_buy_me/presentation/controllers/validation_vault.dart';
 import '../../features/camera/data/data_source/image_remote_data_source.dart';
@@ -63,6 +64,9 @@ class AiCycleInjection {
   // --- Use Cases ---
   late final CreateBuyMeFolderUseCase createBuyMeFolderUseCase =
       CreateBuyMeFolderUseCase(_buyMeRepository);
+
+  late final GetFolderDetailUsecase getFolderDetailUsecase =
+      GetFolderDetailUsecase(_buyMeRepository);
 
   late final GetDirectionalImagesUseCase getDirectionalImagesUseCase =
       GetDirectionalImagesUseCase(_buyMeRepository);

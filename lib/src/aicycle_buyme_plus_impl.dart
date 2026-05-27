@@ -1,10 +1,13 @@
-import 'package:aicycle_buyme_plus/src/core/utils/screen_utils.dart';
-import 'package:aicycle_buyme_plus/src/core/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
 import '../../../../aicycle_buyme_plus.dart';
+import 'core/theme/app_colors.dart';
+import 'core/utils/internal_cache.dart';
+import 'core/utils/screen_utils.dart';
 import 'features/aicycle_buy_me/presentation/buy_me_page.dart';
 import 'features/aicycle_buy_me/presentation/controllers/buy_me_controller.dart';
+import 'features/document_result/presentation/document_result_page.dart';
 
 /// The main entry point for the SDK as a Widget.
 ///
@@ -19,7 +22,7 @@ class AiCycleBuyMe extends StatefulWidget {
 
   /// Callback when initialization succeeds.
   /// If provided, the widget will not automatically navigate to the default flow.
-  final Function(dynamic data)? onComplete;
+  final Function(Map<String, dynamic> data)? onComplete;
 
   const AiCycleBuyMe({
     super.key,
@@ -57,13 +60,34 @@ class _AiCycleBuyMeState extends State<AiCycleBuyMe> {
     _controller.init(widget.aiCycleConfig);
   }
 
+  bool _isFirstLoad = true;
+
   void _onStatusChanged() {
+    /// Error status: close app
     if (_controller.status == BuyMeStatus.error) {
       if (widget.onError != null) {
         widget.onError!(_controller.errorMessage);
       }
       if (mounted) {
         Navigator.pop(context);
+      }
+    }
+    /// Success status with showResultScreen = true: push to result page
+    else if (_controller.status == BuyMeStatus.success && _isFirstLoad) {
+      _isFirstLoad = false;
+      if (InternalCache.resultsAvailable &&
+          widget.aiCycleConfig.generalConfig.showResultScreen == true) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          if (mounted) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) =>
+                    DocumentResultPage(onComplete: widget.onComplete),
+              ),
+            );
+          }
+        });
       }
     }
   }
