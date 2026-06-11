@@ -1,3 +1,7 @@
+## 1.0.23
+
+- Fix bugs
+
 ## 1.0.22
 
 - Rename ImageEntity property filePath to imageUrl and remove unused navigation logic
