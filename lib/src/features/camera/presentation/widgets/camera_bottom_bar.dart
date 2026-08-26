@@ -4,6 +4,7 @@ import 'package:native_device_orientation/native_device_orientation.dart';
 
 // import '../../../../../gen/assets.gen.dart';
 import '../../../../core/di/injection.dart';
+import '../../../../core/extension/directional_image_ext.dart';
 import '../../../../core/theme/app_colors.dart';
 // import '../../../../core/theme/app_strings.dart';
 import '../../../../core/theme/app_text_styles.dart';
@@ -108,6 +109,7 @@ class CameraBottomBar extends StatelessWidget {
                               if (images.isNotEmpty) ...[
                                 CachedNetworkImage(
                                   imageUrl: images.last.imageUrl ?? '',
+                                  cacheKey: images.last.cacheKey,
                                   fit: BoxFit.cover,
                                   height: double.infinity,
                                   width: double.infinity,

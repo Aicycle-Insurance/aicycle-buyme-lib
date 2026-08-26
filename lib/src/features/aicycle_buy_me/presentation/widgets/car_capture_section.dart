@@ -14,6 +14,7 @@ import '../../../camera/presentation/pages/camera_page.dart';
 import '../../../car_capture/presentation/pages/car_capture_page.dart';
 
 import '../../../images_list/presentation/image_list_page.dart';
+import '../../../../core/extension/directional_image_ext.dart';
 import '../../domain/entities/directional_image.dart';
 import '../controllers/validation_vault.dart';
 
@@ -104,6 +105,7 @@ class CarCaptureSection extends StatelessWidget {
                   children: [
                     CachedNetworkImage(
                       imageUrl: images[index].imageUrl!,
+                      cacheKey: images[index].cacheKey,
                       fit: BoxFit.cover,
                       height: 90.h,
                       width: double.infinity,
