@@ -5,6 +5,7 @@ import '../../../../../gen/assets.gen.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_text_styles.dart';
 import '../../../../core/widgets/delete_confirm_dialog.dart';
+import '../../../../core/extension/directional_image_ext.dart';
 import '../../../aicycle_buy_me/domain/entities/directional_image.dart';
 import '../../../../../aicycle_buyme_plus.dart';
 import '../../../../core/di/injection.dart';
@@ -64,6 +65,7 @@ class _CarCaptureGuidePageState extends State<CarCaptureGuidePage> {
                 children: [
                   CachedNetworkImage(
                     imageUrl: image.imageUrl ?? '',
+                    cacheKey: image.cacheKey,
                     fit: BoxFit.cover,
                     height: double.infinity,
                     width: double.infinity,

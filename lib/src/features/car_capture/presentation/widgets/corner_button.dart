@@ -6,6 +6,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../core/di/injection.dart';
+import '../../../../core/extension/directional_image_ext.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_strings.dart';
 import '../controllers/car_capture_controller.dart';
@@ -53,6 +54,7 @@ class CornerButton extends StatelessWidget {
                   children: [
                     CachedNetworkImage(
                       imageUrl: images.last.imageUrl ?? '',
+                      cacheKey: images.last.cacheKey,
                       fit: BoxFit.cover,
                       placeholder: (context, url) =>
                           const Center(child: CircularProgressIndicator()),
